@@ -1,10 +1,10 @@
 import React from 'react'
-import Register from '../../features/auth/Register'
+import Hero from './Hero'
 
 export default function Home() {
   return (
     <div>
-        <Register></Register>
+        <Hero></Hero>
     </div>
   )
 }
