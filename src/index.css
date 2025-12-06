@@ -1,22 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: light --default;
-};
+}
 
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #CAEB66;
-  --color-secondary: #03373D;
-} *
-
-body {
+  --color-primary: #caeb66;
+  --color-secondary: #03373d;
+}
+* body {
   font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
 }
 
+.container {
+  @apply mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8;
+}
 
+/* 2. .section: 
+    Protiti main content section-er jonyo uniform vertical spacing (top/bottom) 
+    ensure korbe. Mobile-e beshi padding ebong desktop-e aro beshi padding.
+*/
+.section {
+  @apply py-10 md:py-20 lg:py-24;
+}
 
+/* 3. .section-title: 
+    Header/Title-gulo ke ekta standard look debar jonyo.
+*/
+.section-title {
+  @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 md:mb-8;
+}
 
+/* 4. .sub-title: 
+    Section-title-er niche choto description-er jonyo.
+*/
+.sub-title {
+  @apply text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto;
+}
 
+/* 5. .btn-primary-ghost: 
+    Custom button style jeta primary color use korbe kintu transparent hobe.
+*/
+.btn-primary-ghost {
+  @apply btn border-none bg-transparent text-primary hover:bg-primary/10 hover:border-primary/10 transition duration-300;
+}

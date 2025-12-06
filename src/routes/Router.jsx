@@ -4,6 +4,7 @@ import Register from "../features/auth/Register";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/home/Home";
 import PrivateRoute from "./PrivateRoute";
+import AuthLayout from "../layouts/AuthLayout";
 
 export const router = createBrowserRouter([
   {
@@ -35,20 +36,20 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/",
-  //   Component: AuthLayout,
-  //   children: [
-  //     {
-  //       path: "/register",
-  //       element: <Register></Register>
-  //     },
-  //     {
-  //       path: "/login",
-  //       element: <Login></Login>
-  //     },
-  //   ]
-  // },
+  {
+    path: "/",
+    Component: AuthLayout,
+    children: [
+      {
+        path: "/register",
+        element: <Register></Register>
+      },
+      {
+        path: "/login",
+        element: <Login></Login>
+      },
+    ]
+  },
   // {
   //   path: '/dashboard',
   //   element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
