@@ -7,8 +7,8 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #caeb66;
-  --color-secondary: #03373d;
+  --color-primary: #03373D;
+  --color-secondary: #CAEB66;
 }
 * body {
   font-family: "Urbanist", sans-serif;

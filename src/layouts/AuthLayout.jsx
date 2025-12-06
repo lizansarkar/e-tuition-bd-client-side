@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import Footer from "../components/reusable/Footer";
-
-const logoPath = "/logo-img/logo.png";
+import logoPath from "../assets/logo.png";
 
 export default function AuthLayout() {
   return (
