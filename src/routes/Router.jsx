@@ -5,6 +5,11 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/home/Home";
 import PrivateRoute from "./PrivateRoute";
 import AuthLayout from "../layouts/AuthLayout";
+import MyTuitions from "../features/dashboard/student-dashboard/MyTuitions";
+import StudentDashboardLayout from "../features/dashboard/student-dashboard/StudentDashboardLayout";
+import TutorDashboardLayout from "../features/dashboard/tutor-dashboard/TutorDashboardLayout";
+import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDashboardLayout";
+import DashboardContainer from "../features/dashboard/DashboardContainer";
 
 export const router = createBrowserRouter([
   {
@@ -13,26 +18,17 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        
+
         element: <Home></Home>,
       },
 
       {
-        path: "/",
-        element: <PrivateRoute></PrivateRoute>,
-        loader: () => fetch("/serviceCenters.json").then(res => res.json())
-      },
-      {
-        path: "/send-percel",
-        element: <PrivateRoute></PrivateRoute>,
-        loader: () => fetch("/serviceCenters.json").then(res => res.json())
-      },
-      {
-        path: "/",
-        loader: () => fetch("/serviceCenters.json").then(res => res.json())
-      },
-      {
-        path: "/",
+        path: "/tuitions",
+        element: (
+          <PrivateRoute>
+            <MyTuitions></MyTuitions>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -42,47 +38,77 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/register",
-        element: <Register></Register>
+        element: <Register></Register>,
       },
       {
         path: "/login",
-        element: <Login></Login>
+        element: <Login></Login>,
       },
-    ]
+    ],
   },
-  // {
-  //   path: '/dashboard',
-  //   element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-  //   children: [
-  //     {
-  //       path: 'my-parcels',
-  //       element: <MyPercels></MyPercels>
-  //     },
-  //     {
-  //       path: 'payment/:parcelId',
-  //       element: <Payment></Payment>
-  //     },
-  //     {
-  //       path: 'payment-success',
-  //       element: <PaymentSuccess></PaymentSuccess>
-  //     },
-  //     {
-  //       path: 'payment-cancelled',
-  //       element: <PaymentCancelled></PaymentCancelled>
-  //     },
-  //     {
-  //       path: 'approve-rider',
-  //       element: <AdminRoute><ApproveRider></ApproveRider></AdminRoute>
-  //     },
-  //     {
-  //       path: 'users-management',
-  //       // element: <AdminRoute><UserManagement></UserManagement></AdminRoute>
-  //       element: <UserManagement></UserManagement>
-  //     },
-  //     {
-  //       path: '*',
-  //       element: <ErrorPage></ErrorPage>
-  //     },
-  //   ]
-  // }
+
+  //dashboard routes
+  {
+    path: "/dashboard",
+    // Shob Dashboard Route gulo PrivateRoute-er bhitore thakbe
+    element: (
+      <PrivateRoute>
+        <DashboardContainer></DashboardContainer>
+      </PrivateRoute>
+    ),
+    children: [
+      //  STUDENT DASHBOARD
+      {
+        path: "student", // /dashboard/student
+        Component: StudentDashboardLayout, // Student Layout will render here
+        children: [
+          {
+            index: true,
+            element: <MyTuitions />,
+          },
+          {
+            path: "post-new-tuition",
+            // element: <PostNewTuition />,
+          },
+          {
+            path: "applied-tutors/:id",
+            // element: <AppliedTutors />,
+          },
+          // ... other student routes (Payments, Profile)
+        ],
+      },
+
+      // TUTOR DASHBOARD
+      {
+        path: "tutor", // /dashboard/tutor
+        Component: TutorDashboardLayout,
+        children: [
+          {
+            index: true,
+            // element: <TutorMyApplications />,
+          },
+          // ... other tutor routes (Ongoing Tuitions, Revenue History)
+        ],
+      },
+
+      // ADMIN DASHBOARD
+      {
+        path: "admin", // /dashboard/admin
+        Component: AdminDashboardLayout,
+        children: [
+          {
+            path: "user-management",
+            // element: <UserManagement />,
+          },
+          // ... other admin routes (Tuition Management, Reports)
+        ],
+      },
+
+      // Optional: Default redirect or error page for /dashboard
+      {
+        path: "",
+        // element: <RedirectToRoleDashboard />,
+      },
+    ],
+  },
 ]);
