@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import StudentSidebar from "./StudentSidebar";
-import { Truck } from "lucide-react";
+import { Book, Truck } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
 
 const StudentDashboardLayout = () => {
@@ -77,12 +77,12 @@ const StudentDashboardLayout = () => {
               {/* our dashboard link */}
               <li>
                 <Link
-                  to="/dashboard/my-parcels"
+                  to="/dashboard/post-new-tuition"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="My Parcels"
                 >
-                  <Truck />
-                  <span className="is-drawer-close:hidden">My Parcels</span>
+                  <Book />
+                  <span className="is-drawer-close:hidden">Post New Tuition</span>
                 </Link>
                 
               </li>

@@ -10,6 +10,7 @@ import StudentDashboardLayout from "../features/dashboard/student-dashboard/Stud
 import TutorDashboardLayout from "../features/dashboard/tutor-dashboard/TutorDashboardLayout";
 import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDashboardLayout";
 import DashboardContainer from "../features/dashboard/DashboardContainer";
+import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuition";
 
 export const router = createBrowserRouter([
   {
@@ -68,7 +69,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "post-new-tuition",
-            // element: <PostNewTuition />,
+            element: <PostNewTuition />,
           },
           {
             path: "applied-tutors/:id",
