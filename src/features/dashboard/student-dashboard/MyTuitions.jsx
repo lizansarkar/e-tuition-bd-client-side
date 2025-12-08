@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// ✅ Shothik import: react-router-dom
 import { NavLink } from "react-router";
 import {
   FileText,
@@ -16,6 +17,8 @@ import Swal from "sweetalert2";
 
 import UseAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
+// 🚩 Modal Component Import
+import EditTuitionModal from "./EditTuitionModal";
 
 // Helper to determine status color (No change needed)
 const getStatusColor = (status) => {
@@ -36,6 +39,10 @@ const MyTuitions = () => {
   const { user } = UseAuth();
   const axiosSicure = useAxiosSicure();
 
+  // 🚩 NEW STATE: Modal handling er jonno
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTuition, setSelectedTuition] = useState(null);
+
   // 2. Fetch Tuition Posts (using tanstack/react-query)
   const {
     data: tuitions = [],
@@ -43,14 +50,19 @@ const MyTuitions = () => {
     isError,
     refetch,
   } = useQuery({
-    // queryKey must include user?.email to refetch when user changes
     queryKey: ["myTuitions", user?.email],
-    enabled: !!user?.email, // Only run if user email exists
+    enabled: !!user?.email,
     queryFn: async () => {
       const res = await axiosSicure.get(`/tuition-posts?email=${user.email}`);
       return res.data;
     },
   });
+
+  // 🚩 NEW FUNCTION: Edit button click korle modal kholbe
+  const handleEditClick = (tuition) => {
+    setSelectedTuition(tuition);
+    setIsModalOpen(true);
+  };
 
   // ❌ Delete Functionality (Integrated with axiosSicure and Swal)
   const handleDelete = (id) => {
@@ -178,7 +190,7 @@ const MyTuitions = () => {
                       key={tuition.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-150"
                     >
-                      {/* Subject & Location */}
+                      {/* ... (Details sections: Subject, Location, Budget, Tutors, Status - unchanged) ... */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
                           {tuition.subject}
@@ -188,16 +200,12 @@ const MyTuitions = () => {
                           {tuition.location}
                         </div>
                       </td>
-
-                      {/* Budget */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 dark:text-white font-medium flex items-center gap-1">
                           <DollarSign className="w-4 h-4 text-green-500" />
                           {tuition.budget?.toLocaleString() || "N/A"} BDT
                         </div>
                       </td>
-
-                      {/* Applied Tutors */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <NavLink
                           to={`/dashboard/applied-tutors/${tuition.id}`}
@@ -207,8 +215,6 @@ const MyTuitions = () => {
                           {tuition.appliedTutors} Applications
                         </NavLink>
                       </td>
-
-                      {/* Status */}
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getStatusColor(
@@ -224,19 +230,18 @@ const MyTuitions = () => {
                         </span>
                       </td>
 
-                      {/* Actions */}
+                      {/* Actions - Edit button changed to call handleEditClick */}
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        {/* ✏️ Edit Button */}
-                        <NavLink
-                          // Pass the MongoDB ID for editing
-                          to={`/dashboard/edit-tuition/${tuition.id}`}
-                          className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition duration-150 mx-2"
+                        {/* ✏️ Edit Button: Changed to standard button for modal */}
+                        <button
+                          onClick={() => handleEditClick(tuition)}
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition duration-150 mx-2 cursor-pointer"
                           title="Edit Post"
                         >
                           <Pencil className="w-5 h-5 inline-block" />
-                        </NavLink>
+                        </button>
 
-                        {/* ❌ Delete Button */}
+                        {/* ❌ Delete Button (Unchanged) */}
                         <button
                           onClick={() => handleDelete(tuition.id)}
                           className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition duration-150 mx-2 cursor-pointer"
@@ -261,6 +266,7 @@ const MyTuitions = () => {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
+                  {/* ... (Details - Unchanged) ... */}
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                       {tuition.subject}
@@ -292,14 +298,17 @@ const MyTuitions = () => {
                     </NavLink>
                   </div>
 
-                  {/* Actions */}
+                  {/* Actions - Edit button changed to call handleEditClick */}
                   <div className="flex justify-end gap-3 pt-2">
-                    <NavLink
-                      to={`/dashboard/edit-tuition/${tuition.id}`}
+                    {/* ✏️ Edit Button: Changed to standard button for modal */}
+                    <button
+                      onClick={() => handleEditClick(tuition)}
                       className="btn btn-sm bg-blue-500 text-white hover:bg-blue-600 transition-all flex items-center gap-1 p-2 rounded"
                     >
                       <Pencil className="w-4 h-4" /> Edit
-                    </NavLink>
+                    </button>
+
+                    {/* ❌ Delete Button (Unchanged) */}
                     <button
                       onClick={() => handleDelete(tuition.id)}
                       className="btn btn-sm bg-red-500 text-white hover:bg-red-600 transition-all flex items-center gap-1 p-2 rounded"
@@ -313,6 +322,17 @@ const MyTuitions = () => {
           </>
         )}
       </motion.div>
+
+      {/* 🚩 NEW: Edit Modal Component */}
+      {/* selectedTuition thakle shudhu modal render hobe */}
+      {selectedTuition && (
+        <EditTuitionModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          tuitionData={selectedTuition}
+          refetchList={refetch}
+        />
+      )}
     </section>
   );
 };

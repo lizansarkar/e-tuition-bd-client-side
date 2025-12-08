@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
+import { motion } from "framer-motion"; // motion import kora holo (jodi na koren)
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import useAuth from "../../../hooks/UseAuth";
 
@@ -36,19 +37,24 @@ const EditTuitionModal = ({ isOpen, onClose, tuitionData, refetchList }) => {
   if (!isOpen || !tuitionData) return null;
 
   const handleChange = (e) => {
+    // Budget ke number hishebe handle korar jonno ekta chotto check add kora jetey pare
+    const value =
+      e.target.name === "budget" ? Number(e.target.value) : e.target.value;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Email address add kora update korar jonno (jehetu ami age suggest korechilam)
     const dataToSend = {
       ...formData,
-      userEmail: user?.email, // Ensure email is resent for data consistency
+      userEmail: user?.email,
+      // Status ke 'Pending' kore dewa uchit jodi kono update hoy
+      status: "Pending",
     };
 
     try {
@@ -66,10 +72,10 @@ const EditTuitionModal = ({ isOpen, onClose, tuitionData, refetchList }) => {
           text: "Your tuition post has been updated successfully and is Pending review.",
           icon: "success",
         });
-        onClose(); // Modal bondho kora
-        refetchList(); // MyTuitions list refresh kora
+        onClose();
+        refetchList();
       } else {
-        Swal.fire("Info", "No changes were made to the post.", "info");
+        Swal.fire("Info", "No significant changes were detected.", "info");
         onClose();
       }
     } catch (error) {
@@ -79,7 +85,7 @@ const EditTuitionModal = ({ isOpen, onClose, tuitionData, refetchList }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#dfdfdf] bg-opacity-50 backdrop-blur-sm">
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
