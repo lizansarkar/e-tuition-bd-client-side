@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../../../components/reusable/Footer";
 import { Link, Outlet } from "react-router";
-import { Book, BookOpen, BookPlus, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
+import { Book, BookMarked, BookOpen, BookOpenCheck, BookPlus, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
 
 export default function TutorDashboardLayout() {
@@ -66,27 +66,27 @@ export default function TutorDashboardLayout() {
 
                 {/* ********** our dashboard link start here *********** */}
                 <li>
-                  {/* my tuitions */}
+                  {/* My Applications */}
                   <Link
-                    to="/dashboard/student/my-tuitions"
+                    to="/dashboard/tutor/my-applications"
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="My Tuitions"
+                    data-tip="My Applications"
                   >
                     <BookOpen />
-                    <span className="is-drawer-close:hidden">My Tuitions</span>
+                    <span className="is-drawer-close:hidden">My Applications</span>
                   </Link>
                 </li>
 
                 <li>
-                  {/* post new tuition */}
+                  {/* Tutor Ongoing Tuitions */}
                   <Link
-                    to="/dashboard/student/post-new-tuition"
+                    to="/dashboard/tutor/ongoing-tuitions"
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Post New Tuition"
+                    data-tip="Tutor Ongoing Tuitions"
                   >
-                    <BookPlus />
+                    <BookOpenCheck />
                     <span className="is-drawer-close:hidden">
-                      Post New Tuition
+                      Tutor Ongoing Tuitions
                     </span>
                   </Link>
                 </li>
@@ -94,39 +94,13 @@ export default function TutorDashboardLayout() {
                 <li>
                   {/* Applied Tutors */}
                   <Link
-                    to="/dashboard/student/applied-tutors"
+                    to="/dashboard/tutor/tutor-revenue-history"
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Applied Tutors"
+                    data-tip="Revenue History"
                   >
-                    <BookPlus />
+                    <BookMarked />
                     <span className="is-drawer-close:hidden">
-                      Applied Tutors
-                    </span>
-                  </Link>
-                </li>
-
-                <li>
-                  {/* Payments */}
-                  <Link
-                    to="/dashboard/student/payments"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Payments"
-                  >
-                    <DollarSign></DollarSign>
-                    <span className="is-drawer-close:hidden">Payments</span>
-                  </Link>
-                </li>
-
-                <li>
-                  {/* Profile Settings */}
-                  <Link
-                    to="/dashboard/student/profile-settings"
-                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Profile Settings"
-                  >
-                    <UserRoundCog />
-                    <span className="is-drawer-close:hidden">
-                      Profile Settings
+                      Revenue History
                     </span>
                   </Link>
                 </li>

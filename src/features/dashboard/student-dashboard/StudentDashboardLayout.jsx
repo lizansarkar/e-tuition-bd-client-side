@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import StudentSidebar from "./StudentSidebar";
-import { Book, BookOpen, BookPlus, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
+import { BookPlus, BookUser, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
 import Footer from "../../../components/reusable/Footer";
 
@@ -71,7 +71,7 @@ const StudentDashboardLayout = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="My Tuitions"
                 >
-                  <BookOpen />
+                  <BookUser />
                   <span className="is-drawer-close:hidden">My Tuitions</span>
                 </Link>
               </li>

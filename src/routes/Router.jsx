@@ -14,6 +14,9 @@ import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuiti
 import AppliedTutors from "../features/dashboard/student-dashboard/AppliedTutors";
 import Payments from "../features/dashboard/student-dashboard/Payments";
 import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
+import TutorMyApplications from "../features/dashboard/tutor-dashboard/TutorMyApplications";
+import OngoingTuitions from "../features/dashboard/tutor-dashboard/OngoingTuitions";
+import TutorRevenueHistory from "../features/dashboard/tutor-dashboard/TutorRevenueHistory";
 
 export const router = createBrowserRouter([
   {
@@ -94,12 +97,24 @@ export const router = createBrowserRouter([
 
       // TUTOR DASHBOARD
       {
-        path: "tutor", // /dashboard/tutor
+        path: "tutor",
         Component: TutorDashboardLayout,
         children: [
           {
             index: true,
-            // element: <TutorMyApplications />,
+            element: <TutorMyApplications />,
+          },
+          {
+            path: 'my-applications',
+            element: <TutorMyApplications />,
+          },
+          {
+            path: 'ongoing-tuitions',
+            element: <OngoingTuitions />,
+          },
+          {
+            path: 'tutor-revenue-history',
+            element: <TutorRevenueHistory />,
           },
         ],
       },

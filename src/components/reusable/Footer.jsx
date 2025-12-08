@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import logoPath from "../../assets/logo.png";
 import {
   Mail,
   Phone,
@@ -8,7 +9,7 @@ import {
   Linkedin,
   X,
   Instagram,
-} from "lucide-react"; // lucide-react icons used for a modern look
+} from "lucide-react";
 
 const Footer = () => {
   // Platform description placeholder
@@ -28,9 +29,13 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* 1. About Platform */}
         <div className="col-span-1">
-          <h3 className="text-2xl font-extrabold text-primary">
-            <span className="text-primary">e</span>TuitionBD
-          </h3>
+          <Link to="/" className="text-2xl font-extrabold ml-2 sm:ml-0">
+            <img
+              className="h-[50px] w-[200px]"
+              src={logoPath}
+              alt="eTuitionBD Logo"
+            />
+          </Link>
           <p className="mt-4 text-sm max-w-xs text-gray-600 dark:text-gray-400">
             {aboutPlatform}
           </p>
