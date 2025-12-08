@@ -11,6 +11,9 @@ import TutorDashboardLayout from "../features/dashboard/tutor-dashboard/TutorDas
 import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDashboardLayout";
 import DashboardContainer from "../features/dashboard/DashboardContainer";
 import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuition";
+import AppliedTutors from "../features/dashboard/student-dashboard/AppliedTutors";
+import Payments from "../features/dashboard/student-dashboard/Payments";
+import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 
 export const router = createBrowserRouter([
   {
@@ -19,12 +22,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-
         element: <Home></Home>,
       },
 
       {
-        path: "/tuitions",
+        path: "/my-tuitions",
         element: (
           <PrivateRoute>
             <MyTuitions></MyTuitions>
@@ -68,14 +70,25 @@ export const router = createBrowserRouter([
             element: <MyTuitions />,
           },
           {
+            path: "my-tuitions",
+            element: <MyTuitions />,
+          },
+          {
             path: "post-new-tuition",
             element: <PostNewTuition />,
           },
           {
-            path: "applied-tutors/:id",
-            // element: <AppliedTutors />,
+            path: "applied-tutors",
+            element: <AppliedTutors></AppliedTutors>,
           },
-          // ... other student routes (Payments, Profile)
+          {
+            path: "payments",
+            element: <Payments></Payments>
+          },
+          {
+            path: "profile-settings",
+            element: <ProfileSettings></ProfileSettings>
+          },
         ],
       },
 
@@ -88,7 +101,6 @@ export const router = createBrowserRouter([
             index: true,
             // element: <TutorMyApplications />,
           },
-          // ... other tutor routes (Ongoing Tuitions, Revenue History)
         ],
       },
 

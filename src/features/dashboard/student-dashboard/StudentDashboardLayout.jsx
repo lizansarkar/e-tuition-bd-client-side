@@ -1,7 +1,8 @@
 import { Link, Outlet } from "react-router";
 import StudentSidebar from "./StudentSidebar";
-import { Book, Truck } from "lucide-react";
+import { Book, BookOpen, BookPlus, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
+import Footer from "../../../components/reusable/Footer";
 
 const StudentDashboardLayout = () => {
     const { role } = UseRole();
@@ -37,7 +38,7 @@ const StudentDashboardLayout = () => {
           </nav>
           {/* Page content here */}
           <Outlet></Outlet>
-          <div className="p-4">Page Content</div>
+          <Footer></Footer>
         </div>
 
         <div className="drawer-side is-drawer-close:overflow-visible">
@@ -57,35 +58,72 @@ const StudentDashboardLayout = () => {
                   data-tip="Homepage"
                 >
                   {/* Home icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2"
-                    fill="none"
-                    stroke="currentColor"
-                    className="my-1.5 inline-block size-4"
-                  >
-                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  </svg>
+                  <Home></Home>
                   <span className="is-drawer-close:hidden">Homepage</span>
                 </Link>
               </li>
 
-              {/* our dashboard link */}
+              {/* ********** our dashboard link start here *********** */}
               <li>
+                {/* my tuitions */}
                 <Link
-                  to="/dashboard/post-new-tuition"
+                  to="/dashboard/student/my-tuitions"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="My Parcels"
+                  data-tip="My Tuitions"
                 >
-                  <Book />
+                  <BookOpen />
+                  <span className="is-drawer-close:hidden">My Tuitions</span>
+                </Link>
+              </li>
+
+              <li>
+                {/* post new tuition */}
+                <Link
+                  to="/dashboard/student/post-new-tuition"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Post New Tuition"
+                >
+                  <BookPlus />
                   <span className="is-drawer-close:hidden">Post New Tuition</span>
                 </Link>
-                
               </li>
+
+              <li>
+                {/* Applied Tutors */}
+                <Link
+                  to="/dashboard/student/applied-tutors"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Applied Tutors"
+                >
+                  <BookPlus />
+                  <span className="is-drawer-close:hidden">Applied Tutors</span>
+                </Link>
+              </li>
+
+              <li>
+                {/* Payments */}
+                <Link
+                  to="/dashboard/student/payments"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Payments"
+                >
+                  <DollarSign></DollarSign>
+                  <span className="is-drawer-close:hidden">Payments</span>
+                </Link>
+              </li>
+
+              <li>
+                {/* Profile Settings */}
+                <Link
+                  to="/dashboard/student/profile-settings"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Profile Settings"
+                >
+                  <UserRoundCog />
+                  <span className="is-drawer-close:hidden">Profile Settings</span>
+                </Link>
+              </li>
+
               {role === "admin" && (
                 <>
                   {/* approve rider menu add in dashboard */}
@@ -122,21 +160,7 @@ const StudentDashboardLayout = () => {
                   data-tip="Settings"
                 >
                   {/* Settings icon */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeWidth="2"
-                    fill="none"
-                    stroke="currentColor"
-                    className="my-1.5 inline-block size-4"
-                  >
-                    <path d="M20 7h-9"></path>
-                    <path d="M14 17H5"></path>
-                    <circle cx="17" cy="17" r="3"></circle>
-                    <circle cx="7" cy="7" r="3"></circle>
-                  </svg>
+                  <Settings></Settings>
                   <span className="is-drawer-close:hidden">Settings</span>
                 </button>
               </li>
