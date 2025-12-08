@@ -17,6 +17,15 @@ import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSett
 import TutorMyApplications from "../features/dashboard/tutor-dashboard/TutorMyApplications";
 import OngoingTuitions from "../features/dashboard/tutor-dashboard/OngoingTuitions";
 import TutorRevenueHistory from "../features/dashboard/tutor-dashboard/TutorRevenueHistory";
+import ViewAllUser from "../features/dashboard/admin-dashboard/ViewAllUser";
+import UpdateUser from "../features/dashboard/admin-dashboard/UpdateUser";
+import ModifyRole from "../features/dashboard/admin-dashboard/ModifyRole";
+import DeleteAccounts from "../features/dashboard/admin-dashboard/DeleteAccounts";
+import ViewTotalEarnings from "../features/dashboard/admin-dashboard/ViewTotalEarnings";
+import LatestTutors from "../pages/home/LatestTutors";
+import AllTutor from "../pages/home/AllTutor";
+import About from "../pages/home/About";
+import Contact from "../pages/home/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +44,18 @@ export const router = createBrowserRouter([
             <MyTuitions></MyTuitions>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/tutors",
+        element: <AllTutor></AllTutor>,
+      },
+      {
+        path: "/about",
+        element: <About></About>,
+      },
+      {
+        path: "/contact",
+        element: <Contact></Contact>,
       },
     ],
   },
@@ -86,11 +107,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "payments",
-            element: <Payments></Payments>
+            element: <Payments></Payments>,
           },
           {
             path: "profile-settings",
-            element: <ProfileSettings></ProfileSettings>
+            element: <ProfileSettings></ProfileSettings>,
           },
         ],
       },
@@ -105,15 +126,15 @@ export const router = createBrowserRouter([
             element: <TutorMyApplications />,
           },
           {
-            path: 'my-applications',
+            path: "my-applications",
             element: <TutorMyApplications />,
           },
           {
-            path: 'ongoing-tuitions',
+            path: "ongoing-tuitions",
             element: <OngoingTuitions />,
           },
           {
-            path: 'tutor-revenue-history',
+            path: "tutor-revenue-history",
             element: <TutorRevenueHistory />,
           },
         ],
@@ -125,10 +146,29 @@ export const router = createBrowserRouter([
         Component: AdminDashboardLayout,
         children: [
           {
-            path: "user-management",
-            // element: <UserManagement />,
+            index: true,
+            element: <ViewAllUser></ViewAllUser>,
           },
-          // ... other admin routes (Tuition Management, Reports)
+          {
+            path: "view-all-users",
+            element: <ViewAllUser></ViewAllUser>,
+          },
+          {
+            path: "update-user",
+            element: <UpdateUser></UpdateUser>,
+          },
+          {
+            path: "modify-role",
+            element: <ModifyRole></ModifyRole>,
+          },
+          {
+            path: "delete-accounts",
+            element: <DeleteAccounts></DeleteAccounts>,
+          },
+          {
+            path: "total-earning",
+            element: <ViewTotalEarnings></ViewTotalEarnings>,
+          },
         ],
       },
 

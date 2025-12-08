@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import StudentSidebar from "./StudentSidebar";
-import { BookPlus, BookUser, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
+import { BookPlus, BookUp2, BookUser, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
 import Footer from "../../../components/reusable/Footer";
 
@@ -95,7 +95,7 @@ const StudentDashboardLayout = () => {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Applied Tutors"
                 >
-                  <BookPlus />
+                  <BookUp2 />
                   <span className="is-drawer-close:hidden">Applied Tutors</span>
                 </Link>
               </li>
@@ -126,7 +126,7 @@ const StudentDashboardLayout = () => {
 
               {role === "admin" && (
                 <>
-                  {/* approve rider menu add in dashboard */}
+                  {/* approve*/}
                   <li>
                     <Link
                       to="approve-rider"

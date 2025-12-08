@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import heroImage from "../../assets/hero.png";
 
 export default function Hero() {
+  
   // Animation variants for the text
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -12,7 +13,7 @@ export default function Hero() {
       opacity: 1,
       y: 0,
       transition: {
-        staggerChildren: 0.2, // Chhoto chhoto kore shob elements ashbe
+        staggerChildren: 0.2,
         duration: 0.8,
       },
     },
@@ -32,28 +33,24 @@ export default function Hero() {
     },
   };
 
-  // Discord-er moto halka 'Glow' effect-er jonyo ekta pseudo-element use kora holo.
-  // Eita Tailwind CSS config file-e custom class hishebe add korte paren:
-  // utility: .bg-glow { background: radial-gradient(circle at center, #caeb6640 0%, transparent 70%); }
-
   return (
     <motion.div
       className="relative overflow-hidden dark:bg-gray-900 min-h-[70vh] md:min-h-[85vh] flex items-center"
       initial="hidden"
-      animate="visible"
+      whileInView="visible" 
+      viewport={{ once: false, amount: 0.5 }} 
     >
-      {/* 🚩 Background Glowing Effect (Discord-er background effect-er moto) */}
-      {/* Eita Tailwind-e custom class banate hobe (jemon: bg-glow) */}
       <div className="absolute inset-0 z-0 opacity-20">
         <div className="w-full h-full bg-gradient-radial from-primary/30 via-transparent to-transparent animate-pulse-slow">
-          {/* Eta shamanno animated glow effect debe. Custom Tailwind config dorkar */}
+          {/* Custom Tailwind config for bg-gradient-radial and animate-pulse-slow dorkar */}
         </div>
       </div>
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-16 sm:py-24 md:py-32 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-12">
-          {/* ডান দিক: Heading, Nitikotha and Buttons */}
+          
+          {/* Text/Buttons Section */}
           <motion.div
             className="md:w-1/2 text-center md:text-left"
             variants={textVariants}
@@ -87,7 +84,7 @@ export default function Hero() {
               {/* Button 1: Find Tutor */}
               <NavLink
                 to="/tutors"
-                className="btn btn-lg bg-primary text-white hover:bg-primary-focus transition-all shadow-lg font-bold"
+                className="px-6 py-3 bg-primary text-white hover:bg-primary/90 transition-all shadow-lg font-bold rounded-lg" // Added specific Tailwind classes for button styling
                 onClick={() => console.log("Find Tutors Clicked")}
               >
                 Find a Tutor
@@ -96,7 +93,7 @@ export default function Hero() {
               {/* Button 2: Post a Tuition Request */}
               <NavLink
                 to="/post-tuition"
-                className="btn btn-lg btn-outline border-2 border-primary text-primary hover:bg-primary/10 transition-all font-semibold"
+                className="px-6 py-3 border-2 border-primary text-primary hover:bg-primary/10 transition-all font-semibold rounded-lg" // Added specific Tailwind classes for button styling
                 onClick={() => console.log("Post Tuition Clicked")}
               >
                 Post Tuition Request
@@ -104,7 +101,7 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* বাম দিক: Image (Responsive: Mobile-e niche chole jabe) */}
+          {/* Image Section */}
           <motion.div
             className="md:w-1/2 mt-12 md:mt-0 flex justify-center"
             variants={imageVariants}

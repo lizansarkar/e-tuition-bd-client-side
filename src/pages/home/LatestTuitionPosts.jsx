@@ -123,7 +123,8 @@ export default function LatestTuitionPosts() {
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.5 }}
           variants={{
             visible: { transition: { staggerChildren: 0.1 } },
           }}

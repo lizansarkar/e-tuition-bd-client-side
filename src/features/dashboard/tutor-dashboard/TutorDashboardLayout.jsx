@@ -7,7 +7,6 @@ import UseRole from "../../../hooks/useRole";
 export default function TutorDashboardLayout() {
     const { role } = UseRole();
   return (
-    <div>
       <div className="">
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -150,6 +149,5 @@ export default function TutorDashboardLayout() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

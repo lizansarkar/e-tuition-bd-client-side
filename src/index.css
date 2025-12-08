@@ -10,7 +10,7 @@
   name: "light";
   default: true;
   --color-primary: #03373D;
-  --color-secondary: #CAEB66;
+  --color-secondary: #b4ce46;
 }
 * body {
   font-family: "Urbanist", sans-serif;
@@ -48,4 +48,9 @@
 */
 .btn-primary-ghost {
   @apply btn border-none bg-transparent text-primary hover:bg-primary/10 hover:border-primary/10 transition duration-300;
+}
+
+/* input field custom css code */
+.input-field {
+  @apply w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition duration-200;
 }
