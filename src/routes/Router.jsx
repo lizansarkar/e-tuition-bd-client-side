@@ -28,6 +28,7 @@ import About from "../pages/home/About";
 import Contact from "../pages/home/Contact";
 import AllTuitions from "../pages/home/AllTuitions";
 import UserManagement from "../features/dashboard/admin-dashboard/user-management/UserManagement";
+import PendingApproval from "../features/dashboard/admin-dashboard/PendingApproval";
 
 export const router = createBrowserRouter([
   {
@@ -158,6 +159,10 @@ export const router = createBrowserRouter([
           {
             path: "user-management",
             element: <UserManagement></UserManagement>,
+          },
+          {
+            path: "pending-approval",
+            element: <PendingApproval></PendingApproval>,
           },
           {
             path: "view-all-users",

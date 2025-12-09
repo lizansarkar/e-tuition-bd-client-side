@@ -55,7 +55,7 @@ export default function Register() {
 
       // Success message or redirection
       alert(`Registration Successful as ${data.role}! Please login.`);
-      navigate("/login");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Registration Error:", error);
       // Firebase error message set kora holo
@@ -90,8 +90,7 @@ export default function Register() {
       };
 
       // 3. Send data to Backend to save or check if user exists
-      const backendResponse = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/users`,
+      const backendResponse = await axiosSicure.post(`/users`,
         userData
       );
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Outlet } from "react-router";
 import Footer from "../../../components/reusable/Footer";
 import { FaUsers } from "react-icons/fa";
+import { FaHourglassHalf } from "react-icons/fa6";
 import {
   Book,
   BookMarked,
@@ -91,6 +92,18 @@ export default function AdminDashboardLayout() {
                   <span className="is-drawer-close:hidden">
                     User Management
                   </span>
+                </Link>
+              </li>
+
+              {/* pending approval */}
+              <li>
+                <Link
+                  to="/dashboard/admin/pending-approval"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Pending Approval"
+                >
+                  <FaHourglassHalf className="text-2xl"/>
+                  <span className="is-drawer-close:hidden">Pending Approval</span>
                 </Link>
               </li>
 
