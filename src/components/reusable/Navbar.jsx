@@ -34,6 +34,9 @@ const Navbar = () => {
         <NavLink to="/my-tuitions" onClick={closeMobileMenu}>My Tuitions</NavLink>
       </li>
       <li>
+        <NavLink to="/all-tuitions" onClick={closeMobileMenu}>All Tuitions</NavLink>
+      </li>
+      <li>
         <NavLink to="/tutors" onClick={closeMobileMenu}>Tutors</NavLink>
       </li>
       <li>

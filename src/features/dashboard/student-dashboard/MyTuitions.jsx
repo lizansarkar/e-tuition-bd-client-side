@@ -17,7 +17,6 @@ import Swal from "sweetalert2";
 
 import UseAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
-// 🚩 Modal Component Import
 import EditTuitionModal from "./EditTuitionModal";
 
 // Helper to determine status color (No change needed)
@@ -124,7 +123,7 @@ const MyTuitions = () => {
   const formattedTuitions = tuitions.map((t) => ({
     ...t,
     id: t._id,
-    appliedTutors: t.appliedTutors || 0, // Ensure appliedTutors exists for display
+    appliedTutors: t.appliedTutors || 0,
   }));
 
   return (
@@ -208,7 +207,7 @@ const MyTuitions = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <NavLink
-                          to={`/dashboard/applied-tutors/${tuition.id}`}
+                          to={`/dashboard/student/applied-tutors/${tuition.id}`}
                           className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
                         >
                           <Users className="w-4 h-4 text-blue-600" />
@@ -290,7 +289,7 @@ const MyTuitions = () => {
                       {tuition.budget?.toLocaleString() || "N/A"} BDT
                     </p>
                     <NavLink
-                      to={`/dashboard/applied-tutors/${tuition.id}`}
+                      to={`/dashboard/student/applied-tutors/${tuition.id}`}
                       className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
                     >
                       <Users className="w-4 h-4 text-blue-600" />{" "}

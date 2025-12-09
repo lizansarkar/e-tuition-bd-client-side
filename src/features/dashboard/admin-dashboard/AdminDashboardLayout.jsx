@@ -1,7 +1,23 @@
 import React from "react";
 import { Link, Outlet } from "react-router";
 import Footer from "../../../components/reusable/Footer";
-import { Book, BookMarked, BookOpen, BookOpenCheck, BookPlus, DollarSign, Home, Landmark, Settings, UserPen, UserRound, UserRoundCog, UserRoundMinus, UsersRound } from "lucide-react";
+import { FaUsers } from "react-icons/fa";
+import {
+  Book,
+  BookMarked,
+  BookOpen,
+  BookOpenCheck,
+  BookPlus,
+  DollarSign,
+  Home,
+  Landmark,
+  Settings,
+  UserPen,
+  UserRound,
+  UserRoundCog,
+  UserRoundMinus,
+  UsersRound,
+} from "lucide-react";
 import UseRole from "../../../hooks/useRole";
 
 export default function AdminDashboardLayout() {
@@ -64,6 +80,20 @@ export default function AdminDashboardLayout() {
               </li>
 
               {/* ********** our dashboard link start here *********** */}
+
+              <li>
+                <Link
+                  to="/dashboard/admin/user-management"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="User Management"
+                >
+                  <FaUsers className="text-2xl"></FaUsers>
+                  <span className="is-drawer-close:hidden">
+                    User Management
+                  </span>
+                </Link>
+              </li>
+
               <li>
                 {/* update user */}
                 <Link
@@ -72,9 +102,7 @@ export default function AdminDashboardLayout() {
                   data-tip="Update User"
                 >
                   <UsersRound />
-                  <span className="is-drawer-close:hidden">
-                    Update User
-                  </span>
+                  <span className="is-drawer-close:hidden">Update User</span>
                 </Link>
               </li>
 
@@ -86,9 +114,7 @@ export default function AdminDashboardLayout() {
                   data-tip="Modify Role"
                 >
                   <UserPen />
-                  <span className="is-drawer-close:hidden">
-                    Modify Role
-                  </span>
+                  <span className="is-drawer-close:hidden">Modify Role</span>
                 </Link>
               </li>
 
@@ -114,9 +140,7 @@ export default function AdminDashboardLayout() {
                   data-tip="Total Earnings"
                 >
                   <Landmark />
-                  <span className="is-drawer-close:hidden">
-                    Total Earnings
-                  </span>
+                  <span className="is-drawer-close:hidden">Total Earnings</span>
                 </Link>
               </li>
 

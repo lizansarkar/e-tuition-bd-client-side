@@ -26,6 +26,8 @@ import LatestTutors from "../pages/home/LatestTutors";
 import AllTutor from "../pages/home/AllTutor";
 import About from "../pages/home/About";
 import Contact from "../pages/home/Contact";
+import AllTuitions from "../pages/home/AllTuitions";
+import UserManagement from "../features/dashboard/admin-dashboard/user-management/UserManagement";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +46,10 @@ export const router = createBrowserRouter([
             <MyTuitions></MyTuitions>
           </PrivateRoute>
         ),
+      },
+      {
+        path:"/all-tuitions",
+        element:<AllTuitions></AllTuitions>,
       },
       {
         path: "/tutors",
@@ -102,7 +108,7 @@ export const router = createBrowserRouter([
             element: <PostNewTuition />,
           },
           {
-            path: "applied-tutors",
+            path: "applied-tutors/:tuitionId",
             element: <AppliedTutors></AppliedTutors>,
           },
           {
@@ -148,6 +154,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <ViewAllUser></ViewAllUser>,
+          },
+          {
+            path: "user-management",
+            element: <UserManagement></UserManagement>,
           },
           {
             path: "view-all-users",
