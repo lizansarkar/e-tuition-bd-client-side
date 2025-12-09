@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import UseAuth from "../../hooks/UseAuth";
 import axios from "axios";
 import { Mail, User, Lock, Phone, UserCog, EyeOff, Eye } from "lucide-react";
+import useAuth from "../../hooks/UseAuth";
+import useAxiosSicure from "../../hooks/useAxiosSicure";
 
 export default function Register() {
-  const { registerUser, updateUserProfile, signInWithGoogle } = UseAuth();
+  const { registerUser, updateUserProfile, signInWithGoogle } = useAuth();
+  const axiosSicure = useAxiosSicure();
   const navigate = useNavigate();
   const {
     register,
@@ -40,12 +42,12 @@ export default function Register() {
         phone: data.phone,
         role: data.role, // Student or Tutor
         firebaseUID: firebaseUser.uid,
-        // Optional: profilePic: firebaseUser.photoURL,
-        // Optional: createdAt: new Date()
+        photoURL: firebaseUser.photoURL || null, // Optional: profilePic
       };
 
-      const backendResponse = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/register-user`,
+      // 4. Send data to Backend to save user information in MongoDB
+      // API URL: VITE_API_BASE_URL + '/users' (Backend-er route hishebe set kora holo)
+      const backendResponse = await axiosSicure.post(`/users`,
         userData
       );
 
@@ -69,18 +71,38 @@ export default function Register() {
     }
   };
 
-   // 2. Google Login Handler
+  // 2. Google Login Handler (Modified to save data in Backend)
   const handleGoogleLogin = async () => {
     setRegisterError("");
     try {
-      // signInWithGoogle function call kora holo
+      // 1. Firebase Sign In
       const result = await signInWithGoogle();
-      console.log("Google Sign In Successful:", result.user);
+      const firebaseUser = result.user;
 
-      // TODO: Optional: Check if user already exists in MongoDB and if not, save their data.
+      // 2. Prepare Data for MongoDB Save/Check
+      const userData = {
+        name: firebaseUser.displayName,
+        email: firebaseUser.email,
+        photoURL: firebaseUser.photoURL,
+        role: "Student", // Default role for Social Login
+        firebaseUID: firebaseUser.uid,
+        phone: null,
+      };
+
+      // 3. Send data to Backend to save or check if user exists
+      const backendResponse = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/users`,
+        userData
+      );
+
+      console.log(
+        "Database Save/Check Response (Google):",
+        backendResponse.data
+      );
 
       // Login successful
-      navigate("/dashboard");
+      alert(`Login Successful as ${userData.role}!`);
+      navigate("/dashboard"); // Successful login er por dashboard-e redirect kora holo
     } catch (error) {
       console.error("Google Login Error:", error);
       setRegisterError("Google sign-in failed. Please try again.");
@@ -136,7 +158,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* 3. Password Field with Visibility Toggle (Stable Version) */}
+          {/* 3. Password Field with Visibility Toggle */}
           <div className="form-control">
             <label className="label">
               <span className="label-text flex items-center gap-1">
@@ -165,12 +187,7 @@ export default function Register() {
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {/* Icons */}
-                {showPassword ? (
-                  // EyeOff icon dekhabe jokhon password dekha jacche
-                  <EyeOff></EyeOff>
-                ) : (
-                  <Eye></Eye>
-                )}
+                {showPassword ? <EyeOff></EyeOff> : <Eye></Eye>}
               </button>
             </div>
 
@@ -239,7 +256,6 @@ export default function Register() {
         </form>
 
         {/* Link to Social Login */}
-        {/* Google */}
         <button
           onClick={handleGoogleLogin}
           className="btn btn-outline border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
