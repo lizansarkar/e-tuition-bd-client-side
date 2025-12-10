@@ -128,7 +128,7 @@ export default function AllTuitions() {
 
                 {/* Link to Details Page */}
                 <NavLink
-                  to={`/tuition/${tuition._id}`}
+                  to={`/all-tuition/${tuition._id}`}
                   className="btn btn-sm bg-primary text-white hover:bg-primary/90 transition-all"
                 >
                   View Details

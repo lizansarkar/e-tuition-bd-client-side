@@ -29,6 +29,7 @@ import Contact from "../pages/home/Contact";
 import AllTuitions from "../pages/home/AllTuitions";
 import UserManagement from "../features/dashboard/admin-dashboard/user-management/UserManagement";
 import PendingApproval from "../features/dashboard/admin-dashboard/PendingApproval";
+import TuitionDetails from "../pages/home/TuitionDetails";
 
 export const router = createBrowserRouter([
   {
@@ -49,8 +50,12 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path:"/all-tuitions",
-        element:<AllTuitions></AllTuitions>,
+        path: "/all-tuitions",
+        element: <AllTuitions></AllTuitions>,
+      },
+      {
+        path: "/all-tuition/:id",
+        element: <TuitionDetails></TuitionDetails>,
       },
       {
         path: "/tutors",
