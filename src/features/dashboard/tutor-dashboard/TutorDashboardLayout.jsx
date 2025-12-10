@@ -1,8 +1,9 @@
 import React from "react";
 import Footer from "../../../components/reusable/Footer";
 import { Link, Outlet } from "react-router";
-import { Book, BookMarked, BookOpen, BookOpenCheck, BookPlus, DollarSign, Home, Settings, UserRoundCog } from "lucide-react";
+import { BookOpen, BookOpenCheck, Home, Settings } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
+import { IoTrendingUpOutline } from "react-icons/io5";
 
 export default function TutorDashboardLayout() {
     const { role } = UseRole();
@@ -97,7 +98,7 @@ export default function TutorDashboardLayout() {
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                     data-tip="Revenue History"
                   >
-                    <BookMarked />
+                    <IoTrendingUpOutline className="text-2xl"/>
                     <span className="is-drawer-close:hidden">
                       Revenue History
                     </span>

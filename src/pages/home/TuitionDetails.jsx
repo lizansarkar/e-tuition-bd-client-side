@@ -12,16 +12,19 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import useAxiosSicure from "../../hooks/useAxiosSicure";
-import useAuth from "../../hooks/UseAuth";
 import ApplyModal from "./ApplyModal";
+import useAuth from "../../hooks/UseAuth";
+import UseRole from "../../hooks/UseRole"; 
 
 export default function TuitionDetails() {
-  const { id } = useParams(); // Get ID from URL
+  const { id } = useParams();
   const axiosSecure = useAxiosSicure();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth(); 
+  const { role, roleLoading } = UseRole(); 
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 1. Fetching Specific Tuition Post Details
+  // Fetching Specific Tuition Post Details
   const {
     data: tuition,
     isLoading,
@@ -35,7 +38,8 @@ export default function TuitionDetails() {
     enabled: !!id, // Only run query if ID is available
   });
 
-  if (isLoading || authLoading) {
+  // Combined loading state
+  if (isLoading || authLoading || roleLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -51,19 +55,20 @@ export default function TuitionDetails() {
     );
   }
 
-  // Check if the logged-in user is a Tutor (or who can apply)
-  // Assuming 'role' is part of the user object returned by UseAuth
-  const isTutor = user?.role === "Tutor";
+  // Role Check Logic (using role from UseRole hook)
+  const isTutor = role === "Tutor"; 
   const isOwner = user?.email === tuition.userEmail;
+  
+//   console.log("Tuition Details:", tuition);
+//   console.log("Logged-in User:", user);
+//   console.log("Is Tutor (from UseRole):", isTutor); 
 
   const handleApplyClick = () => {
     if (!user) {
       toast.error("Please log in to apply for this tuition.");
-      // Optionally navigate to login page
-      // navigate('/login');
       return;
     }
-    if (!isTutor) {
+    if (!isTutor) { 
       toast.error("Only registered Tutors can apply for tuition jobs.");
       return;
     }
@@ -159,13 +164,13 @@ export default function TuitionDetails() {
               <button
                 onClick={handleApplyClick}
                 className="btn btn-block btn-primary text-white text-lg transition-all"
-                disabled={!isTutor || isOwner} // Only enable if user is Tutor and not the owner
+                disabled={!isTutor || isOwner} 
               >
                 Apply Now
               </button>
 
               {/* Status message/Hint */}
-              {user && !isTutor && (
+              {user && !isTutor && ( 
                 <p className="text-sm text-red-500 mt-2">
                   You must be registered as a Tutor to apply.
                 </p>

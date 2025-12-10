@@ -18,7 +18,7 @@ import useAuth from "../../../hooks/UseAuth";
 
 const AppliedTutors = () => {
   // 1. URL theke tuition ID extract kora
-  const { tuitionId } = useParams();
+  const { id } = useParams();
   const axiosSicure = useAxiosSicure();
   const { user } = useAuth();
 
@@ -29,11 +29,11 @@ const AppliedTutors = () => {
     isError,
     refetch,
   } = useQuery({
-    // tuitionId must exist to enable the query
-    queryKey: ["appliedTutors", tuitionId],
-    enabled: !!tuitionId && !!user?.email,
+    // id must exist to enable the query
+    queryKey: ["appliedTutors", id],
+    enabled: !!id && !!user?.email,
     queryFn: async () => {
-      const res = await axiosSicure.get(`/applied-tutors/${tuitionId}`);
+      const res = await axiosSicure.get(`/applied-tutors/${id}`);
       return res.data;
     },
   });
@@ -54,7 +54,7 @@ const AppliedTutors = () => {
       if (result.isConfirmed) {
         try {
           const res = await axiosSicure.put("/applications/update-status", {
-            tuitionId,
+            id,
             tutorEmail,
             status: action === "accept" ? "Accepted" : "Rejected",
           });
@@ -86,8 +86,8 @@ const AppliedTutors = () => {
   };
 
   // --- Loading, Error, and Missing ID States ---
-  if (!tuitionId) {
-    // ✅ NEW CHECK: Jodi tuitionId na thake
+  if (!id) {
+    // ✅ NEW CHECK: Jodi id na thake
     return (
       <div className="text-center py-20 text-red-500">
         Error: Tuition ID is missing in the URL.
@@ -98,7 +98,7 @@ const AppliedTutors = () => {
   if (isLoading) {
     return (
       <div className="text-center py-20 text-xl dark:text-gray-300">
-        Loading tutor applications for Tuition ID: {tuitionId}...
+        Loading tutor applications for Tuition ID: {id}...
       </div>
     );
   }
@@ -124,9 +124,9 @@ const AppliedTutors = () => {
           Tutor Applications for Post ID:
           {/* ✅ FIX: Conditional rendering use kora holo */}
           <span className="text-primary ml-2">
-            {tuitionId.length > 8
-              ? `${tuitionId.substring(0, 8)}...`
-              : tuitionId}
+            {id.length > 8
+              ? `${id.substring(0, 8)}...`
+              : id}
           </span>
         </h1>
 

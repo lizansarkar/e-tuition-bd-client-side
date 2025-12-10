@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import useAxiosSicure from "../../hooks/useAxiosSicure";
+import { IoCloseCircle } from "react-icons/io5";
 
 export default function ApplyModal({
   isOpen,
@@ -22,16 +23,16 @@ export default function ApplyModal({
   // Mutation for submitting the application
   const applicationMutation = useMutation({
     mutationFn: async (applicationData) => {
-      // Backend API hit kora holo: /api/applications
-      const res = await axiosSecure.post("/api/applications", applicationData);
+      // Backend API hit kora holo: /applications
+      const res = await axiosSecure.post("/applications", applicationData);
       return res.data;
     },
     onSuccess: () => {
       toast.success(
         "Application submitted successfully! Check 'My Applications' in your dashboard."
       );
-      reset(); // Clear form fields
-      onClose(); // Close the modal
+      reset();
+      onClose();
     },
     onError: (err) => {
       console.error("Application submission error:", err);
@@ -39,7 +40,7 @@ export default function ApplyModal({
       if (err.response?.status === 409) {
         toast.error(err.response.data.message);
       } else {
-        toast.error("Failed to submit application. Please try again.");
+        toast.error("Youre allready applied. Failed to submit application. Please try again.");
       }
     },
   });
@@ -50,13 +51,13 @@ export default function ApplyModal({
     // Prepare final application payload
     const applicationData = {
       tuitionId: tuitionId,
-      tutorEmail: user.email, // Logged-in Tutor's Email
-      tutorName: user.displayName || data.name, // Logged-in Tutor's Name
+      tutorEmail: user.email,
+      tutorName: user.displayName || data.name,
       qualifications: data.qualifications,
       experience: data.experience,
       expectedSalary: parseFloat(data.expectedSalary),
-      tuitionBudget: tuitionBudget, // Original Budget for reference
-      status: "Pending", // Initial status
+      tuitionBudget: tuitionBudget,
+      status: "Pending",
       appliedAt: new Date(),
     };
 
@@ -64,14 +65,14 @@ export default function ApplyModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+    <div className="fixed inset-0 bg-gray-200 bg-opacity-50 flex justify-center items-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md shadow-2xl p-6 relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 hover:text-red-500"
+          className="absolute top-3 right-3 text-gray-600 hover:text-red-500 cursor-pointer"
           disabled={applicationMutation.isLoading}
         >
-          &times;
+          <IoCloseCircle className="text-2xl"/>
         </button>
         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-5">
           Apply for this Tuition
