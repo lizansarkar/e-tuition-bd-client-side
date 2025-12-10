@@ -1,227 +1,156 @@
 import React from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import Swal from "sweetalert2";
-import { motion } from "framer-motion";
-import {
-  User,
-  Mail,
-  Phone,
-  BookOpen,
-  GraduationCap,
-  X,
-  Check,
-} from "lucide-react";
-import useAxiosSicure from "../../../hooks/useAxiosSicure";
-import useAuth from "../../../hooks/UseAuth";
+import { CheckCheck, XCircle, DollarSign, Loader } from "lucide-react";
+import useAxiosSecure from "../../../hooks/useAxiosSicure";
 
+export default function AppliedTutors() {
+  const { tuitionId } = useParams();
+  const axiosSecure = useAxiosSecure();
 
-const AppliedTutors = () => {
-  // 1. URL theke tuition ID extract kora
-  const { id } = useParams();
-  const axiosSicure = useAxiosSicure();
-  const { user } = useAuth();
-
-  // 2. Data Fetch Kora: Specific tuition-er jonno applied tutors list
   const {
     data: applications = [],
     isLoading,
-    isError,
-    refetch,
+    error,
   } = useQuery({
-    // id must exist to enable the query
-    queryKey: ["appliedTutors", id],
-    enabled: !!id && !!user?.email,
+    // Key is changed to fetch ALL data
+    queryKey: ["allAppliedTutors"],
     queryFn: async () => {
-      const res = await axiosSicure.get(`/applied-tutors/${id}`);
+      const res = await axiosSecure.get(`/applications/all`);
       return res.data;
     },
   });
 
-  // Handle Action... (Unchanged)
-  const handleAction = async (tutorEmail, action) => {
-    const actionText = action === "accept" ? "Accept" : "Reject";
-
-    Swal.fire({
-      title: `${actionText} this tutor?`,
-      text: `You are about to ${actionText.toLowerCase()} the application.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: action === "accept" ? "#10B981" : "#EF4444",
-      cancelButtonColor: "#6B7280",
-      confirmButtonText: `Yes, ${actionText} it!`,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await axiosSicure.put("/applications/update-status", {
-            id,
-            tutorEmail,
-            status: action === "accept" ? "Accepted" : "Rejected",
-          });
-
-          if (res.data.modifiedCount > 0) {
-            Swal.fire({
-              title: "Success!",
-              text: `Tutor application has been ${actionText.toLowerCase()}ed.`,
-              icon: "success",
-            });
-            refetch();
-          } else {
-            Swal.fire(
-              "Info",
-              "Status was already set or failed to update.",
-              "info"
-            );
-          }
-        } catch (error) {
-          console.error("Action Error:", error);
-          Swal.fire(
-            "Error",
-            `Failed to ${actionText.toLowerCase()} the application.`,
-            "error"
-          );
-        }
-      }
-    });
+  // --- Status Badge Component ---
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "Approved":
+        return (
+          <span className="badge badge-success text-white">
+            Approved <CheckCheck className="w-4 h-4 ml-1" />
+          </span>
+        );
+      case "Pending":
+        return (
+          <span className="badge badge-warning text-white">
+            Pending <Loader className="w-4 h-4 ml-1 animate-spin" />
+          </span>
+        );
+      case "Rejected":
+        return (
+          <span className="badge badge-error text-white">
+            Rejected <XCircle className="w-4 h-4 ml-1" />
+          </span>
+        );
+      default:
+        return <span className="badge badge-ghost">Unknown</span>;
+    }
   };
 
-  // --- Loading, Error, and Missing ID States ---
-  if (!id) {
-    // ✅ NEW CHECK: Jodi id na thake
-    return (
-      <div className="text-center py-20 text-red-500">
-        Error: Tuition ID is missing in the URL.
-      </div>
+  const handleAction = (action, app) => {
+    // Dummy logic: Shudhu alert dewa holo
+    alert(
+      `${action} clicked for ${app.tutorName}. Functional API logic needed here.`
     );
-  }
+  };
 
+  // --- Loading and Error Handling ---
   if (isLoading) {
     return (
-      <div className="text-center py-20 text-xl dark:text-gray-300">
-        Loading tutor applications for Tuition ID: {id}...
+      <div className="text-center py-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
       </div>
     );
   }
-
-  if (isError) {
+  if (error) {
     return (
-      <div className="text-center py-20 text-red-500">
-        Error loading applications. Please try again later.
+      <div className="text-center py-20 text-red-500 font-bold">
+        Error: Failed to fetch applications. Check backend server and the
+        `/applications/all` route.
+      </div>
+    );
+  }
+  if (applications.length === 0) {
+    return (
+      <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-2xl mx-auto mt-10">
+        <p className="text-2xl font-semibold text-gray-600 dark:text-gray-300">
+          No applications found in the database.
+        </p>
       </div>
     );
   }
 
-  // --- Main UI Rendering ---
+  // --- Main Component Render (Data Display in a Table) ---
   return (
-    <motion.section
-      className="p-4 md:p-8 bg-gray-50 dark:bg-gray-800 min-h-screen"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="container mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 border-b pb-4">
-          Tutor Applications for Post ID:
-          {/* ✅ FIX: Conditional rendering use kora holo */}
-          <span className="text-primary ml-2">
-            {id.length > 8
-              ? `${id.substring(0, 8)}...`
-              : id}
-          </span>
-        </h1>
-
-        {applications.length === 0 ? (
-          <div className="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg text-center">
-            <h2 className="text-xl font-semibold dark:text-white">
-              No applications received yet!
-            </h2>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Wait for tutors to apply to your tuition post.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="p-4 md:p-10">
+      <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+        🧑‍🏫 Tutor Applications List
+      </h2>
+      <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl">
+        <table className="table w-full">
+          <thead>
+            <tr className="text-lg">
+              <th>Tutor</th>
+              <th>Qualifications & Exp.</th>
+              <th>Expected Salary</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
             {applications.map((app) => (
-              <motion.div
-                key={app.tutorEmail}
-                className="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg border-t-4 border-primary/70 dark:border-primary/50 transition-all hover:shadow-xl"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3 }}
+              <tr
+                key={app._id}
+                className="hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                <div className="flex items-center gap-4 mb-4 border-b pb-3 dark:border-gray-600">
-                  <User className="w-8 h-8 text-primary" />
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    {app.tutorName || "Unknown Tutor"}
-                  </h3>
-                </div>
+                {/* Tutor Name & Email */}
+                <td>
+                  <div className="font-bold">{app.tutorName}</div>
+                  <div className="text-sm opacity-50">{app.tutorEmail}</div>
+                </td>
+                {/* Qualifications and Experience */}
+                <td>
+                  {app.qualifications}
+                  <br />
+                  <span className="badge badge-ghost badge-sm">
+                    {app.experience}
+                  </span>
+                </td>
+                {/* Expected Salary */}
+                <td className="font-bold text-lg text-red-600 dark:text-red-400">
+                  {app.expectedSalary} BDT
+                </td>
+                {/* Status */}
+                <td>{getStatusBadge(app.status)}</td>
 
-                <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
-                  <p className="flex items-center gap-2">
-                    <GraduationCap className="w-4 h-4 text-indigo-500" />
-                    **Qualification:** {app.qualification || "N/A"}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-purple-500" />
-                    **Experience:** {app.experience || "Not specified"}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-blue-500" />
-                    **Email:** {app.tutorEmail}
-                  </p>
-                  {app.contactNumber && (
-                    <p className="flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-green-500" />
-                      **Contact:** {app.contactNumber}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mt-5 pt-4 border-t dark:border-gray-600 flex flex-col gap-2">
-                  <p className="font-semibold text-base dark:text-white">
-                    Status:
-                    <span
-                      className={`ml-2 px-3 py-1 rounded-full text-xs font-bold ${
-                        app.status === "Accepted"
-                          ? "bg-green-100 text-green-700"
-                          : app.status === "Rejected"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {app.status || "Pending"}
-                    </span>
-                  </p>
-
-                  {app.status === "Pending" && (
-                    <div className="flex gap-3 mt-3">
+                {/* Actions (Buttons) */}
+                <th>
+                  {app.status === "Pending" ? (
+                    <div className="flex flex-col space-y-2">
                       <button
-                        onClick={() => handleAction(app.tutorEmail, "accept")}
-                        className="flex-1 flex items-center justify-center gap-1 bg-green-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-green-600 transition duration-200"
+                        onClick={() => handleAction("Approve", app)}
+                        className="btn btn-success btn-sm text-white"
                       >
-                        <Check className="w-4 h-4" /> Accept
+                        Approve
                       </button>
                       <button
-                        onClick={() => handleAction(app.tutorEmail, "reject")}
-                        className="flex-1 flex items-center justify-center gap-1 bg-red-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-red-600 transition duration-200"
+                        onClick={() => handleAction("Reject", app)}
+                        className="btn btn-error btn-outline btn-sm"
                       >
-                        <X className="w-4 h-4" /> Reject
+                        Reject
                       </button>
                     </div>
+                  ) : (
+                    <button className="btn btn-disabled btn-sm">
+                      {app.status}
+                    </button>
                   )}
-                  {app.status !== "Pending" && (
-                    <p className="mt-3 text-center text-sm italic text-gray-500 dark:text-gray-400">
-                      Action taken.
-                    </p>
-                  )}
-                </div>
-              </motion.div>
+                </th>
+              </tr>
             ))}
-          </div>
-        )}
+          </tbody>
+        </table>
       </div>
-    </motion.section>
+    </div>
   );
-};
-
-export default AppliedTutors;
+}

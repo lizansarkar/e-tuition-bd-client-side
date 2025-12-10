@@ -118,7 +118,7 @@ export const router = createBrowserRouter([
             element: <AppliedTutors></AppliedTutors>,
           },
           {
-            path: "applied-tutors/:id",
+            path: "applied-tutors/:tuitionId",
             element: <AppliedTutors></AppliedTutors>,
           },
           {
