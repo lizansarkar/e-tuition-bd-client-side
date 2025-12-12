@@ -12,7 +12,6 @@ import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDas
 import DashboardContainer from "../features/dashboard/DashboardContainer";
 import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuition";
 import AppliedTutors from "../features/dashboard/student-dashboard/AppliedTutors";
-import Payments from "../features/dashboard/student-dashboard/Payments";
 import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 import TutorMyApplications from "../features/dashboard/tutor-dashboard/TutorMyApplications";
 import OngoingTuitions from "../features/dashboard/tutor-dashboard/OngoingTuitions";
@@ -30,6 +29,7 @@ import AllTuitions from "../pages/home/AllTuitions";
 import UserManagement from "../features/dashboard/admin-dashboard/user-management/UserManagement";
 import PendingApproval from "../features/dashboard/admin-dashboard/PendingApproval";
 import TuitionDetails from "../pages/home/TuitionDetails";
+import Payment from "../features/dashboard/payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -122,8 +122,8 @@ export const router = createBrowserRouter([
             element: <AppliedTutors></AppliedTutors>,
           },
           {
-            path: "payments",
-            element: <Payments></Payments>,
+            path: "payments/:paymentId",
+            element: <Payment></Payment>,
           },
           {
             path: "profile-settings",

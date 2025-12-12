@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCheck, XCircle, DollarSign, Loader } from "lucide-react";
 import useAxiosSecure from "../../../hooks/useAxiosSicure";
@@ -127,18 +127,18 @@ export default function AppliedTutors() {
                 <th>
                   {app.status === "Pending" ? (
                     <div className="flex flex-col space-y-2">
-                      <button
-                        onClick={() => handleAction("Approve", app)}
+                      <Link
+                        to={`/dashboard/student/payments/${app._id}`}
                         className="btn btn-success btn-sm text-white"
                       >
                         Approve
-                      </button>
-                      <button
-                        onClick={() => handleAction("Reject", app)}
+                      </Link>
+                      <Link
+                        to={`/dashboard/student/applied-tutors/reject/${app._id}`}
                         className="btn btn-error btn-outline btn-sm"
                       >
                         Reject
-                      </button>
+                      </Link>
                     </div>
                   ) : (
                     <button className="btn btn-disabled btn-sm">

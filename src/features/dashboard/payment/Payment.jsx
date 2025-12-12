@@ -7,21 +7,21 @@ const Payment = () => {
   const { paymentId } = useParams();
   const axiosSecure = useAxiosSicure();
 
-  const { isLoading, data: parcel } = useQuery({
-    queryKey: ["parcels", paymentId],
+  const { isLoading, data: tutor } = useQuery({
+    queryKey: ["tutor", paymentId],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/parcels/${paymentId}`);
+      const res = await axiosSecure.get(`/tutor/${paymentId}`);
       return res.data;
     },
   });
 
   const handlePayment = async () => {
     const paymentInfo = {
-      cost: parcel.cost,
-      parcelId: parcel._id,
-      senderEmail: parcel.senderEmail,
-      parcelName: parcel.parcelName,
-    };
+      tuitionBudget: tutor.tuitionBudget,
+      tuitionId: tutor._id,
+      tutorEmail: tutor.senderEmail,
+      tutorName: tutor.name,
+  };
 
     const res = await axiosSecure.post("/create-checkout-session", paymentInfo);
 
@@ -41,7 +41,7 @@ const Payment = () => {
   return (
     <div>
       <h2>
-        Please Pay ${parcel.cost} for : {parcel.parcelName}{" "}
+        Please Pay ${tutor.tuitionBudget} for : {tutor.tutorName}{" "}
       </h2>
       <button onClick={handlePayment} className="btn btn-primary text-black">
         Pay
