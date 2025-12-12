@@ -16,7 +16,7 @@ export default function AppliedTutors() {
     // Key is changed to fetch ALL data
     queryKey: ["allAppliedTutors"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/applications/all`);
+      const res = await axiosSecure.get(`/applications`);
       return res.data;
     },
   });
