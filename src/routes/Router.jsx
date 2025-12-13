@@ -30,6 +30,8 @@ import UserManagement from "../features/dashboard/admin-dashboard/user-managemen
 import PendingApproval from "../features/dashboard/admin-dashboard/PendingApproval";
 import TuitionDetails from "../pages/home/TuitionDetails";
 import Payment from "../features/dashboard/payment/Payment";
+import PaymentSuccess from "../features/dashboard/payment/PaymentSuccess";
+import PaymentCancelled from "../features/dashboard/payment/PaymentCancelled";
 
 export const router = createBrowserRouter([
   {
@@ -122,13 +124,21 @@ export const router = createBrowserRouter([
             element: <AppliedTutors></AppliedTutors>,
           },
           {
+            path: "profile-settings",
+            element: <ProfileSettings></ProfileSettings>,
+          },
+          {
             path: "payments/:paymentId",
             element: <Payment></Payment>,
           },
           {
-            path: "profile-settings",
-            element: <ProfileSettings></ProfileSettings>,
+            path: "payment-success",
+            element: <PaymentSuccess></PaymentSuccess>,
           },
+          {
+            path: "payment-cancelled",
+            element: <PaymentCancelled></PaymentCancelled>
+          }
         ],
       },
 
