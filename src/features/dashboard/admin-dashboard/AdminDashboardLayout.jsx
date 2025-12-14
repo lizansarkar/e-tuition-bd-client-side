@@ -109,58 +109,6 @@ export default function AdminDashboardLayout() {
                 </Link>
               </li>
 
-              {/* pending approval */}
-              <li>
-                <Link
-                  to="/dashboard/admin/pending-approval"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Pending Approval"
-                >
-                  <FaHourglassHalf className="text-2xl" />
-                  <span className="is-drawer-close:hidden">
-                    Pending Approval
-                  </span>
-                </Link>
-              </li>
-
-              <li>
-                {/* update user */}
-                <Link
-                  to="/dashboard/admin/update-user"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Update User"
-                >
-                  <UsersRound />
-                  <span className="is-drawer-close:hidden">Update User</span>
-                </Link>
-              </li>
-
-              <li>
-                {/* Modify Role */}
-                <Link
-                  to="/dashboard/admin/modify-role"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Modify Role"
-                >
-                  <UserPen />
-                  <span className="is-drawer-close:hidden">Modify Role</span>
-                </Link>
-              </li>
-
-              <li>
-                {/* Delete Accounts */}
-                <Link
-                  to="/dashboard/admin/delete-accounts"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Delete Accounts"
-                >
-                  <UserRoundMinus />
-                  <span className="is-drawer-close:hidden">
-                    Delete Accounts
-                  </span>
-                </Link>
-              </li>
-
               <li>
                 {/* Total Earnings */}
                 <Link
