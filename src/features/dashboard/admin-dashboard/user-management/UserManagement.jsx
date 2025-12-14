@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { User, Mail, Shield, Loader, Edit, Trash2 } from "lucide-react";
 import useAxiosSicure from "../../../../hooks/useAxiosSicure";
+import Swal from "sweetalert2";
 
 export default function UserManagement() {
   const axiosSecure = useAxiosSicure();
@@ -12,7 +13,7 @@ export default function UserManagement() {
     data: users = [], // Shob user data
     isLoading,
     error,
-    // refetch // Delete/Update-er jonne porobortite lagbe
+    refetch,
   } = useQuery({
     queryKey: ["allUsersAdmin"],
     queryFn: async () => {
@@ -21,6 +22,88 @@ export default function UserManagement() {
       return res.data;
     },
   });
+
+  // --- Edit Role users management Functionality ---
+  const handleEditRole = (user) => {
+    const availableRoles = ["Student", "Tutor", "Admin"];
+
+    Swal.fire({
+      title: `Change Role for ${user.displayName}`,
+      input: "select",
+      inputOptions: availableRoles.reduce((acc, role) => {
+        acc[role] = role;
+        return acc;
+      }, {}),
+      inputValue: user.role, // Default value current role
+      showCancelButton: true,
+      confirmButtonText: "Confirm Role Change",
+    }).then(async (result) => {
+      if (result.isConfirmed && result.value !== user.role) {
+        const newRole = result.value;
+
+        // Prepare updated data: Shudhu 'role' field update kora holo
+        const updatedData = { role: newRole };
+
+        try {
+          // API Call: PATCH /users/:id
+          const res = await axiosSecure.patch(
+            `/users/${user._id}`,
+            updatedData
+          );
+
+          if (res.data.modifiedCount > 0) {
+            Swal.fire({
+              title: "Updated!",
+              text: `${user.displayName}'s role updated to ${newRole}.`,
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+            refetch(); // ✅ Table data refresh kora holo
+          } else {
+            Swal.fire("Not Updated", "No changes were made.", "info");
+          }
+        } catch (error) {
+          Swal.fire("Error", "Failed to update user role.", "error");
+        }
+      }
+    });
+  };
+
+  // --- Delete User Functionality ---
+  const handleDelete = (userId, displayName) => {
+    Swal.fire({
+      title: `Are you sure to delete ${displayName}?`,
+      text: "This action is irreversible and will delete the account permanently.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Delete Account!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // API Call: DELETE /users/:id
+          const res = await axiosSecure.delete(`/users/${userId}`);
+
+          if (res.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: `${displayName}'s account has been deleted.`,
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+            refetch(); // ✅ Table data refresh kora holo
+          } else {
+            Swal.fire("Error", "Account deletion failed.", "error");
+          }
+        } catch (error) {
+          Swal.fire("Error", "Server error during deletion.", "error");
+        }
+      }
+    });
+  };
 
   // --- Status/Role Badge (for better visual) ---
   const getRoleBadge = (role) => {
@@ -70,7 +153,7 @@ export default function UserManagement() {
     <div className="p-4 md:p-8">
       <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center">
         <User className="w-7 h-7 mr-3" />
-        User Management ({users.length} Users)
+        Users Management ({users.length} Users)
       </h2>
 
       <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl">
@@ -138,18 +221,18 @@ export default function UserManagement() {
                 {/* Actions (Placeholder for now) */}
                 <th>
                   <div className="flex space-x-2">
-                    {/* Edit Button */}
+                    {/* Edit/Update Role Button */}
                     <button
                       className="btn btn-ghost btn-xs text-blue-500 hover:text-blue-700"
-                      // onClick={() => handleEdit(user)} // Implement this later
-                      data-tip="Edit User"
+                      onClick={() => handleEditRole(user)} // ✅ Handler attached
+                      data-tip="Change Role"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
                     {/* Delete Button */}
                     <button
                       className="btn btn-ghost btn-xs text-red-500 hover:text-red-700"
-                      // onClick={() => handleDelete(user._id)} // Implement this later
+                      onClick={() => handleDelete(user._id, user.displayName)} // ✅ Handler attached
                       data-tip="Delete User"
                     >
                       <Trash2 className="w-4 h-4" />

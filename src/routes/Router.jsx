@@ -34,6 +34,7 @@ import PaymentSuccess from "../features/dashboard/payment/PaymentSuccess";
 import PaymentCancelled from "../features/dashboard/payment/PaymentCancelled";
 import AllSuccessPayment from "../features/dashboard/payment/AllSuccessPayment";
 import ErrorPage from "../ErrorPage";
+import TuitionManagement from "../features/dashboard/admin-dashboard/tuition-management/TuitionManagement";
 
 export const router = createBrowserRouter([
   {
@@ -184,6 +185,10 @@ export const router = createBrowserRouter([
           {
             path: "user-management",
             element: <UserManagement></UserManagement>,
+          },
+          {
+            path: "tuition-management",
+            element: <TuitionManagement></TuitionManagement>,
           },
           {
             path: "pending-approval",

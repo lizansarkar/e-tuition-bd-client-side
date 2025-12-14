@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router";
 import Footer from "../../../components/reusable/Footer";
 import { FaUsers } from "react-icons/fa";
 import { FaHourglassHalf } from "react-icons/fa6";
+import { FaLayerGroup } from "react-icons/fa";
 import {
   Book,
   BookMarked,
@@ -86,11 +87,24 @@ export default function AdminDashboardLayout() {
                 <Link
                   to="/dashboard/admin/user-management"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="User Management"
+                  data-tip="Users Management"
                 >
                   <FaUsers className="text-2xl"></FaUsers>
                   <span className="is-drawer-close:hidden">
-                    User Management
+                    Users Management
+                  </span>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/dashboard/admin/tuition-management"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Tuition Management"
+                >
+                  <FaLayerGroup className="text-2xl"></FaLayerGroup>
+                  <span className="is-drawer-close:hidden">
+                    Tuition Management
                   </span>
                 </Link>
               </li>

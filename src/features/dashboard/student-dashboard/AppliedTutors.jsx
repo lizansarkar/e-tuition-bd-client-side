@@ -151,7 +151,7 @@ export default function AppliedTutors() {
                   </span>
                 </td>
                 {/* Expected Salary */}
-                <td className="font-bold text-lg text-red-600 dark:text-red-400">
+                <td className="font-bold text-lg text-green-600">
                   {app.expectedSalary} BDT
                 </td>
                 {/* Status */}
