@@ -1,9 +1,27 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { use, useEffect } from "react";
+import { Link, useSearchParams } from "react-router";
 import { CheckCircle, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import useAxiosSicure from "../../../hooks/useAxiosSicure";
 
 export default function PaymentSuccess() {
+
+  const [searchParams] = useSearchParams()
+  const sessionId = searchParams.get("session_id");
+  const axiosSecure = useAxiosSicure();
+  console.log("Payment Success Session ID:", sessionId);
+
+  useEffect(() => {
+    if (sessionId) {
+      axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      console.log("Fetching details for session ID:", sessionId);
+    }
+  }
+  , [sessionId, axiosSecure]);
+
   // Animation variants for the success card
   const containerVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.95 },
@@ -67,7 +85,7 @@ export default function PaymentSuccess() {
           </p>
 
           {/* Button to return to dashboard */}
-          <Link to="/dashboard">
+          <Link to="/dashboard/student">
             <motion.button
               className="btn w-full py-3 text-lg font-bold flex items-center justify-center
                                        bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/50 

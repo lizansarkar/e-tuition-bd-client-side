@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCheck, XCircle, DollarSign, Loader } from "lucide-react";
 import useAxiosSecure from "../../../hooks/useAxiosSicure";
+import Swal from "sweetalert2";
 
 export default function AppliedTutors() {
   const { tuitionId } = useParams();
@@ -47,13 +48,46 @@ export default function AppliedTutors() {
     }
   };
 
-  const handleAction = (action, app) => {
-    // Dummy logic: Shudhu alert dewa holo
-    alert(
-      `${action} clicked for ${app.tutorName}. Functional API logic needed here.`
-    );
-  };
+  const handleReject = (applicationId, tutorName) => {
+    Swal.fire({
+      title: `Reject ${tutorName}'s application?`,
+      text: "This action will reject the application and cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, Reject it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // 🚩 Step 2.1: Backend API call
+          const res = await axiosSecure.patch(
+            `/applications/reject/${applicationId}`
+          );
 
+          if (res.data.modifiedCount > 0) {
+            Swal.fire({
+              title: "Rejected!",
+              text: `${tutorName}'s application has been rejected.`,
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+            // 🚩 Step 2.2: Data refresh kora
+            refetch();
+          } else {
+            Swal.fire("Error", "Application status not changed.", "error");
+          }
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            "Failed to connect to the server or update status.",
+            "error"
+          );
+        }
+      }
+    });
+  };
   // --- Loading and Error Handling ---
   if (isLoading) {
     return (
@@ -82,9 +116,9 @@ export default function AppliedTutors() {
 
   // --- Main Component Render (Data Display in a Table) ---
   return (
-    <div className="p-4 md:p-10">
+    <div className="p-4 md:p-10 container mx-auto">
       <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-        🧑‍🏫 Tutor Applications List
+        Tutor Applications List
       </h2>
       <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl">
         <table className="table w-full">
@@ -134,7 +168,7 @@ export default function AppliedTutors() {
                         Approve
                       </Link>
                       <Link
-                        to={`/dashboard/student/applied-tutors/reject/${app._id}`}
+                        onClick={() => handleReject(app._id, app.tutorName)}
                         className="btn btn-error btn-outline btn-sm"
                       >
                         Reject
@@ -142,7 +176,7 @@ export default function AppliedTutors() {
                     </div>
                   ) : (
                     <button className="btn btn-disabled btn-sm">
-                      {app.status}
+                      {app.paymentStatus}
                     </button>
                   )}
                 </th>

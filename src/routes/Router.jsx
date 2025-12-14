@@ -32,6 +32,7 @@ import TuitionDetails from "../pages/home/TuitionDetails";
 import Payment from "../features/dashboard/payment/Payment";
 import PaymentSuccess from "../features/dashboard/payment/PaymentSuccess";
 import PaymentCancelled from "../features/dashboard/payment/PaymentCancelled";
+import AllSuccessPayment from "../features/dashboard/payment/AllSuccessPayment";
 
 export const router = createBrowserRouter([
   {
@@ -122,6 +123,10 @@ export const router = createBrowserRouter([
           {
             path: "applied-tutors/:tuitionId",
             element: <AppliedTutors></AppliedTutors>,
+          },
+          {
+            path: "payments",
+            element: <AllSuccessPayment></AllSuccessPayment>,
           },
           {
             path: "profile-settings",

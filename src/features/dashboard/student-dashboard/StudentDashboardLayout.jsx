@@ -105,10 +105,10 @@ const StudentDashboardLayout = () => {
                 <Link
                   to="/dashboard/student/payments"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Payments"
+                  data-tip="Success Payments"
                 >
                   <DollarSign></DollarSign>
-                  <span className="is-drawer-close:hidden">Payments</span>
+                  <span className="is-drawer-close:hidden">Success Payments</span>
                 </Link>
               </li>
 

@@ -4,6 +4,7 @@ import { BadgeAlert, Check, Clock, Edit, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import useAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
+import Swal from "sweetalert2";
 
 export default function TutorMyApplications() {
   const { user, loading: authLoading } = useAuth();
@@ -26,6 +27,75 @@ export default function TutorMyApplications() {
     },
     enabled: !!user?.email && !authLoading, // User email thakle ebong loading na thakle shuru hobe
   });
+
+  const handleDelete = (applicationId, tutorName) => {
+    Swal.fire({
+      title: `Delete application by ${tutorName}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosSecure.delete(`/applications/${applicationId}`);
+
+        if (res.data.deletedCount > 0) {
+          Swal.fire(
+            "Deleted!",
+            "Your application has been deleted.",
+            "success"
+          );
+          refetch(); // ✅ Data refresh korar jonne
+        } else {
+          Swal.fire("Error", "Failed to delete the application.", "error");
+        }
+      }
+    });
+  };
+
+  const handleUpdate = (app) => {
+    // Example: Using Swal.fire to get new salary
+    Swal.fire({
+      title: `Update Salary for ${app.tutorName}`,
+      input: "text",
+      inputValue: app.expectedSalary,
+      showCancelButton: true,
+      confirmButtonText: "Update",
+      inputValidator: (value) => {
+        if (!value || isNaN(value) || Number(value) <= 0) {
+          return "Please enter a valid amount";
+        }
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const newSalary = Number(result.value);
+
+        // 🚩 Step 2: Prepare updated data
+        const updatedData = {
+          expectedSalary: newSalary,
+        };
+
+        // 🚩 Step 3: API call
+        const res = await axiosSecure.patch(
+          `/applications/${app._id}`,
+          updatedData
+        );
+
+        if (res.data.modifiedCount > 0) {
+          Swal.fire(
+            "Updated!",
+            "Application salary updated successfully.",
+            "success"
+          );
+          refetch(); // ✅ Data refresh korar jonne
+        } else {
+          Swal.fire("Not Updated", "No changes were made.", "info");
+        }
+      }
+    });
+  };
 
   // --- Loading State Handling ---
   if (isLoading || authLoading) {
@@ -97,7 +167,7 @@ export default function TutorMyApplications() {
                 <tr>
                   <th>#</th>
                   <th>Tuition Subject</th>
-                  <th>Budget Offer</th>
+                  <th>Expected Salary</th>
                   <th>Application Date</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -121,7 +191,7 @@ export default function TutorMyApplications() {
                     {/* Budget Offer */}
                     <td>
                       <span className="font-bold text-primary">
-                        {app.bidAmount} BDT
+                        {app.expectedSalary} BDT
                       </span>
                     </td>
 
@@ -138,19 +208,19 @@ export default function TutorMyApplications() {
                     <td>
                       {app.status === "Pending" ? (
                         <div className="space-x-2">
-                          {/* Update Button (Only visible if Pending) */}
+                          {/* Update Button */}
                           <button
                             className="btn btn-sm text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition duration-150 mx-2 cursor-pointer"
                             data-tip="Update Application"
-                            // onClick={() => handleUpdate(app)} // Implement this function
+                            onClick={() => handleUpdate(app)} // ✅ Handler attached
                           >
                             <Edit className="w-4 h-4" />
                           </button>
-                          {/* Delete Button (Only visible if Pending) */}
+                          {/* Delete Button */}
                           <button
                             className="btn btn-sm tooltip text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
                             data-tip="Delete Application"
-                            // onClick={() => handleDelete(app._id)} // Implement this function
+                            onClick={() => handleDelete(app._id, app.tutorName)} // ✅ Handler attached
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
