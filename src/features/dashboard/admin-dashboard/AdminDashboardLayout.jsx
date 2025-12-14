@@ -102,8 +102,10 @@ export default function AdminDashboardLayout() {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Pending Approval"
                 >
-                  <FaHourglassHalf className="text-2xl"/>
-                  <span className="is-drawer-close:hidden">Pending Approval</span>
+                  <FaHourglassHalf className="text-2xl" />
+                  <span className="is-drawer-close:hidden">
+                    Pending Approval
+                  </span>
                 </Link>
               </li>
 

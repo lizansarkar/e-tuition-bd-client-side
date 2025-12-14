@@ -33,6 +33,7 @@ import Payment from "../features/dashboard/payment/Payment";
 import PaymentSuccess from "../features/dashboard/payment/PaymentSuccess";
 import PaymentCancelled from "../features/dashboard/payment/PaymentCancelled";
 import AllSuccessPayment from "../features/dashboard/payment/AllSuccessPayment";
+import ErrorPage from "../ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -142,8 +143,8 @@ export const router = createBrowserRouter([
           },
           {
             path: "payment-cancelled",
-            element: <PaymentCancelled></PaymentCancelled>
-          }
+            element: <PaymentCancelled></PaymentCancelled>,
+          },
         ],
       },
 
@@ -217,5 +218,9 @@ export const router = createBrowserRouter([
         // element: <RedirectToRoleDashboard />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
