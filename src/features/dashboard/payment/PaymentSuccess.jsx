@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { CheckCircle, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
@@ -7,6 +7,7 @@ import useAxiosSicure from "../../../hooks/useAxiosSicure";
 export default function PaymentSuccess() {
 
   const [searchParams] = useSearchParams()
+  const [paymentInfo, setPaymentInfo] = useState({});
   const sessionId = searchParams.get("session_id");
   const axiosSecure = useAxiosSicure();
   console.log("Payment Success Session ID:", sessionId);
@@ -16,6 +17,10 @@ export default function PaymentSuccess() {
       axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
       .then((res) => {
         console.log(res.data);
+        setPaymentInfo({
+          transactionId: res.data.transactionId,
+          trackingId: res.data.trackingId,
+        })
       })
       console.log("Fetching details for session ID:", sessionId);
     }
@@ -81,7 +86,7 @@ export default function PaymentSuccess() {
           {/* Message */}
           <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
             Your transaction was completed successfully. The tutor has been
-            hired!
+            hired! and you can now manage your tutoring sessions from your dashboard.
           </p>
 
           {/* Button to return to dashboard */}
