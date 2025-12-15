@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import { Mail, Lock, LogIn } from "lucide-react";
+import useAxiosSicure from "../../hooks/useAxiosSicure";
 
 export default function Login() {
   const { signInUser, signInWithGoogle } = UseAuth();
@@ -14,6 +15,30 @@ export default function Login() {
   } = useForm();
   const [loginError, setLoginError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const axiosSecure = useAxiosSicure();
+
+  const redirectToDashboard = async (email) => {
+    try {
+      const res = await axiosSecure.get(`/users/role`);
+      const role = res.data.role;
+
+      if (role === "Admin") {
+        navigate("/dashboard/adminHome");
+      } else if (role === "Tutor") {
+        navigate("/dashboard/tutorHome");
+      } else if (role === "Student") {
+        navigate("/dashboard/studentHome");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (roleError) {
+      console.error("Role Check Error:", roleError);
+      setLoginError(
+        "Login successful, but failed to fetch role. Redirecting to default dashboard."
+      );
+      navigate("/dashboard");
+    }
+  };
 
   // 1. Email/Password Login Handler
   const onSubmit = async (data) => {
@@ -23,9 +48,7 @@ export default function Login() {
     try {
       await signInUser(data.email, data.password);
 
-      // Login successful
-      // User-ke dashboard/home page-e pathano holo
-      navigate("/dashboard");
+      await redirectToDashboard(data.email);
     } catch (error) {
       console.error("Login Error:", error);
       // Firebase error messages handle kora holo
@@ -53,8 +76,7 @@ export default function Login() {
 
       // TODO: Optional: Check if user already exists in MongoDB and if not, save their data.
 
-      // Login successful
-      navigate("/dashboard");
+      await redirectToDashboard(result.user.email);
     } catch (error) {
       console.error("Google Login Error:", error);
       setLoginError("Google sign-in failed. Please try again.");

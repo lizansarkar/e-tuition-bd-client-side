@@ -150,7 +150,7 @@ export default function UserManagement() {
 
   // --- Main Component Render (Data Table) ---
   return (
-    <div className="p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8">
       <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white flex items-center">
         <User className="w-7 h-7 mr-3" />
         Users Management ({users.length} Users)

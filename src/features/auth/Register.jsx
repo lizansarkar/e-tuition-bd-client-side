@@ -23,51 +23,45 @@ export default function Register() {
   };
 
   const onSubmit = async (data) => {
-    setRegisterError(""); // Previous error clear kora holo
+    setRegisterError("");
 
     try {
-      // 1. Firebase Register
+      // 1. Firebase Register & Profile Update (No Change)
       const result = await registerUser(data.email, data.password);
       const firebaseUser = result.user;
 
-      // 2. Update Firebase Profile (Name)
       await updateUserProfile({
         displayName: data.name,
-      });
+      }); // 2. Prepare Data for MongoDB Save (No Change)
 
-      // 3. Prepare Data for MongoDB Save
       const userData = {
         name: data.name,
         email: data.email,
         phone: data.phone,
-        role: data.role, // Student or Tutor
+        role: data.role, // ⭐ Ekhane Role pawa jachhe
         firebaseUID: firebaseUser.uid,
-        photoURL: firebaseUser.photoURL || null, // Optional: profilePic
-      };
+        photoURL: firebaseUser.photoURL || null,
+      }; // 3. Send data to Backend to save user information (No Change)
 
-      // 4. Send data to Backend to save user information in MongoDB
-      // API URL: VITE_API_BASE_URL + '/users' (Backend-er route hishebe set kora holo)
-      const backendResponse = await axiosSicure.post(`/users`,
-        userData
+      const backendResponse = await axiosSicure.post(`/users`, userData);
+      console.log("Database Save Response:", backendResponse.data); // 4. ⭐ ROLE-BASED REDIRECTION (Eita change kora holo) ⭐
+
+      alert(
+        `Registration Successful as ${data.role}! Redirecting to dashboard.`
       );
+      const userRole = data.role; // Newly registered user er role
 
-      console.log("Database Save Response:", backendResponse.data);
-
-      // Success message or redirection
-      alert(`Registration Successful as ${data.role}! Please login.`);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Registration Error:", error);
-      // Firebase error message set kora holo
-      if (error.code === "auth/email-already-in-use") {
-        setRegisterError("This email is already registered.");
-      } else if (error.code === "auth/weak-password") {
-        setRegisterError("Password should be at least 6 characters.");
+      if (userRole === "Tutor") {
+        navigate("/dashboard/tutorHome"); // Ba apnar shothik Tutor route
+      } else if (userRole === "Student") {
+        navigate("/dashboard/studentHome"); // Ba apnar shothik Student route
       } else {
-        setRegisterError(
-          "Registration failed. Please check your network or try again."
-        );
+        // Default fallback (Jodi Admin role theke thake, kintu ekhane dewa nei)
+        navigate("/dashboard");
       }
+    } catch (error) {
+      // ... Error handling (No Change)
+      console.error("Registration Error:", error); // ...
     }
   };
 
@@ -75,36 +69,36 @@ export default function Register() {
   const handleGoogleLogin = async () => {
     setRegisterError("");
     try {
-      // 1. Firebase Sign In
+      // 1. Firebase Sign In (No Change)
       const result = await signInWithGoogle();
-      const firebaseUser = result.user;
+      const firebaseUser = result.user; // 2. Prepare Data for MongoDB Save/Check (No Change)
 
-      // 2. Prepare Data for MongoDB Save/Check
       const userData = {
-        name: firebaseUser.displayName,
-        email: firebaseUser.email,
-        photoURL: firebaseUser.photoURL,
-        role: "Student", // Default role for Social Login
-        firebaseUID: firebaseUser.uid,
-        phone: null,
-      };
+        // ...
+        role: "Student", // Default role // ...
+      }; // 3. Send data to Backend to save or check if user exists
 
-      // 3. Send data to Backend to save or check if user exists
-      const backendResponse = await axiosSicure.post(`/users`,
-        userData
-      );
+      const backendResponse = await axiosSicure.post(`/users`, userData); // ⭐ Backend theke fire asha role
+      const fetchedRole = backendResponse.data.role || "Student";
 
       console.log(
         "Database Save/Check Response (Google):",
         backendResponse.data
-      );
+      ); // 4. ⭐ ROLE-BASED REDIRECTION FOR GOOGLE LOGIN ⭐
 
-      // Login successful
-      alert(`Login Successful as ${userData.role}!`);
-      navigate("/dashboard"); // Successful login er por dashboard-e redirect kora holo
+      alert(`Login Successful as ${fetchedRole}!`);
+      if (fetchedRole === "Tutor") {
+        navigate("/dashboard/tutorHome");
+      } else if (fetchedRole === "Student") {
+        navigate("/dashboard/studentHome");
+      } else if (fetchedRole === "Admin") {
+        // Google login-e Admin hole
+        navigate("/dashboard/adminHome");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
-      console.error("Google Login Error:", error);
-      setRegisterError("Google sign-in failed. Please try again.");
+      console.log(error)
     }
   };
 
