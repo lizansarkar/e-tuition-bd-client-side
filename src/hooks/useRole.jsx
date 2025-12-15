@@ -27,7 +27,7 @@ export default function UseRole() {
   const userEmail = user?.email;
   // console.log("UseRole hook called for:", userEmail);
 
-  const { isLoading: roleLoading, data: role = "user" } = useQuery({
+  const { isLoading: roleLoading, data: role = "student" } = useQuery({
     queryKey: ["user-role", userEmail], // Key te email use kora holo
     queryFn: async () => {
       // Email thakleibe API call hobe

@@ -9,7 +9,6 @@ import MyTuitions from "../features/dashboard/student-dashboard/MyTuitions";
 import StudentDashboardLayout from "../features/dashboard/student-dashboard/StudentDashboardLayout";
 import TutorDashboardLayout from "../features/dashboard/tutor-dashboard/TutorDashboardLayout";
 import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDashboardLayout";
-import DashboardContainer from "../features/dashboard/DashboardContainer";
 import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuition";
 import AppliedTutors from "../features/dashboard/student-dashboard/AppliedTutors";
 import TutorMyApplications from "../features/dashboard/tutor-dashboard/TutorMyApplications";
@@ -35,6 +34,7 @@ import AllSuccessPayment from "../features/dashboard/payment/AllSuccessPayment";
 import ErrorPage from "../ErrorPage";
 import TuitionManagement from "../features/dashboard/admin-dashboard/tuition-management/TuitionManagement";
 import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
     // Shob Dashboard Route gulo PrivateRoute-er bhitore thakbe
     element: (
       <PrivateRoute>
-        <DashboardContainer></DashboardContainer>
+        <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
     children: [

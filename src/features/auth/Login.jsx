@@ -22,12 +22,12 @@ export default function Login() {
       const res = await axiosSecure.get(`/users/role`);
       const role = res.data.role;
 
-      if (role === "Admin") {
-        navigate("/dashboard/adminHome");
-      } else if (role === "Tutor") {
-        navigate("/dashboard/tutorHome");
-      } else if (role === "Student") {
-        navigate("/dashboard/studentHome");
+      if (role === "admin") {
+        navigate("/dashboard/admin");
+      } else if (role === "tutor") {
+        navigate("/dashboard/tutor");
+      } else if (role === "student") {
+        navigate("/dashboard/student");
       } else {
         navigate("/dashboard");
       }
@@ -70,11 +70,8 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     setLoginError("");
     try {
-      // signInWithGoogle function call kora holo
       const result = await signInWithGoogle();
       console.log("Google Sign In Successful:", result.user);
-
-      // TODO: Optional: Check if user already exists in MongoDB and if not, save their data.
 
       await redirectToDashboard(result.user.email);
     } catch (error) {

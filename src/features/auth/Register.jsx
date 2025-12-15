@@ -49,37 +49,36 @@ export default function Register() {
       alert(
         `Registration Successful as ${data.role}! Redirecting to dashboard.`
       );
-      const userRole = data.role; // Newly registered user er role
+      const userRole = data.role;
 
-      if (userRole === "Tutor") {
-        navigate("/dashboard/tutorHome"); // Ba apnar shothik Tutor route
-      } else if (userRole === "Student") {
-        navigate("/dashboard/studentHome"); // Ba apnar shothik Student route
+      if (userRole === "tutor") {
+        navigate("/dashboard/tutor");
+      } else if (userRole === "student") {
+        navigate("/dashboard/student");
+      } else if (userRole === "admin") {
+        navigate("/dashboard/admin");
       } else {
-        // Default fallback (Jodi Admin role theke thake, kintu ekhane dewa nei)
         navigate("/dashboard");
       }
     } catch (error) {
-      // ... Error handling (No Change)
-      console.error("Registration Error:", error); // ...
+      console.error("Registration Error:", error);
     }
   };
 
-  // 2. Google Login Handler (Modified to save data in Backend)
+  // Google Login
   const handleGoogleLogin = async () => {
     setRegisterError("");
     try {
-      // 1. Firebase Sign In (No Change)
+      // 1. Firebase Sign In
       const result = await signInWithGoogle();
-      const firebaseUser = result.user; // 2. Prepare Data for MongoDB Save/Check (No Change)
+      const firebaseUser = result.user;
 
       const userData = {
-        // ...
-        role: "Student", // Default role // ...
-      }; // 3. Send data to Backend to save or check if user exists
+        role: "Student",
+      };
 
       const backendResponse = await axiosSicure.post(`/users`, userData); // ⭐ Backend theke fire asha role
-      const fetchedRole = backendResponse.data.role || "Student";
+      const fetchedRole = backendResponse.data.role || "student";
 
       console.log(
         "Database Save/Check Response (Google):",
@@ -87,13 +86,13 @@ export default function Register() {
       ); // 4. ⭐ ROLE-BASED REDIRECTION FOR GOOGLE LOGIN ⭐
 
       alert(`Login Successful as ${fetchedRole}!`);
-      if (fetchedRole === "Tutor") {
-        navigate("/dashboard/tutorHome");
-      } else if (fetchedRole === "Student") {
-        navigate("/dashboard/studentHome");
-      } else if (fetchedRole === "Admin") {
+      if (fetchedRole === "tutor") {
+        navigate("/dashboard/tutor");
+      } else if (fetchedRole === "student") {
+        navigate("/dashboard/student");
+      } else if (fetchedRole === "admin") {
         // Google login-e Admin hole
-        navigate("/dashboard/adminHome");
+        navigate("/dashboard/admin");
       } else {
         navigate("/dashboard");
       }
@@ -225,8 +224,8 @@ export default function Register() {
               <option value="" disabled>
                 Select your role
               </option>
-              <option value="Student">Student</option>
-              <option value="Tutor">Tutor</option>
+              <option value="student">Student</option>
+              <option value="tutor">Tutor</option>
             </select>
             {errors.role && (
               <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>
