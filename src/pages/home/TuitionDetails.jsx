@@ -15,6 +15,7 @@ import useAxiosSicure from "../../hooks/useAxiosSicure";
 import ApplyModal from "./ApplyModal";
 import useAuth from "../../hooks/UseAuth";
 import UseRole from "../../hooks/UseRole"; 
+import Loading from "../../components/ui/Loading";
 
 export default function TuitionDetails() {
   const { id } = useParams();
@@ -40,11 +41,7 @@ export default function TuitionDetails() {
 
   // Combined loading state
   if (isLoading || authLoading || roleLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   if (error || !tuition) {

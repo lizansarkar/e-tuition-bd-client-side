@@ -5,6 +5,7 @@ import { CheckCheck, XCircle, DollarSign, Edit3, Loader } from "lucide-react";
 import toast from "react-hot-toast";
 import useAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
+import Loading from "../../../components/ui/Loading";
 
 export default function AppliedTutorDetails() {
   // 1. URL theke tuitionId extract kora
@@ -100,11 +101,7 @@ export default function AppliedTutorDetails() {
 
   // --- Loading & Error Handling ---
   if (isLoading || authLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   if (error || !tuitionId) {

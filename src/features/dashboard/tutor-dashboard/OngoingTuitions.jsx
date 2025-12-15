@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ListChecks, Clock, User, DollarSign, Calendar } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
+import Loading from "../../../components/ui/Loading";
 
 export default function OngoingTuitions() {
   const { user, loading } = useAuth();
@@ -36,11 +37,7 @@ export default function OngoingTuitions() {
 
   // --- Loading State ---
   if (loading || isLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   // --- Error State ---

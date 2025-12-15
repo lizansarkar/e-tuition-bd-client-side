@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CheckCheck, XCircle, DollarSign, Loader } from "lucide-react";
 import useAxiosSecure from "../../../hooks/useAxiosSicure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/ui/Loading";
 
 export default function AppliedTutors() {
   const { tuitionId } = useParams();
@@ -90,11 +91,7 @@ export default function AppliedTutors() {
   };
   // --- Loading and Error Handling ---
   if (isLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
   if (error) {
     return (

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
 import { Mail, Lock, LogIn } from "lucide-react";
 import useAxiosSicure from "../../hooks/useAxiosSicure";
+import Loading from "../../components/ui/Loading";
 
 export default function Login() {
   const { signInUser, signInWithGoogle } = UseAuth();
@@ -150,7 +151,7 @@ export default function Login() {
             disabled={isSubmitting} // Submitting hole button disable hobe
           >
             {isSubmitting ? (
-              <span className="loading loading-spinner"></span>
+              <Loading></Loading>
             ) : (
               <>
                 <LogIn className="w-5 h-5" /> Log In

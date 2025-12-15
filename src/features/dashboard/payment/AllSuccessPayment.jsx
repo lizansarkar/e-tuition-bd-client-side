@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DollarSign, Clock, Users, Loader } from "lucide-react";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import useAuth from "../../../hooks/useAuth";
+import Loading from "../../../components/ui/Loading";
 
 export default function AllSuccessPayment() {
   const axiosSecure = useAxiosSicure();
@@ -29,11 +30,7 @@ export default function AllSuccessPayment() {
 
   // --- Loading, Error, Empty State Handling ---
   if (isLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
   if (error) {
     return (

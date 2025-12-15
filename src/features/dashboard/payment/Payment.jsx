@@ -5,6 +5,7 @@ import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import { DollarSign, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
+import Loading from "../../../components/ui/Loading";
 
 const Payment = () => {
   const { paymentId } = useParams();
@@ -53,11 +54,7 @@ const Payment = () => {
 
   // --- Loading State ---
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   // Fallback if data is missing after loading (safety)

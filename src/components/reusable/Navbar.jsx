@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
 import logoPath from "../../assets/logo.png";
-import useAuth from "../../hooks/useAuth";
+import Loading from "../ui/Loading";
+import useAuth from "../../hooks/UseAuth";
 
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, loading, logOut } = useAuth();
-
-  console.log("Navbar User:", user, "Loading:", loading,);
 
   // Mobile Menu bondho korar jonyo ekta common function
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -39,7 +38,7 @@ const Navbar = () => {
         <NavLink to="/all-tuitions" onClick={closeMobileMenu}>All Tuitions</NavLink>
       </li>
       <li>
-        <NavLink to="/tutors" onClick={closeMobileMenu}>Tutors</NavLink>
+        <NavLink to="/tutors" onClick={closeMobileMenu}>Pending Tutors</NavLink>
       </li>
       <li>
         <NavLink to="/about" onClick={closeMobileMenu}>About</NavLink>
@@ -139,11 +138,7 @@ const Navbar = () => {
   // === Loading State Management ===
   if (loading) {
     // ... (Loading state code)
-    return (
-      <div className="sticky top-0 z-50 bg-base-100 shadow-lg flex justify-center items-center h-16">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   // === Main Return (Navbar Structure) ===

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User, Mail, Shield, Loader, Edit, Trash2 } from "lucide-react";
 import useAxiosSicure from "../../../../hooks/useAxiosSicure";
 import Swal from "sweetalert2";
+import Loading from "../../../../components/ui/Loading";
 
 export default function UserManagement() {
   const axiosSecure = useAxiosSicure();
@@ -125,11 +126,7 @@ export default function UserManagement() {
 
   // --- Loading, Error, Empty State Handling ---
   if (isLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
   if (error) {
     return (

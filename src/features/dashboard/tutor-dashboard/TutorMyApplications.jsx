@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import useAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import Swal from "sweetalert2";
+import Loading from "../../../components/ui/Loading";
 
 export default function TutorMyApplications() {
   const { user, loading: authLoading } = useAuth();
@@ -99,11 +100,7 @@ export default function TutorMyApplications() {
 
   // --- Loading State Handling ---
   if (isLoading || authLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   if (error) {

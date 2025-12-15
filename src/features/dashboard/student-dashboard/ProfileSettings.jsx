@@ -4,6 +4,7 @@ import { User, Mail, Phone, Image, Settings, Save, Loader } from "lucide-react";
 import Swal from "sweetalert2";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import useAuth from "../../../hooks/useAuth";
+import Loading from "../../../components/ui/Loading";
 
 export default function ProfileSettings() {
   const { user, loading, updateUserProfile } = useAuth();
@@ -97,11 +98,7 @@ export default function ProfileSettings() {
   // ... (rest of the component's render logic, which is already correct) ...
   // Ekhane ami shudhu loading/error check shob dewa holo.
   if (loading || isLoading) {
-    return (
-      <div className="text-center py-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   // Main Component Render

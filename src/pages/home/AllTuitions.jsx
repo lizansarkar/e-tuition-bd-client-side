@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import { MapPin, BookOpen, Clock, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import useAxiosSicure from "../../hooks/useAxiosSicure";
+import Loading from "../../components/ui/Loading";
 
 // Animation variants
 const cardVariants = {
@@ -37,12 +38,7 @@ export default function AllTuitions() {
   }, [axiosSicure]);
 
   if (loading) {
-    // 🚩 Loading UI: Apnar project requirement-e full-screen spinner use korte hobe
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   if (error) {
