@@ -12,7 +12,6 @@ import AdminDashboardLayout from "../features/dashboard/admin-dashboard/AdminDas
 import DashboardContainer from "../features/dashboard/DashboardContainer";
 import PostNewTuition from "../features/dashboard/student-dashboard/PostNewTuition";
 import AppliedTutors from "../features/dashboard/student-dashboard/AppliedTutors";
-import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 import TutorMyApplications from "../features/dashboard/tutor-dashboard/TutorMyApplications";
 import OngoingTuitions from "../features/dashboard/tutor-dashboard/OngoingTuitions";
 import TutorRevenueHistory from "../features/dashboard/tutor-dashboard/TutorRevenueHistory";
@@ -35,6 +34,7 @@ import PaymentCancelled from "../features/dashboard/payment/PaymentCancelled";
 import AllSuccessPayment from "../features/dashboard/payment/AllSuccessPayment";
 import ErrorPage from "../ErrorPage";
 import TuitionManagement from "../features/dashboard/admin-dashboard/tuition-management/TuitionManagement";
+import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 
 export const router = createBrowserRouter([
   {
@@ -55,9 +55,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/profile-settings",
+        element: <ProfileSettings></ProfileSettings>,
+      },
+      {
         path: "/all-tuitions",
         element: <AllTuitions></AllTuitions>,
       },
+
       {
         path: "/all-tuition/:id",
         element: <TuitionDetails></TuitionDetails>,

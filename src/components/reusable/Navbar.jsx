@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
-import UseAuth from "../../hooks/UseAuth";
 import logoPath from "../../assets/logo.png";
+import useAuth from "../../hooks/useAuth";
 
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, loading, logOut } = UseAuth();
+  const { user, loading, logOut } = useAuth();
+
+  console.log("Navbar User:", user, "Loading:", loading,);
 
   // Mobile Menu bondho korar jonyo ekta common function
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -85,7 +87,7 @@ const Navbar = () => {
               <img
                 alt={user.displayName || "User Profile"}
                 src={
-                  user.photoURL || "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
+                  user?.photoURL || "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
                 }
                 className="w-full h-full object-cover"
               />
@@ -111,7 +113,7 @@ const Navbar = () => {
             </li>
             {/* Desktop dropdown-e shudhu Profile/Settings/Logout thakuk, Dashboard uporei ache */}
             <li>
-              <NavLink to="/profile" onClick={closeMobileMenu}>
+              <NavLink to="/profile-settings" onClick={closeMobileMenu}>
                 Profile Settings
               </NavLink>
             </li>
