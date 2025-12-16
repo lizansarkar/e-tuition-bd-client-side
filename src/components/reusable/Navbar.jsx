@@ -13,11 +13,10 @@ const Navbar = () => {
 
   // --- Role-Based Redirection Handler ---
   const handleDashboardClick = () => {
-    closeMobileMenu(); // Mobile menu bondho korar jonne
+    closeMobileMenu();
 
-    let path = "/dashboard"; // Default fallback
+    let path = "/dashboard";
 
-    // ⭐ Role check kore shothik path set kora holo ⭐
     if (role === "admin") {
       path = "/dashboard/admin";
     } else if (role === "tutor") {
@@ -44,50 +43,84 @@ const Navbar = () => {
   // Navigation Links
   const navLinks = (
     <>
-      <li>
-        <NavLink to="/" onClick={closeMobileMenu}>
+      {/* --- Home Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/"
+          onClick={closeMobileMenu}
+          // Base styling for alignment and transition
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           Home
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/my-tuitions" onClick={closeMobileMenu}>
+
+      {/* --- My Tuitions Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/my-tuitions"
+          onClick={closeMobileMenu}
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           My Tuitions
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/all-tuitions" onClick={closeMobileMenu}>
+
+      {/* --- All Tuitions Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/all-tuitions"
+          onClick={closeMobileMenu}
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           All Tuitions
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/tutors" onClick={closeMobileMenu}>
+
+      {/* --- Pending Tutors Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/tutors"
+          onClick={closeMobileMenu}
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           Pending Tutors
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/about" onClick={closeMobileMenu}>
+
+      {/* --- About Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/about"
+          onClick={closeMobileMenu}
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           About
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/contact" onClick={closeMobileMenu}>
+
+      {/* --- Contact Link --- */}
+      <li className="list-none">
+        <NavLink
+          to="/contact"
+          onClick={closeMobileMenu}
+          className="block w-full px-4 py-2 transition-colors duration-200"
+        >
           Contact
         </NavLink>
       </li>
 
-      {/* Conditional Dashboard Link (Mobile-e eta Navigation Menu-r ekta part) */}
-      {user &&
-        role && (
-          <li>
-            <li onClick={handleDashboardClick} className="cursor-pointer">
-              <span
-                className="font-semibold text-primary block w-full"
-              >
-                Dashboard
-              </span>
-            </li>
-          </li>
-        )}
+      {/* --- Conditional Dashboard Link (Jeta onClick handler diye chole) --- */}
+      {user && role && (
+        <li
+          onClick={handleDashboardClick}
+          className="list-none font-semibold cursor-pointer"
+        >
+          <span className="block w-full px-4 py-2 text-primary hover:text-primary/80 transition-colors duration-200">
+            Dashboard
+          </span>
+        </li>
+      )}
     </>
   );
 
