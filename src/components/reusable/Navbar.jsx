@@ -1,18 +1,35 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import logoPath from "../../assets/logo.png";
 import Loading from "../ui/Loading";
 import useAuth from "../../hooks/UseAuth";
-
+import UseRole from "../../hooks/useRole";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, loading, logOut } = useAuth();
+  const { role } = UseRole();
+  const navigate = useNavigate();
 
-  // Mobile Menu bondho korar jonyo ekta common function
+  // --- Role-Based Redirection Handler ---
+  const handleDashboardClick = () => {
+    closeMobileMenu(); // Mobile menu bondho korar jonne
+
+    let path = "/dashboard"; // Default fallback
+
+    // ⭐ Role check kore shothik path set kora holo ⭐
+    if (role === "admin") {
+      path = "/dashboard/admin";
+    } else if (role === "tutor") {
+      path = "/dashboard/tutor";
+    } else if (role === "student") {
+      path = "/dashboard/student";
+    }
+    navigate(path);
+  };
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  // Logout handle function
   const handleLogout = async () => {
     try {
       await logOut();
@@ -22,43 +39,55 @@ const Navbar = () => {
     }
   };
 
-  // Profile Avatar er jonyo common styles
   const profileBorderColor = "border-primary";
 
   // Navigation Links
   const navLinks = (
     <>
       <li>
-        <NavLink to="/" onClick={closeMobileMenu}>Home</NavLink>
+        <NavLink to="/" onClick={closeMobileMenu}>
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/my-tuitions" onClick={closeMobileMenu}>My Tuitions</NavLink>
+        <NavLink to="/my-tuitions" onClick={closeMobileMenu}>
+          My Tuitions
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/all-tuitions" onClick={closeMobileMenu}>All Tuitions</NavLink>
+        <NavLink to="/all-tuitions" onClick={closeMobileMenu}>
+          All Tuitions
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/tutors" onClick={closeMobileMenu}>Pending Tutors</NavLink>
+        <NavLink to="/tutors" onClick={closeMobileMenu}>
+          Pending Tutors
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/about" onClick={closeMobileMenu}>About</NavLink>
+        <NavLink to="/about" onClick={closeMobileMenu}>
+          About
+        </NavLink>
       </li>
       <li>
-        <NavLink to="/contact" onClick={closeMobileMenu}>Contact</NavLink>
+        <NavLink to="/contact" onClick={closeMobileMenu}>
+          Contact
+        </NavLink>
       </li>
 
       {/* Conditional Dashboard Link (Mobile-e eta Navigation Menu-r ekta part) */}
-      {user && (
-        <li>
-          <NavLink
-            to="/dashboard"
-            onClick={closeMobileMenu}
-            className="font-semibold text-primary"
-          >
-            Dashboard
-          </NavLink>
-        </li>
-      )}
+      {user &&
+        role && (
+          <li>
+            <li onClick={handleDashboardClick} className="cursor-pointer">
+              <span
+                className="font-semibold text-primary block w-full"
+              >
+                Dashboard
+              </span>
+            </li>
+          </li>
+        )}
     </>
   );
 
@@ -86,7 +115,8 @@ const Navbar = () => {
               <img
                 alt={user.displayName || "User Profile"}
                 src={
-                  user?.photoURL || "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
+                  user?.photoURL ||
+                  "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
                 }
                 className="w-full h-full object-cover"
               />
@@ -117,7 +147,10 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <button onClick={handleLogout} className="text-red-600 font-semibold">
+              <button
+                onClick={handleLogout}
+                className="text-red-600 font-semibold"
+              >
                 Logout
               </button>
             </li>
@@ -129,8 +162,12 @@ const Navbar = () => {
     // Logged Out
     return (
       <div className="flex gap-2">
-        <NavLink to="/login" className="btn btn-sm btn-primary">Login</NavLink>
-        <NavLink to="/register" className="btn btn-sm btn-outline">Register</NavLink>
+        <NavLink to="/login" className="btn btn-sm btn-primary">
+          Login
+        </NavLink>
+        <NavLink to="/register" className="btn btn-sm btn-outline">
+          Register
+        </NavLink>
       </div>
     );
   };
@@ -138,17 +175,15 @@ const Navbar = () => {
   // === Loading State Management ===
   if (loading) {
     // ... (Loading state code)
-    return <Loading></Loading>
+    return <Loading></Loading>;
   }
 
   // === Main Return (Navbar Structure) ===
   return (
     <div className="sticky top-0 z-50 bg-base-200 shadow-sm">
       <div className="navbar container mx-auto p-4 sm:p-4">
-        
         {/* Left side: Logo and Mobile Menu */}
         <div className="navbar-start">
-          
           {/* Mobile Menu Button (Hamburger/Close Icon) */}
           <div className="md:hidden">
             <button
@@ -157,13 +192,33 @@ const Navbar = () => {
             >
               {mobileMenuOpen ? (
                 // Close Icon (X)
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
                 // Hamburger Icon
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
@@ -194,58 +249,74 @@ const Navbar = () => {
           </div>
 
           {user ? (
-            <div 
-                className={`md:hidden w-8 h-8 rounded-full border-2 ${profileBorderColor} overflow-hidden cursor-pointer`}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)} // <<< MOBILE CLICK LOGIC
+            <div
+              className={`md:hidden w-8 h-8 rounded-full border-2 ${profileBorderColor} overflow-hidden cursor-pointer`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} // <<< MOBILE CLICK LOGIC
             >
               <img
                 alt={user.displayName || "User Profile"}
                 src={
-                  user.photoURL || "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
+                  user.photoURL ||
+                  "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
                 }
                 className="w-full h-full object-cover"
               />
             </div>
-          ) : ( // User log in na thakle (Mobile-e Sign In button)
+          ) : (
+            // User log in na thakle (Mobile-e Sign In button)
             <div className="md:hidden">
-                <NavLink to="/login" onClick={closeMobileMenu} className="btn btn-sm btn-primary">
-                    Login
-                </NavLink>
+              <NavLink
+                to="/login"
+                onClick={closeMobileMenu}
+                className="btn btn-sm btn-primary"
+              >
+                Login
+              </NavLink>
             </div>
           )}
         </div>
       </div>
 
-      <div 
+      <div
         className={`
           md:hidden fixed top-0 left-0 w-64 h-full bg-base-100 z-50 shadow-2xl transform 
           transition-transform duration-300 ease-in-out
-          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
         `}
         // Menu open hole background-e click korle bondho korar jonyo
-        onClick={() => setMobileMenuOpen(false)} 
+        onClick={() => setMobileMenuOpen(false)}
       >
         <div className="p-4 flex flex-col h-full overflow-y-auto">
-          
           {/* Top Bar: Close Button and Logo */}
           <div className="flex justify-between items-center pb-4 border-b border-gray-200">
-            <Link to="/" className="text-2xl font-extrabold" onClick={closeMobileMenu}>
-                <img
-                    className="h-[50px] w-auto"
-                    src={logoPath}
-                    alt="eTuitionBD Logo"
-                />
-            </Link>
-            <button
-                onClick={closeMobileMenu}
-                className="btn btn-ghost p-1"
+            <Link
+              to="/"
+              className="text-2xl font-extrabold"
+              onClick={closeMobileMenu}
             >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                </svg>
+              <img
+                className="h-[50px] w-auto"
+                src={logoPath}
+                alt="eTuitionBD Logo"
+              />
+            </Link>
+            <button onClick={closeMobileMenu} className="btn btn-ghost p-1">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
-          
+
           <ul className="menu menu-vertical p-0 space-y-1 flex-1 pt-4">
             {navLinks}
           </ul>
@@ -253,7 +324,6 @@ const Navbar = () => {
           {/* 🚩 MOBILE USER PROFILE AND LOGOUT SECTION (Shudhu User thakle dekhabe) */}
           {user ? (
             <div className="pt-4 mt-4 space-y-3 border-t border-gray-200">
-              
               {/* Profile Details Button (Apnar dewa chobir moto) */}
               <NavLink
                 to="/profile"
@@ -270,25 +340,32 @@ const Navbar = () => {
               >
                 Log Out
               </button>
-              
             </div>
           ) : (
             // User logged out thakle ekhane Login/Register button dekhte parbe
             <div className="pt-4 mt-4 space-y-3 border-t border-gray-200">
-                <NavLink to="/login" onClick={closeMobileMenu} className="btn btn-sm btn-primary w-full">
-                    Login
-                </NavLink>
-                <NavLink to="/register" onClick={closeMobileMenu} className="btn btn-sm btn-outline w-full">
-                    Register
-                </NavLink>
+              <NavLink
+                to="/login"
+                onClick={closeMobileMenu}
+                className="btn btn-sm btn-primary w-full"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/register"
+                onClick={closeMobileMenu}
+                className="btn btn-sm btn-outline w-full"
+              >
+                Register
+              </NavLink>
             </div>
           )}
         </div>
       </div>
-      
+
       {/* Optional: Overlay (Menu open thakle background dim korar jonyo) */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
           onClick={closeMobileMenu}
         />
