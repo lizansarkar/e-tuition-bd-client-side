@@ -26,7 +26,7 @@ export default function UserManagement() {
 
   // --- Edit Role users management Functionality ---
   const handleEditRole = (user) => {
-    const availableRoles = ["Student", "Tutor", "Admin"];
+    const availableRoles = ["student", "tutor", "admin"];
 
     Swal.fire({
       title: `Change Role for ${user.displayName}`,
@@ -110,13 +110,13 @@ export default function UserManagement() {
   const getRoleBadge = (role) => {
     let colorClass = "badge-ghost";
     switch (role) {
-      case "Admin":
+      case "admin":
         colorClass = "badge-error text-white";
         break;
-      case "Tutor":
+      case "tutor":
         colorClass = "badge-warning text-white";
         break;
-      case "Student":
+      case "student":
       default:
         colorClass = "badge-info text-white";
         break;

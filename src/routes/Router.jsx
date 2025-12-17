@@ -190,7 +190,8 @@ export const router = createBrowserRouter([
           },
           {
             path: "user-management",
-            element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
+            // element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
+            Component: UserManagement
           },
           {
             path: "tuition-management",

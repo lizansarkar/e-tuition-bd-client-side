@@ -104,36 +104,6 @@ export default function TutorDashboardLayout() {
                     </span>
                   </Link>
                 </li>
-
-                {role === "admin" && (
-                  <>
-                    {/* approve rider menu add in dashboard */}
-                    <li>
-                      <Link
-                        to="approve-rider"
-                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                        data-tip="Apporve Rider"
-                      >
-                        <RiEBike2Fill />
-                        <span className="is-drawer-close:hidden">
-                          Apporve Rider
-                        </span>
-                      </Link>
-                    </li>
-                    {/* Users management menu add in dashboard */}
-                    <li>
-                      <Link
-                        to="users-management"
-                        className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                        data-tip="Users Manegement"
-                      >
-                        <FaUser />
-                        <span className="is-drawer-close:hidden">Users</span>
-                      </Link>
-                    </li>
-                  </>
-                )}
-
                 {/* List item */}
                 <li>
                   <button
