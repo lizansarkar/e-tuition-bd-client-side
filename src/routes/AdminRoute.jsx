@@ -1,8 +1,9 @@
 import React from "react";
 import UseAuth from "../hooks/UseAuth";
-import Loading from "../components/common/Loading";
-import UseRole from "../hooks/UseRole";
-import Forbidden from "../components/unCommon/Forbidden";
+import UseRole from "../hooks/useRole";
+
+import Loading from "../components/ui/Loading";
+import Forbidden from "./Forbidden";
 
 export default function AdminRoute({children}) {
   const { loading } = UseAuth();
@@ -12,7 +13,7 @@ export default function AdminRoute({children}) {
     return <Loading></Loading>;
   }
 
-  if (role !== 'admin') {
+  if (role?.toLowerCase() !== 'admin') {
     return <Forbidden></Forbidden>
   }
 

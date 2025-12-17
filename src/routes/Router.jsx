@@ -35,6 +35,7 @@ import ErrorPage from "../ErrorPage";
 import TuitionManagement from "../features/dashboard/admin-dashboard/tuition-management/TuitionManagement";
 import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 import DashboardLayout from "../layouts/DashboardLayout";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -185,39 +186,19 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ViewAllUser></ViewAllUser>,
+            element: <AdminRoute><ViewAllUser></ViewAllUser></AdminRoute>,
           },
           {
             path: "user-management",
-            element: <UserManagement></UserManagement>,
+            element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
           },
           {
             path: "tuition-management",
-            element: <TuitionManagement></TuitionManagement>,
-          },
-          {
-            path: "pending-approval",
-            element: <PendingApproval></PendingApproval>,
-          },
-          {
-            path: "view-all-users",
-            element: <ViewAllUser></ViewAllUser>,
-          },
-          {
-            path: "update-user",
-            element: <UpdateUser></UpdateUser>,
-          },
-          {
-            path: "modify-role",
-            element: <ModifyRole></ModifyRole>,
-          },
-          {
-            path: "delete-accounts",
-            element: <DeleteAccounts></DeleteAccounts>,
+            element: <AdminRoute><TuitionManagement></TuitionManagement></AdminRoute>,
           },
           {
             path: "total-earning",
-            element: <ViewTotalEarnings></ViewTotalEarnings>,
+            element: <AdminRoute><ViewTotalEarnings></ViewTotalEarnings></AdminRoute>,
           },
         ],
       },
