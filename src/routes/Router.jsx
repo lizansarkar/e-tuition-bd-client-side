@@ -186,12 +186,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AdminRoute><ViewAllUser></ViewAllUser></AdminRoute>,
-          },
-          {
-            path: "user-management",
-            // element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
-            Component: UserManagement
+            element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
           },
           {
             path: "tuition-management",

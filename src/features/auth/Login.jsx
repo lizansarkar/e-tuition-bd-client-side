@@ -20,24 +20,25 @@ export default function Login() {
 
   const redirectToDashboard = async (email) => {
     try {
-      const res = await axiosSecure.get(`/users/role`);
+      // API call korar agey user role fetch kora
+      const res = await axiosSecure.get(`/users/${email}/role`);
       const role = res.data.role;
 
+      console.log("User Role Found:", role); // Debugging er jonne
+
       if (role === "admin") {
-        navigate("/dashboard/admin");
-      } else if (role === "tutor") {
-        navigate("/dashboard/tutor");
-      } else if (role === "student") {
-        navigate("/dashboard/student");
+        navigate("/dashboard/admin", { replace: true });
+      } else if (role === "Tutor") {
+        navigate("/dashboard/tutor", { replace: true });
+      } else if (role === "Student") {
+        navigate("/dashboard/student", { replace: true });
       } else {
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }
     } catch (roleError) {
       console.error("Role Check Error:", roleError);
-      setLoginError(
-        "Login successful, but failed to fetch role. Redirecting to default dashboard."
-      );
-      navigate("/dashboard");
+      // Fail hole home e na pathiye default dashboard e pathan
+      navigate("/dashboard", { replace: true });
     }
   };
 

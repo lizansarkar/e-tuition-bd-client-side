@@ -1,5 +1,3 @@
-// components/DashboardContainer.jsx
-
 import React from "react";
 import { Outlet, Navigate } from "react-router";
 import useAuth from "../hooks/UseAuth";
