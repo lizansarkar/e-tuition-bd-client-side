@@ -36,6 +36,7 @@ import TuitionManagement from "../features/dashboard/admin-dashboard/tuition-man
 import ProfileSettings from "../features/dashboard/student-dashboard/ProfileSettings";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AdminRoute from "./AdminRoute";
+import Blogs from "../pages/blogs/Blogs";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,11 @@ export const router = createBrowserRouter([
       {
         path: "/all-tuitions",
         element: <AllTuitions></AllTuitions>,
+      },
+
+      {
+        path: "/blogs",
+        element: <Blogs></Blogs>
       },
 
       {
@@ -186,6 +192,10 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
+            element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
+          },
+          {
+            path: "user-management",
             element: <AdminRoute><UserManagement></UserManagement></AdminRoute>,
           },
           {

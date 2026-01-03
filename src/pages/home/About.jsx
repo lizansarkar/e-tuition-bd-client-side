@@ -31,7 +31,7 @@ const cardVariants = {
 };
 
 export default function About() {
-  const image_url = "https://images.unsplash.com/photo-1546410531-bb4064d1e847";
+  const image_url = "/src/pages/about/learning.jpg";
 
   return (
     <section className="bg-white dark:bg-gray-900 py-16 md:py-24">

@@ -5,7 +5,7 @@ import { config } from "webpack";
 import { useNavigate } from "react-router";
 
 const axiosSicure = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://e-tuition-bd-server-side.vercel.app",
 });
 
 export default function useAxiosSicure() {

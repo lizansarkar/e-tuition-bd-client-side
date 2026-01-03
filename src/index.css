@@ -51,24 +51,35 @@
   @apply w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition duration-200;
 }
 
-.navbar-center li a {
-  padding: 5px 20px;
-  color: #4b5563; 
+.menu li > *:not(ul):not(details):active, 
+.menu li > *:not(ul):not(details):focus,
+.menu li > details > summary:active {
+  background-color: transparent !important;
+  color: inherit;
+}
+
+.menu li > a:hover, 
+.menu li > span:hover {
+  background-color: transparent !important;
+}
+
+.nav-underlined {
   position: relative;
-  transition: color 0.3s ease, border-color 0.3s ease;
-  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
 }
 
-.navbar-center li a:hover {
-  color: #03373d;
-  border-bottom: 2px solid #03373d;
+.nav-underlined::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #03373d;
+  transition: width 0.3s ease-in-out;
 }
 
-.navbar-center li .active {
-  color: #03373d !important;
-  border-bottom: 2px solid #03373d !important; 
-  font-weight: 500;
-}
-.navbar-center li span {
-  color: var(--primary-color);
+.active .nav-underlined::after {
+  width: 100%;
+  color: red;
 }

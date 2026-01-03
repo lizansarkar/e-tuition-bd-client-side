@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import UseAuth from "../../hooks/UseAuth";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, ShieldCheck, Eye, EyeOff } from "lucide-react"; // Eye এবং EyeOff যোগ করা হয়েছে
 import useAxiosSicure from "../../hooks/useAxiosSicure";
 import Loading from "../../components/ui/Loading";
 
@@ -12,19 +12,30 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+
   const [loginError, setLoginError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const axiosSecure = useAxiosSicure();
+
+  const handleDemoAdmin = () => {
+    setValue("email", "admin@gmail.com");
+    setValue("password", "123456Aa");
+    setLoginError("");
+  };
+
+  const togglePasswordVisibility = (e) => {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
 
   const redirectToDashboard = async (email) => {
     try {
-      // API call korar agey user role fetch kora
       const res = await axiosSecure.get(`/users/${email}/role`);
       const role = res.data.role;
-
-      console.log("User Role Found:", role); // Debugging er jonne
 
       if (role === "admin") {
         navigate("/dashboard/admin", { replace: true });
@@ -37,29 +48,19 @@ export default function Login() {
       }
     } catch (roleError) {
       console.error("Role Check Error:", roleError);
-      // Fail hole home e na pathiye default dashboard e pathan
       navigate("/dashboard", { replace: true });
     }
   };
 
-  // 1. Email/Password Login Handler
   const onSubmit = async (data) => {
     setLoginError("");
     setIsSubmitting(true);
-
     try {
       await signInUser(data.email, data.password);
-
       await redirectToDashboard(data.email);
     } catch (error) {
-      console.error("Login Error:", error);
-      // Firebase error messages handle kora holo
       if (error.code === "auth/invalid-credential") {
-        setLoginError(
-          "Invalid email or password. Please check your credentials."
-        );
-      } else if (error.code === "auth/user-not-found") {
-        setLoginError("No user found with this email.");
+        setLoginError("Invalid email or password.");
       } else {
         setLoginError("Login failed. Please try again.");
       }
@@ -68,41 +69,46 @@ export default function Login() {
     }
   };
 
-  // 2. Google Login Handler
   const handleGoogleLogin = async () => {
     setLoginError("");
     try {
       const result = await signInWithGoogle();
-      console.log("Google Sign In Successful:", result.user);
-
       await redirectToDashboard(result.user.email);
     } catch (error) {
-      console.error("Google Login Error:", error);
-      setLoginError("Google sign-in failed. Please try again.");
+      setLoginError("Google sign-in failed.");
     }
   };
 
   return (
-    <div className="w-full bg-[#ffffff] p-8 rounded-2xl shadow-xl border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-      <h2 className="text-3xl font-extrabold text-center text-gray-900 dark:text-white">
+    <div className="w-full bg-[#ffffff] p-8 rounded-2xl shadow-xl border border-gray-200 dark:bg-gray-800 dark:border-gray-700 relative overflow-hidden">
+      {/* Demo Admin Badge */}
+      <button
+        onClick={handleDemoAdmin}
+        type="button"
+        className="cursor-pointer absolute top-0 right-0 bg-primary/10 hover:bg-primary/20 text-primary text-[10px] font-bold px-3 py-1 rounded-bl-xl transition-all flex items-center gap-1 border-b border-l border-primary/20 z-20"
+      >
+        <ShieldCheck className="w-3 h-3" /> Quick Admin Access
+      </button>
+
+      <h2 className="text-3xl font-extrabold text-center text-gray-900 dark:text-white mt-2">
         Welcome Back!
       </h2>
-      <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
+      <p className="text-center text-gray-500 dark:text-gray-400 mb-6 text-sm">
         Sign in to access your dashboard.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* 1. Email Field */}
+        {/* Email Field */}
         <div className="form-control">
           <label className="label">
-            <span className="label-text flex items-center gap-1">
+            <span className="label-text flex items-center gap-1 font-medium">
               <Mail className="w-4 h-4" /> Email
             </span>
           </label>
           <input
             type="email"
             placeholder="example@email.com"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full focus:outline-primary"
             {...register("email", { required: "Email is required" })}
           />
           {errors.email && (
@@ -110,19 +116,31 @@ export default function Login() {
           )}
         </div>
 
-        {/* 2. Password Field */}
+        {/* Password Field with Eye Toggle */}
         <div className="form-control">
           <label className="label">
-            <span className="label-text flex items-center gap-1">
+            <span className="label-text flex items-center gap-1 font-medium">
               <Lock className="w-4 h-4" /> Password
             </span>
           </label>
-          <input
-            type="password"
-            placeholder="Your Password"
-            className="input input-bordered w-full"
-            {...register("password", { required: "Password is required" })}
-          />
+
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Your Password"
+              className="input input-bordered w-full pr-12 focus:outline-primary"
+              {...register("password", { required: "Password is required" })}
+            />
+            {/* Eye Toggle Button */}
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-gray-400 hover:text-primary p-1 transition-colors cursor-pointer"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
           {errors.password && (
             <p className="text-red-500 text-xs mt-1">
               {errors.password.message}
@@ -130,29 +148,29 @@ export default function Login() {
           )}
         </div>
 
-        {/* Forgot Password Link (Optional but good practice) */}
         <div className="flex justify-end text-sm">
-          <Link to="/forgot-password" className="text-black hover:underline">
+          <Link
+            to="/forgot-password"
+            className="text-gray-500 hover:text-primary hover:underline transition-all"
+          >
             Forgot Password?
           </Link>
         </div>
 
-        {/* Global Error Message */}
         {loginError && (
-          <p className="text-red-600 text-sm font-medium mt-3 text-center">
+          <p className="text-red-600 text-sm font-medium text-center">
             {loginError}
           </p>
         )}
 
-        {/* 3. Submit Button */}
         <div className="form-control mt-6">
           <button
             type="submit"
-            className="btn btn-primary text-secondary w-full text-lg"
-            disabled={isSubmitting} // Submitting hole button disable hobe
+            className="btn btn-primary text-secondary w-full text-lg shadow-md"
+            disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Loading></Loading>
+              <Loading />
             ) : (
               <>
                 <LogIn className="w-5 h-5" /> Log In
@@ -162,15 +180,24 @@ export default function Login() {
         </div>
       </form>
 
-      {/* OR Divider */}
-      <div className="divider text-sm text-gray-500 dark:text-gray-400 my-6">
+      {/* Demo Admin Button */}
+      <div className="mt-4">
+        <button
+          onClick={handleDemoAdmin}
+          type="button"
+          className="btn btn-xs btn-ghost w-full text-primary hover:bg-primary/5 flex items-center gap-1"
+        >
+          Click here for Admin Credentials
+        </button>
+      </div>
+
+      <div className="divider text-xs text-gray-400 my-6 uppercase tracking-widest">
         OR
       </div>
 
-      {/* Google */}
       <button
         onClick={handleGoogleLogin}
-        className="btn btn-outline border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
+        className="btn btn-outline border-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 w-full shadow-sm"
         disabled={isSubmitting}
       >
         <svg
@@ -207,7 +234,7 @@ export default function Login() {
         Don't have an account?
         <Link
           to="/register"
-          className="text-primary font-semibold ml-1 hover:underline"
+          className="text-primary font-bold ml-1 hover:underline"
         >
           Create an account
         </Link>

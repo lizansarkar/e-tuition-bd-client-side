@@ -4,30 +4,28 @@ import logoPath from "../../assets/logo.png";
 import Loading from "../ui/Loading";
 import useAuth from "../../hooks/UseAuth";
 import UseRole from "../../hooks/useRole";
+import { User, Settings, LogOut, ChevronDown, LayoutDashboard } from "lucide-react";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProfileOpen, setMobileProfileOpen] = useState(false);
   const { user, loading, logOut } = useAuth();
   const { role } = UseRole();
   const navigate = useNavigate();
 
-  // --- Role-Based Redirection Handler ---
   const handleDashboardClick = () => {
     closeMobileMenu();
-
     let path = "/dashboard";
-
-    if (role === "admin") {
-      path = "/dashboard/admin";
-    } else if (role === "tutor") {
-      path = "/dashboard/tutor";
-    } else if (role === "student") {
-      path = "/dashboard/student";
-    }
+    if (role === "admin") path = "/dashboard/admin";
+    else if (role === "tutor") path = "/dashboard/tutor";
+    else if (role === "student") path = "/dashboard/student";
     navigate(path);
   };
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileProfileOpen(false);
+  };
 
   const handleLogout = async () => {
     try {
@@ -38,370 +36,123 @@ const Navbar = () => {
     }
   };
 
-  const profileBorderColor = "border-primary";
-
-  // Navigation Links
   const navLinks = (
     <>
-      {/* --- Home Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/"
-          onClick={closeMobileMenu}
-          // Base styling for alignment and transition
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          Home
-        </NavLink>
-      </li>
+      {["Home", "My Tuitions", "All Tuitions", "Blogs", "About", "Contact"].map((item) => (
+        <li key={item} className="list-none">
+          <NavLink
+            to={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
+            onClick={closeMobileMenu}
+            className={({ isActive }) => 
+              `block px-4 py-2 text-sm lg:text-base transition-all duration-300 bg-transparent hover:bg-transparent focus:bg-transparent ${isActive ? "active text-primary font-bold" : "text-gray-700 dark:text-gray-200"}`
+            }
+          >
+            <span className="nav-underlined">{item}</span>
+          </NavLink>
+        </li>
+      ))}
 
-      {/* --- My Tuitions Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/my-tuitions"
-          onClick={closeMobileMenu}
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          My Tuitions
-        </NavLink>
-      </li>
-
-      {/* --- All Tuitions Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/all-tuitions"
-          onClick={closeMobileMenu}
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          All Tuitions
-        </NavLink>
-      </li>
-
-      {/* --- Pending Tutors Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/tutors"
-          onClick={closeMobileMenu}
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          Pending Tutors
-        </NavLink>
-      </li>
-
-      {/* --- About Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/about"
-          onClick={closeMobileMenu}
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          About
-        </NavLink>
-      </li>
-
-      {/* --- Contact Link --- */}
-      <li className="list-none">
-        <NavLink
-          to="/contact"
-          onClick={closeMobileMenu}
-          className="block w-full px-4 py-2 transition-colors duration-200"
-        >
-          Contact
-        </NavLink>
-      </li>
-
-      {/* --- Conditional Dashboard Link (Jeta onClick handler diye chole) --- */}
       {user && role && (
-        <li
-          onClick={handleDashboardClick}
-          className="list-none font-semibold cursor-pointer"
-        >
-          <span className="block w-full px-4 py-2 text-primary hover:text-primary/80 transition-colors duration-200">
-            Dashboard
+        <li onClick={handleDashboardClick} className="list-none font-bold cursor-pointer flex">
+          <span className="px-4 py-2 text-primary hover:scale-105 transition-transform flex items-center gap-1">
+            <LayoutDashboard size={18} /> Dashboard
           </span>
         </li>
       )}
     </>
   );
 
-  // === DEXTOP Auth Action Buttons (Hover Logic - No Change Needed) ===
-  const DesktopAuthActions = () => {
-    if (user) {
-      const [isHoverOpen, setIsHoverOpen] = useState(false);
-
-      return (
-        // Desktop Hover Logic
-        <div
-          className="relative"
-          onMouseEnter={() => setIsHoverOpen(true)}
-          onMouseLeave={() => setIsHoverOpen(false)}
-        >
-          {/* Avatar Button */}
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar p-0 cursor-pointer"
-          >
-            <div
-              className={`w-10 rounded-full border-2 ${profileBorderColor} overflow-hidden transition-all`}
-            >
-              <img
-                alt={user.displayName || "User Profile"}
-                src={
-                  user?.photoURL ||
-                  "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
-                }
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-
-          {/* Dropdown Menu (Conditional Rendering for Hover) */}
-          <ul
-            className={`
-              menu menu-sm absolute right-0 top-full mt-3 z-[50] p-2 shadow 
-              bg-base-100 rounded-box w-52 transform transition-all duration-200 
-              ${
-                isHoverOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible translate-y-2"
-              }
-            `}
-          >
-            <li>
-              <a className="font-semibold text-gray-800 dark:text-gray-200 pointer-events-none">
-                {user.displayName || "User"}
-              </a>
-            </li>
-            {/* Desktop dropdown-e shudhu Profile/Settings/Logout thakuk, Dashboard uporei ache */}
-            <li>
-              <NavLink to="/profile-settings" onClick={closeMobileMenu}>
-                Profile Settings
-              </NavLink>
-            </li>
-            <li>
-              <button
-                onClick={handleLogout}
-                className="text-red-600 font-semibold"
-              >
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
-      );
-    }
-
-    // Logged Out
-    return (
-      <div className="flex gap-2">
-        <NavLink to="/login" className="btn btn-sm btn-primary">
-          Login
-        </NavLink>
-        <NavLink to="/register" className="btn btn-sm btn-outline">
-          Register
-        </NavLink>
-      </div>
-    );
-  };
-
-  // === Loading State Management ===
-  if (loading) {
-    // ... (Loading state code)
-    return <Loading></Loading>;
-  }
-
-  // === Main Return (Navbar Structure) ===
   return (
-    <div className="sticky top-0 z-50 bg-base-200 shadow-sm">
-      <div className="navbar container mx-auto p-4 sm:p-4">
-        {/* Left side: Logo and Mobile Menu */}
+    <div className="sticky top-0 z-50 bg-base-100/80 backdrop-blur-md shadow-md border-b border-base-300">
+      <div className="navbar container mx-auto px-4 py-2">
+        
+        {/* Navbar Start */}
         <div className="navbar-start">
-          {/* Mobile Menu Button (Hamburger/Close Icon) */}
           <div className="md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="btn btn-ghost p-1"
-            >
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="btn btn-ghost btn-circle">
               {mobileMenuOpen ? (
-                // Close Icon (X)
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               ) : (
-                // Hamburger Icon
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
               )}
             </button>
           </div>
-
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-extrabold ml-2 sm:ml-0">
-            <img
-              className="h-[50px] w-[200px]"
-              src={logoPath}
-              alt="eTuitionBD Logo"
-            />
+          <Link to="/" className="flex items-center transition-transform hover:scale-105 ml-2 md:ml-0">
+            <img className="h-10 sm:h-12 w-auto object-contain" src={logoPath} alt="eTuitionBD Logo" />
           </Link>
         </div>
 
-        {/* Center: Desktop Menu */}
+        {/* Navbar Center (Desktop) */}
         <div className="navbar-center hidden md:flex">
-          <ul className="menu menu-horizontal gap-2 px-1 text-base font-medium">
+          <ul className="menu menu-horizontal gap-1 px-1 font-medium bg-transparent">
             {navLinks}
           </ul>
         </div>
 
-        {/* Right side: User/Auth Buttons */}
-        <div className="navbar-end flex items-center gap-3">
-          {/* Desktop Auth Actions */}
-          <div className="hidden md:flex">
-            <DesktopAuthActions />
-          </div>
-
-          {user ? (
-            <div
-              className={`md:hidden w-8 h-8 rounded-full border-2 ${profileBorderColor} overflow-hidden cursor-pointer`}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} // <<< MOBILE CLICK LOGIC
-            >
-              <img
-                alt={user.displayName || "User Profile"}
-                src={
-                  user.photoURL ||
-                  "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
-                }
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ) : (
-            // User log in na thakle (Mobile-e Sign In button)
-            <div className="md:hidden">
-              <NavLink
-                to="/login"
-                onClick={closeMobileMenu}
-                className="btn btn-sm btn-primary"
-              >
-                Login
-              </NavLink>
+        {/* Navbar End */}
+        <div className="navbar-end gap-2">
+          {loading ? <span className="loading loading-dots loading-sm text-primary"></span> : (
+            user ? (
+              <div className="dropdown dropdown-end hidden md:block">
+                <label tabIndex={0} className="btn btn-ghost btn-circle avatar border-2 border-primary overflow-hidden">
+                  <img src={user?.photoURL || "https://i.ibb.co/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"} alt="User" />
+                </label>
+                <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow-xl menu menu-sm dropdown-content bg-base-100 rounded-box w-56 border border-base-200">
+                  <li className="menu-title text-primary font-bold">{user.displayName}</li>
+                  <li><NavLink to="/profile-settings" className="flex items-center gap-2"><Settings size={16}/> Settings</NavLink></li>
+                  <div className="divider my-1"></div>
+                  <li><button onClick={handleLogout} className="text-red-500 font-bold flex items-center gap-2"><LogOut size={16}/> Logout</button></li>
+                </ul>
+              </div>
+            ) : (
+              <div className="hidden md:flex gap-2">
+                <Link to="/login" className="btn btn-sm btn-ghost hover:text-primary">Login</Link>
+                <Link to="/register" className="btn btn-sm btn-primary px-6 rounded-full shadow-lg">Register</Link>
+              </div>
+            )
+          )}
+          
+          {user && (
+            <div className="md:hidden border-2 border-primary rounded-full p-0.5 cursor-pointer" onClick={() => setMobileProfileOpen(!mobileProfileOpen)}>
+              <div className="w-8 h-8 rounded-full overflow-hidden">
+                <img src={user.photoURL || "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"} className="w-full h-full object-cover" alt="Profile" />
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      <div
-        className={`
-          md:hidden fixed top-0 left-0 w-64 h-full bg-base-100 z-50 shadow-2xl transform 
-          transition-transform duration-300 ease-in-out
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-        // Menu open hole background-e click korle bondho korar jonyo
-        onClick={() => setMobileMenuOpen(false)}
-      >
-        <div className="p-4 flex flex-col h-full overflow-y-auto">
-          {/* Top Bar: Close Button and Logo */}
-          <div className="flex justify-between items-center pb-4 border-b border-gray-200">
-            <Link
-              to="/"
-              className="text-2xl font-extrabold"
-              onClick={closeMobileMenu}
-            >
-              <img
-                className="h-[50px] w-auto"
-                src={logoPath}
-                alt="eTuitionBD Logo"
-              />
-            </Link>
-            <button onClick={closeMobileMenu} className="btn btn-ghost p-1">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+      {/* --- MOBILE DRAWER MENU (BLUR ADDED) --- */}
+      <div className={`fixed inset-y-0 left-0 w-72 bg-base-100/90 backdrop-blur-xl z-[60] shadow-2xl transition-transform duration-300 transform ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"} md:hidden border-r border-base-300`}>
+        <div className="h-full flex flex-col">
+          <div className="flex justify-between items-center p-3">
+            <img className="h-10 w-auto" src={logoPath} alt="Logo" />
+            <button onClick={closeMobileMenu} className="btn btn-sm btn-circle btn-ghost"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
           </div>
-
-          <ul className="menu menu-vertical p-0 space-y-1 flex-1 pt-4">
+          <ul className="menu menu-vertical pb-10 space-y-2 flex-1 bg-[#fffffff3] w-full">
             {navLinks}
           </ul>
-
-          {/* 🚩 MOBILE USER PROFILE AND LOGOUT SECTION (Shudhu User thakle dekhabe) */}
-          {user ? (
-            <div className="pt-4 mt-4 space-y-3 border-t border-gray-200">
-              {/* Profile Details Button (Apnar dewa chobir moto) */}
-              <NavLink
-                to="/profile"
-                onClick={closeMobileMenu}
-                className="block w-full text-center px-4 py-2 bg-secondary text-white font-medium rounded-lg hover:opacity-90 transition-all shadow-md"
-              >
-                Hello, {user.displayName || "User"} (Profile)
-              </NavLink>
-
-              {/* Log Out Button */}
-              <button
-                onClick={handleLogout}
-                className="block w-full text-center px-4 py-2 text-red-600 font-semibold border border-red-500 rounded-lg hover:bg-red-50 transition-all"
-              >
-                Log Out
-              </button>
-            </div>
-          ) : (
-            // User logged out thakle ekhane Login/Register button dekhte parbe
-            <div className="pt-4 mt-4 space-y-3 border-t border-gray-200">
-              <NavLink
-                to="/login"
-                onClick={closeMobileMenu}
-                className="btn btn-sm btn-primary w-full"
-              >
-                Login
-              </NavLink>
-              <NavLink
-                to="/register"
-                onClick={closeMobileMenu}
-                className="btn btn-sm btn-outline w-full"
-              >
-                Register
-              </NavLink>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Optional: Overlay (Menu open thakle background dim korar jonyo) */}
-      {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
-          onClick={closeMobileMenu}
-        />
+      {/* --- MOBILE PROFILE DROPDOWN (BLUR ADDED) --- */}
+      <div className={`fixed inset-x-4 top-20 bg-base-100/95 backdrop-blur-lg z-[60] rounded-2xl shadow-2xl p-4 border border-base-300 transition-all duration-300 md:hidden ${mobileProfileOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-5"}`}>
+         <div className="flex items-center gap-3 mb-4 p-2 bg-primary/10 rounded-xl">
+            <img className="w-12 h-12 rounded-full border-2 border-primary" src={user?.photoURL} alt="User" />
+            <div>
+              <p className="font-bold text-base-content">{user?.displayName}</p>
+              <p className="text-xs text-gray-500 truncate w-40">{user?.email}</p>
+            </div>
+         </div>
+         <ul className="space-y-1">
+            <li><Link to="/profile-settings" onClick={closeMobileMenu} className="flex items-center gap-3 p-3 hover:bg-primary/5 rounded-lg transition-colors"><Settings size={18}/> Profile Settings</Link></li>
+            <li><button onClick={handleLogout} className="flex items-center gap-3 p-3 text-red-500 hover:bg-red-50 w-full rounded-lg font-semibold transition-colors"><LogOut size={18}/> Sign Out</button></li>
+         </ul>
+      </div>
+
+      {/* Overlay */}
+      {(mobileMenuOpen || mobileProfileOpen) && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[55] md:hidden transition-opacity" onClick={closeMobileMenu} />
       )}
     </div>
   );
