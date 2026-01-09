@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import UseAuth from "../../../hooks/UseAuth";
 import useAxiosSicure from "../../../hooks/useAxiosSicure";
 import EditTuitionModal from "./EditTuitionModal";
+import Loading from "../../../components/ui/Loading";
 
 // Helper to determine status color (No change needed)
 const getStatusColor = (status) => {
@@ -105,9 +106,7 @@ const MyTuitions = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center py-20 text-xl dark:text-gray-300">
-        Loading your tuition posts...
-      </div>
+      <Loading></Loading>
     );
   }
 
