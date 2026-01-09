@@ -87,7 +87,7 @@ const cardVariants = {
 
 export default function LatestTuitionPosts() {
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900">
+    <section className="py-16 md:py-24 bg-base-200 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         {/* Section Header: Heading and See All Button */}
         <div className="flex justify-between items-center mb-10 md:mb-12">

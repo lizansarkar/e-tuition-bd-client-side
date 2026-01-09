@@ -123,10 +123,9 @@ const WorkStep = ({ step, isLast }) => {
 
 export default function HowWork() {
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 overflow-hidden">
+    <section className="py-16 md:py-24 bg-base-200 dark:bg-gray-900 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Section Heading */}
-        {/* 🚩 Section Heading with Right-to-Left Animation */}
         <motion.div
           className="text-center mb-12 md:mb-16"
           initial="hidden"
