@@ -63,29 +63,37 @@ export default function Register() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setRegisterError("");
-    try {
-      const result = await signInWithGoogle();
-      const userData = { role: "student" };
-      const backendResponse = await axiosSicure.post(`/users`, userData);
-      const fetchedRole = backendResponse.data.role || "student";
+ const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithGoogle();
+    const user = result.user;
 
-      Swal.fire({
-        icon: "success",
-        title: "Welcome Back!",
-        text: `Login Successful as ${fetchedRole}!`,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+    const userData = {
+      name: user.displayName,
+      email: user.email,
+      role: "student",
+      firebaseUID: user.uid,
+      photoURL: user.photoURL,
+    };
 
-      if (fetchedRole === "tutor") navigate("/dashboard/tutor");
-      else if (fetchedRole === "student") navigate("/dashboard/student");
-      else navigate("/dashboard");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    // user save (upsert হওয়া ভালো)
+    await axiosSicure.post("/users", userData);
+
+    // role fetch করুন
+    const roleRes = await axiosSicure.get(
+      `/users/${user.email}/role`
+    );
+
+    const fetchedRole = roleRes.data.role;
+
+    if (fetchedRole === "tutor") navigate("/dashboard/tutor");
+    else navigate("/dashboard/student");
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   return (
     <div className="bg-base-100 flex justify-center items-center py-10 px-4">
