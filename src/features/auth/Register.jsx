@@ -94,7 +94,6 @@ export default function Register() {
   }
 };
 
-
   return (
     <div className="bg-base-100 flex justify-center items-center py-10 px-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-2xl rounded-2xl border border-gray-100 dark:bg-gray-800 dark:border-gray-700">

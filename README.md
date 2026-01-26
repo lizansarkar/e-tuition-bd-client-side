@@ -1,4 +1,4 @@
-eTuitionBd – Tuition Management System [https://your-client-live-link.com]
+eTuitionBd – Tuition Management System [https://e-tuition-bd-c38ed.web.app/]
 
 📘 Project Overview
 
