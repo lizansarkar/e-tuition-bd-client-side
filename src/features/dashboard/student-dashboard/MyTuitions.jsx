@@ -160,7 +160,7 @@ const MyTuitions = () => {
           </div>
         ) : (
           <>
-            {/* 🚩 Desktop Table View (md and up) */}
+            {/* Desktop Table View (md and up) */}
             <div className="hidden md:block bg-white dark:bg-gray-700 rounded-xl shadow-lg overflow-hidden">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                 <thead className="bg-gray-100 dark:bg-gray-600">
