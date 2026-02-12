@@ -78,6 +78,6 @@ The main goal of this project is to provide a trusted, automated, and transparen
 
 (You will paste your deployment links here later)
 
-👉 Client Live URL:
+👉 Backend Github Live URL:
 
-https://your-client-live-link.com
+https://github.com/lizansarkar/e-tuition-bd-server-side.git
