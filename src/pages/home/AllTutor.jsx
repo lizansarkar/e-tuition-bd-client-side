@@ -21,7 +21,7 @@ export default function AllTutor() {
     queryKey: ["all-approved-tuitions", page], // page চেঞ্জ হলেই নতুন API কল হবে
     queryFn: async () => {
       const response = await axiosSicure.get(
-        `/all-approved-tuitions?page=${page}&limit=${limit}`
+        `/all-approved-tutors?page=${page}&limit=${limit}`
       );
       return response.data;
     },
@@ -30,14 +30,14 @@ export default function AllTutor() {
 
   // ✅ ডেটা লোড করার মেইন লজিক (১০টা ১০টা করে)
   useEffect(() => {
-    if (data?.tuitions) {
+    if (data?.tutors) {
       if (page === 0) {
         // প্রথমবার শুধুমাত্র প্রথম ১০টি ডাটা দেখাবে
-        setDisplayTuitions(data.tuitions);
+        setDisplayTuitions(data.tutors);
       } else {
         // পরের বার আগের ১০টার সাথে নতুন ১০টা যোগ হবে
         setDisplayTuitions((prev) => {
-          const newData = data.tuitions.filter(
+          const newData = data.tutors.filter(
             (newItem) => !prev.some((oldItem) => oldItem._id === newItem._id)
           );
           return [...prev, ...newData];
