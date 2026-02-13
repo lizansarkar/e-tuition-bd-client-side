@@ -58,7 +58,10 @@ export const router = createBrowserRouter([
         path: "/all-tuitions",
         element: <AllTuitions></AllTuitions>,
       },
-
+      {
+        path: "/all-tutor",
+        element: <AllTutor></AllTutor>,
+      },
       {
         path: "/blogs",
         element: <Blogs></Blogs>
@@ -67,10 +70,6 @@ export const router = createBrowserRouter([
       {
         path: "/all-tuition/:id",
         element: <TuitionDetails></TuitionDetails>,
-      },
-      {
-        path: "/tutors",
-        element: <AllTutor></AllTutor>,
       },
       {
         path: "/about",

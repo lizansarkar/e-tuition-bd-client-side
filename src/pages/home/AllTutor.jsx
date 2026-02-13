@@ -1,185 +1,149 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Mail,
-  Briefcase,
-  DollarSign,
-  Clock,
-  Calendar,
-  MapPin,
-  Loader,
-  FileText,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router";
+import { MapPin, BookOpen, Clock } from "lucide-react";
 import { motion } from "framer-motion";
-import Swal from "sweetalert2";
-import { format } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosSicure from "../../hooks/useAxiosSicure";
 import Loading from "../../components/ui/Loading";
 
-export default function AllTutor() {
-  const axiosSecure = useAxiosSicure();
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
 
-  // --- 1. Data Fetching Logic ---
-  const {
-    data: applications = [], // Default empty array for safety
-    isLoading,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ["pendingApplications"],
+export default function AllTutor() {
+  const axiosSicure = useAxiosSicure();
+  const [displayTuitions, setDisplayTuitions] = useState([]);
+  const [page, setPage] = useState(0);
+  const limit = 10;
+
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+    queryKey: ["all-approved-tuitions", page], // page চেঞ্জ হলেই নতুন API কল হবে
     queryFn: async () => {
-      // Backend API call to fetch ONLY pending applications
-      const res = await axiosSecure.get(`/all-applications/pending`);
-      return res.data;
+      const response = await axiosSicure.get(
+        `/all-approved-tuitions?page=${page}&limit=${limit}`
+      );
+      return response.data;
     },
+    keepPreviousData: true, // আগের ডাটা স্ক্রিনে রেখে নতুন ডাটা আনবে
   });
 
-  // --- 2. Hire/Accept Functionality (Placeholder for next step) ---
-  const handleHire = (application) => {
-    // Eita apnar poroborti step. Afatoto shudhu alert dewa holo.
-    Swal.fire({
-      title: "Tutor Hiring Placeholder",
-      text: `You are attempting to HIRE or ACCEPT ${application.tutorName} for tuition ID ${application.tuitionId}.`,
-      icon: "info",
-      confirmButtonText: "Okay",
-    });
-    // Porobortite ekhane PATCH API call kore application status 'Accepted' korte hobe.
-  };
+  // ✅ ডেটা লোড করার মেইন লজিক (১০টা ১০টা করে)
+  useEffect(() => {
+    if (data?.tuitions) {
+      if (page === 0) {
+        // প্রথমবার শুধুমাত্র প্রথম ১০টি ডাটা দেখাবে
+        setDisplayTuitions(data.tuitions);
+      } else {
+        // পরের বার আগের ১০টার সাথে নতুন ১০টা যোগ হবে
+        setDisplayTuitions((prev) => {
+          const newData = data.tuitions.filter(
+            (newItem) => !prev.some((oldItem) => oldItem._id === newItem._id)
+          );
+          return [...prev, ...newData];
+        });
+      }
+    }
+  }, [data, page]);
 
-  // Framer Motion Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1, // Each card will appear slightly after the previous one
-      },
-    },
-  };
+  // মেইন লোডিং (পুরো পেজ খালি থাকলে)
+  if (isLoading && page === 0) return <Loading />;
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100, damping: 10 },
-    },
-  };
-
-  // --- 3. Loading, Error, Empty State Handling ---
-  if (isLoading) {
-    return <Loading></Loading>
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-20 text-red-500 font-bold">
-        Error: Failed to fetch applications from server.
-      </div>
-    );
-  }
-
-  if (applications.length === 0) {
-    return (
-      <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-2xl mx-auto mt-10">
-        <p className="text-2xl font-semibold text-gray-600 dark:text-gray-300 flex items-center justify-center">
-          <FileText className="w-6 h-6 mr-3" /> No pending tutor applications
-          found.
-        </p>
-      </div>
-    );
-  }
-
-  // --- 4. Main Component Render (Grid Layout) ---
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white border-b-2 pb-2">
-        Pending Tutor Applications ({applications.length})
-      </h2>
+    <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <div className="container mx-auto px-4">
+        {/* Header - Total Count show from API */}
+        <h1 className="text-3xl md:text-5xl font-extrabold text-center text-gray-900 dark:text-white mb-16">
+          Available <span className="text-primary">Tuition Jobs</span> ({data?.totalCount || 0})
+        </h1>
 
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {applications.map((app) => (
-          <motion.div
-            key={app._id}
-            variants={itemVariants}
-            className="card bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
-          >
-            <div className="card-body p-5">
-              <div className="badge badge-warning text-white font-bold mb-3">
-                {app.status}
-              </div>
-
-              {/* Tutor Details */}
-              <h3 className="text-xl font-bold text-primary mb-2">
-                {app.tutorName || "Unknown Tutor"}
-              </h3>
-              <div className="space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                {/* Email */}
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-secondary" />
-                  <span>{app.tutorEmail}</span>
-                </div>
-
-                {/* Qualification */}
-                <div className="flex items-start gap-2">
-                  <Briefcase className="w-4 h-4 text-secondary flex-shrink-0 mt-1" />
-                  <p className="leading-tight">
-                    <span className="font-semibold block">Qualification:</span>{" "}
-                    {app.qualifications || "N/A"}
-                  </p>
-                </div>
-
-                {/* Experience */}
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-secondary" />
-                  <span>Experience: {app.experience || "N/A"}</span>
-                </div>
-
-                <div className="h-px bg-gray-200 dark:bg-gray-700 my-3"></div>
-
-                {/* Salary & Budget */}
-                <div className="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                  <div className="flex items-center gap-1">
-                    <DollarSign className="w-4 h-4 text-green-500" />
-                    <span className="font-semibold">
-                      Salary: ৳{app.expectedSalary}
-                    </span>
-                  </div>
-                  <div className="text-xs font-medium badge badge-outline badge-primary">
-                    Budget: ৳{app.tuitionBudget}
-                  </div>
-                </div>
-
-                {/* Applied Date */}
-                <div className="flex items-center gap-2 pt-2">
-                  <Calendar className="w-4 h-4 text-gray-500" />
-                  <span className="text-xs italic">
-                    Applied On:{" "}
-                    {app.appliedAt
-                      ? format(new Date(app.appliedAt), "MMM dd, yyyy")
-                      : "N/A"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <div className="card-actions justify-end mt-4">
-                <button
-                  className="btn btn-primary btn-sm w-full"
-                  onClick={() => handleHire(app)}
+        {displayTuitions.length === 0 && !isFetching ? (
+          <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-3xl text-gray-500 italic">
+            No approved tuition posts available right now.
+          </div>
+        ) : (
+          <>
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12"
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+            >
+              {displayTuitions.map((tuition) => (
+                <motion.div
+                  key={tuition._id}
+                  className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all relative overflow-visible group"
+                  variants={cardVariants}
                 >
-                  Review & Hire (Next Step)
+                  {/* Tutor Profile Image */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+                    <div className="w-16 h-16 rounded-full border-4 border-white dark:border-gray-800 shadow-lg overflow-hidden bg-white">
+                      <img 
+                        src={tuition.image || "https://i.ibb.co/5GzXkwq/user.png"} 
+                        alt="Tutor" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-8 text-center">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate">
+                      {tuition.subject} Tutor
+                    </h3>
+                    <div className="badge badge-primary badge-outline mt-2 text-[10px]">
+                      ID: {tuition._id?.slice(-6).toUpperCase()}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-50 dark:border-gray-700 pt-5 mt-5 mb-6">
+                    <div className="flex items-center gap-3">
+                      <BookOpen className="w-4 h-4 text-primary shrink-0" />
+                      <span>Class: <b>{tuition.classLevel}</b></span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <MapPin className="w-4 h-4 text-red-500 shrink-0" />
+                      <span className="truncate">{tuition.location}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Clock className="w-4 h-4 text-orange-500 shrink-0" />
+                      <span>{tuition.schedule}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-3 rounded-2xl">
+                    <span className="text-md font-extrabold text-green-600 dark:text-green-400">
+                      {tuition.budget} BDT
+                    </span>
+                    <NavLink
+                      to={`/all-tuition/${tuition._id}`}
+                      className="px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-xl"
+                    >
+                      Details
+                    </NavLink>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* ✅ See More Logic - শুধুমাত্র তখনই দেখাবে যখন আরও ডাটা থাকবে */}
+            {displayTuitions.length < (data?.totalCount || 0) && (
+              <div className="text-center mt-20">
+                <button
+                  onClick={() => setPage((prev) => prev + 1)}
+                  disabled={isFetching}
+                  className="btn btn-primary px-12 rounded-full font-bold shadow-xl border-none"
+                >
+                  {isFetching ? (
+                    <span className="loading loading-spinner"></span>
+                  ) : (
+                    "See More Jobs"
+                  )}
                 </button>
               </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
   );
 }

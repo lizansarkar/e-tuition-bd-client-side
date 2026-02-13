@@ -38,7 +38,7 @@ const Navbar = () => {
 
   const navLinks = (
     <>
-      {["Home", "My Tuitions", "All Tuitions", "Blogs", "About", "Contact"].map((item) => (
+      {["Home", "All Tuitions", "All Tutor", "Blogs", "About", "Contact"].map((item) => (
         <li key={item} className="list-none">
           <NavLink
             to={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
