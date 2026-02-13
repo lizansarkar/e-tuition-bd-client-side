@@ -36,18 +36,40 @@ const Navbar = () => {
     }
   };
 
+  // ✅ Role-based Navigation logic
+  const getDynamicLinks = () => {
+    // সবার জন্য কমন লিঙ্ক
+    const links = [
+      { name: "Home", path: "/" },
+      { name: "All Tuitions", path: "/all-tuitions" },
+      { name: "All Tutor", path: "/all-tutor" },
+      { name: "Blogs", path: "/blogs" },
+      { name: "About", path: "/about" },
+      { name: "Contact", path: "/contact" },
+    ];
+
+    // যদি ইউজার 'student' হয়, তবে ২য় পজিশনে 'My Tuitions' যোগ হবে
+    if (role === "student") {
+      links.splice(1, 0, { name: "My Tuitions", path: "/my-tuitions" });
+    }
+
+    return links;
+  };
+
   const navLinks = (
     <>
-      {["Home", "All Tuitions", "All Tutor", "Blogs", "About", "Contact"].map((item) => (
-        <li key={item} className="list-none">
+      {getDynamicLinks().map((item) => (
+        <li key={item.name} className="list-none">
           <NavLink
-            to={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
+            to={item.path}
             onClick={closeMobileMenu}
-            className={({ isActive }) => 
-              `block px-4 py-2 text-sm lg:text-base transition-all duration-300 bg-transparent hover:bg-transparent focus:bg-transparent ${isActive ? "active text-primary font-bold" : "text-gray-700 dark:text-gray-200"}`
+            className={({ isActive }) =>
+              `block px-4 py-2 text-sm lg:text-base transition-all duration-300 bg-transparent hover:bg-transparent focus:bg-transparent ${
+                isActive ? "active text-primary font-bold" : "text-gray-700 dark:text-gray-200"
+              }`
             }
           >
-            <span className="nav-underlined">{item}</span>
+            <span className="nav-underlined">{item.name}</span>
           </NavLink>
         </li>
       ))}
@@ -122,26 +144,26 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* --- MOBILE DRAWER MENU (BLUR ADDED) --- */}
+      {/* --- MOBILE DRAWER MENU --- */}
       <div className={`fixed inset-y-0 left-0 w-72 bg-base-100/90 backdrop-blur-xl z-[60] shadow-2xl transition-transform duration-300 transform ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"} md:hidden border-r border-base-300`}>
         <div className="h-full flex flex-col">
           <div className="flex justify-between items-center p-3">
             <img className="h-10 w-auto" src={logoPath} alt="Logo" />
             <button onClick={closeMobileMenu} className="btn btn-sm btn-circle btn-ghost"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
           </div>
-          <ul className="menu menu-vertical pb-10 space-y-2 flex-1 bg-[#fffffff3] w-full">
+          <ul className="menu menu-vertical pb-10 space-y-2 flex-1 bg-transparent w-full">
             {navLinks}
           </ul>
         </div>
       </div>
 
-      {/* --- MOBILE PROFILE DROPDOWN (BLUR ADDED) --- */}
+      {/* --- MOBILE PROFILE DROPDOWN --- */}
       <div className={`fixed inset-x-4 top-20 bg-base-100/95 backdrop-blur-lg z-[60] rounded-2xl shadow-2xl p-4 border border-base-300 transition-all duration-300 md:hidden ${mobileProfileOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-5"}`}>
          <div className="flex items-center gap-3 mb-4 p-2 bg-primary/10 rounded-xl">
             <img className="w-12 h-12 rounded-full border-2 border-primary" src={user?.photoURL} alt="User" />
-            <div>
-              <p className="font-bold text-base-content">{user?.displayName}</p>
-              <p className="text-xs text-gray-500 truncate w-40">{user?.email}</p>
+            <div className="overflow-hidden">
+              <p className="font-bold text-base-content truncate">{user?.displayName}</p>
+              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
             </div>
          </div>
          <ul className="space-y-1">
