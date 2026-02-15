@@ -1,192 +1,133 @@
 import React from "react";
-import { NavLink } from "react-router";
-import { MapPin, BookOpen, Clock, Users } from "lucide-react";
+import { data, NavLink } from "react-router";
+import { MapPin, BookOpen, Clock, Users, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSicure from "../../hooks/useAxiosSicure";
+import Loading from "../../components/ui/Loading";
 
-// 🚩 Dummy Data (Backend-er data ashar aage ei data use kora hobe)
-const mockTuitions = [
-  {
-    id: 1,
-    title: "Urgent Math & Physics Tutor for Class 9 (English Version)",
-    subject: "Math, Physics (Class 9)",
-    location: "Mirpur DOHS, Dhaka",
-    salary: "8,000 - 10,000 BDT/Month",
-    time: "3 Days/Week (Evening)",
-    studentCount: 1,
+// Animation settings
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
   },
-  {
-    id: 2,
-    title: "Tutor for IELTS Preparation (Speaking Focused)",
-    subject: "English (IELTS)",
-    location: "Bashundhara R/A, Dhaka",
-    salary: "5,000 - 7,000 BDT/Month",
-    time: "2 Days/Week (Flexible)",
-    studentCount: 1,
-  },
-  {
-    id: 3,
-    title: "General Science Tutor for Class 6 (Home Visit)",
-    subject: "General Science, Bangla",
-    location: "Chittagong University Area",
-    salary: "4,500 - 6,000 BDT/Month",
-    time: "3 Days/Week (Morning)",
-    studentCount: 2,
-  },
-  {
-    id: 4,
-    title: "University Level C++ Programming Help",
-    subject: "Computer Science (C++)",
-    location: "Online/Remote",
-    salary: "Negotiable (Hourly Rate)",
-    time: "4 Hours/Week (Weekend)",
-    studentCount: 1,
-  },
-  {
-    id: 5,
-    title: "Admission Coaching for Medical Entrance",
-    subject: "Biology, Chemistry",
-    location: "Kallyanpur, Dhaka",
-    salary: "12,000 - 15,000 BDT/Month",
-    time: "5 Days/Week (Afternoon)",
-    studentCount: 1,
-  },
-  {
-    id: 6,
-    title: "Piano Lesson for Beginners (Child)",
-    subject: "Music (Piano)",
-    location: "Gulshan 1, Dhaka",
-    salary: "3,000 - 4,000 BDT/Month",
-    time: "1 Day/Week (Friday)",
-    studentCount: 1,
-  },
-  {
-    id: 7,
-    title: "Arabic Language Tutor for Basic Learning",
-    subject: "Arabic (Basic)",
-    location: "Mohammadpur, Dhaka",
-    salary: "3,500 - 5,000 BDT/Month",
-    time: "2 Days/Week (Evening)",
-    studentCount: 1,
-  },
-  {
-    id: 8,
-    title: "Business Studies (BBA) Semester Final Support",
-    subject: "Accounting, Finance",
-    location: "Online/Remote",
-    salary: "8,000 - 10,000 BDT/Month",
-    time: "Flexible",
-    studentCount: 1,
-  },
-];
+};
 
-// Animation for card entrance
 const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function LatestTuitionPosts() {
-  return (
-    <section className="py-16 md:py-24 bg-base-200 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
-        {/* Section Header: Heading and See All Button */}
-        <div className="flex justify-between items-center mb-10 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
-            <span className="text-primary mr-2">Latest</span> Tuition Posts
-          </h2>
+  const axiosSicure = useAxiosSicure();
 
-          {/* 🚩 See All Button (Apnar design-er moto) */}
+  // ✅ ডাটাবেস থেকে ডাটা আনা
+  const { data: latestTuitions = [], isLoading } = useQuery({
+    queryKey: ["latest-tuitions"],
+    queryFn: async () => {
+      const response = await axiosSicure.get("/latest-tuitions");
+      return response.data;
+    },
+  });
+
+  console.log("My Data:", latestTuitions)
+
+  // if (isLoading) return <Loading />;
+
+  return (
+    <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <div className="container mx-auto px-4 lg:px-8">
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 md:mb-14">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
+              <span className="text-primary">Latest</span> Tuition Posts
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm md:text-base font-medium">
+              Find the best teaching opportunities near you
+            </p>
+          </div>
+
           <NavLink
             to="/all-tuitions"
-            className="btn btn-sm md:btn-md bg-primary text-white hover:bg-primary/90 transition-all font-semibold flex items-center gap-1"
+            className="group flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full font-bold shadow-lg hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
           >
             See All
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-arrow-right"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </NavLink>
         </div>
 
-        {/* Grid Layout: 4x2 (8 Cards) */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.5 }}
-          variants={{
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
-        >
-          {mockTuitions.slice(0, 8).map((tuition, index) => (
-            <motion.div
-              key={tuition.id}
-              className="bg-base-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-              variants={cardVariants}
-            >
-              {/* Card Content */}
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 leading-snug truncate">
-                {tuition.title}
+        {/* Dynamic Grid Layout */}
+        {latestTuitions.map((tuition) => (
+          <motion.div
+            key={tuition._id}
+            className="group bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between border border-gray-100 dark:border-gray-700"
+            variants={cardVariants}
+          >
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase">
+                  Class: {tuition.classLevel}
+                </span>
+                <span className="text-gray-400 text-[10px]">
+                  {tuition.createdAt
+                    ? new Date(tuition.createdAt).toLocaleDateString()
+                    : "Recently"}
+                </span>
+              </div>
+
+              {/* 🚩 এখানে পরিবর্তন: title এর বদলে subject ও classLevel দেখানো হয়েছে */}
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+                Need a tutor for {tuition.subject} (Class {tuition.classLevel})
               </h3>
 
-              {/* Details Grid */}
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400 border-t border-b border-dashed border-gray-300 dark:border-gray-700 py-3 mb-4">
-                {/* Subject */}
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-primary shrink-0" />
-                  <span className="font-medium text-gray-800 dark:text-gray-200">
+              <div className="space-y-3.5 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-50 dark:border-gray-700/50 pt-5 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <BookOpen className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <span className="font-semibold text-gray-800 dark:text-gray-200">
                     {tuition.subject}
                   </span>
                 </div>
 
-                {/* Location */}
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-primary shrink-0" />
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                    <MapPin className="w-4 h-4 text-red-600" />
+                  </div>
                   <span>{tuition.location}</span>
                 </div>
 
-                {/* Time/Schedule */}
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-primary shrink-0" />
-                  <span>{tuition.time}</span>
-                </div>
-
-                {/* Students */}
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-primary shrink-0" />
-                  <span>
-                    {tuition.studentCount} Student
-                    {tuition.studentCount > 1 ? "s" : ""}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                    <Clock className="w-4 h-4 text-orange-600" />
+                  </div>
+                  <span>{tuition.schedule} Days/Week</span>
                 </div>
               </div>
+            </div>
 
-              {/* Footer: Salary and Apply Button */}
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-lg font-extrabold text-green-600 dark:text-green-400">
-                  {tuition.salary}
+            <div className="flex items-center justify-between gap-2 mt-2 pt-4 border-t border-gray-50 dark:border-gray-700/50">
+              <div className="flex flex-col">
+                <span className="text-[10px] text-gray-400 uppercase font-bold">
+                  Salary
                 </span>
-                <NavLink
-                  to={`/tuition/${tuition.id}`}
-                  className="btn btn-sm bg-primary text-white hover:bg-primary/90 transition-all"
-                >
-                  View Details
-                </NavLink>
+                <span className="text-lg font-black text-primary">
+                  {tuition.budget} <small className="text-[10px]">BDT</small>
+                </span>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+
+              <NavLink
+                to={`/all-tuition/${tuition._id}`}
+                className="px-4 py-2 bg-gray-900 dark:bg-white dark:text-gray-900 text-white text-xs font-bold rounded-xl hover:bg-primary transition-colors"
+              >
+                Details
+              </NavLink>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
