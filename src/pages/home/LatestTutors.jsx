@@ -1,11 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router";
-import { MapPin, CheckCircle, GraduationCap } from "lucide-react";
+import { MapPin, CheckCircle, GraduationCap, ArrowRight, Star, Award } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Swiper Import
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay, FreeMode } from "swiper/modules";
+
+// Swiper Styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/free-mode";
 
 const mockTutors = [
   {
@@ -15,157 +20,107 @@ const mockTutors = [
     location: "Dhaka",
     subjects: "Math, Physics",
     isPremium: true,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg", // Replace with actual tutor photos
+    photoURL: "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
   },
   {
     id: 2,
     name: "Md.Sadequzzaman Sadeq",
-    university: "Sher-E-Bangla Agrica...",
+    university: "Sher-E-Bangla Agriculture University",
     location: "Dhaka",
     subjects: "Biology, Chemistry",
     isPremium: true,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
+    photoURL: "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
   },
   {
     id: 3,
     name: "Swath Shahin M.",
-    university: "Ahsanullah Universit...",
+    university: "Ahsanullah University of Science & Tech",
     location: "Dhaka",
     subjects: "CSE, Programming",
     isPremium: true,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
+    photoURL: "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
   },
   {
     id: 4,
-    name: "Rehan",
+    name: "Rehan Ahmed",
     university: "Southeast University",
     location: "Dhaka",
     subjects: "English, IELTS",
     isPremium: true,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
-  },
-  {
-    id: 5,
-    name: "Ayesha Siddiqa",
-    university: "University of Dhaka",
-    location: "Chittagong",
-    subjects: "Bangla, General Science",
-    isPremium: false,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
-  },
-  {
-    id: 6,
-    name: "Fahim Feroz",
-    university: "BUET (CSE)",
-    location: "Online",
-    subjects: "Math, Higher Math",
-    isPremium: true,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
-  },
-  {
-    id: 7,
-    name: "Nusrat Jahan",
-    university: "Jahangirnagar Univ.",
-    location: "Dhaka",
-    subjects: "Arts, History",
-    isPremium: false,
-    photoURL:
-      "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
+    photoURL: "https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg",
   },
 ];
 
-// Framer Motion Variants for Staggered Load
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-  },
-};
-
-// Framer Motion Variants for each Card
-const itemVariants = {
-  hidden: { opacity: 0, y: 50, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 10,
-    },
-  },
-};
-
 const TutorCard = ({ tutor }) => {
-  const isPremium = tutor.isPremium;
-  const premiumColor = "text-[#E5B50A]"; // Golden/Yellow color for Premium tag
-
   return (
     <motion.div
-      className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 h-full flex flex-col items-center text-center relative"
-      variants={itemVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.5 }}
+      whileHover={{ y: -12 }}
+      className="group bg-white dark:bg-gray-900/40 backdrop-blur-xl border border-gray-100 dark:border-gray-800 p-8 rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col items-center text-center relative overflow-hidden h-full cursor-pointer"
     >
-      {/* 🚩 Premium Tag / Badge (Upper Right Corner) */}
-      {isPremium && (
-        <div className="absolute top-0 right-0 p-2 bg-primary text-white text-xs font-bold rounded-tr-xl rounded-bl-xl shadow-md flex items-center gap-1">
-          <CheckCircle className="w-3 h-3 text-white fill-primary" />
-          Premium
+      {/* 🚩 Decorative Gradient Background */}
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+
+      {/* 🚩 Premium Badge */}
+      {tutor.isPremium && (
+        <div className="absolute top-5 right-5 z-10">
+          <motion.div 
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="bg-gradient-to-r from-amber-400 to-yellow-600 p-1.5 rounded-full shadow-lg"
+          >
+            <Star className="w-4 h-4 text-white fill-white" />
+          </motion.div>
         </div>
       )}
 
       {/* Avatar Section */}
-      <div className="relative mb-4">
-        <div className="w-24 h-24 rounded-full border-4 border-primary overflow-hidden mx-auto shadow-md">
-          <img
-            src={tutor.photoURL}
-            alt={tutor.name}
-            className="w-full h-full object-cover"
-          />
+      <div className="relative mb-6">
+        <div className="w-28 h-28 rounded-[2rem] p-1.5 bg-gradient-to-tr from-primary to-blue-500 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+          <div className="w-full h-full rounded-[1.8rem] overflow-hidden bg-white">
+            <img
+              src={tutor.photoURL}
+              alt={tutor.name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
+          </div>
         </div>
-        {/* 🚩 Verification/Certification Badge (Lower Center of Avatar) */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white dark:bg-gray-700 rounded-full p-1 shadow-xl">
-          <CheckCircle
-            className={`w-5 h-5 ${
-              isPremium ? premiumColor : "text-primary"
-            } fill-white dark:fill-gray-800`}
-          />
+        {/* Verification Icon */}
+        <div className="absolute -bottom-2 -right-2 bg-white dark:bg-gray-800 rounded-2xl p-1.5 shadow-xl border border-gray-50 dark:border-gray-700">
+          <CheckCircle className="w-6 h-6 text-green-500 fill-green-50" />
         </div>
       </div>
 
       {/* Content */}
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-4 mb-1">
-        {tutor.name}
-      </h3>
+      <div className="space-y-2 mb-6 flex-grow">
+        <h3 className="text-xl font-black text-gray-900 dark:text-white leading-tight">
+          {tutor.name}
+        </h3>
+        
+        <div className="flex items-center justify-center gap-2 text-primary font-bold text-[10px] uppercase tracking-widest">
+           <Award className="w-3 h-3" />
+           <span>Certified Tutor</span>
+        </div>
 
-      {/* University */}
-      <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 mb-2">
-        <GraduationCap className="w-4 h-4 text-primary shrink-0" />
-        <span>{tutor.university}</span>
+        <div className="pt-4 space-y-3">
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <GraduationCap className="w-4 h-4 text-gray-400" />
+            <span className="font-medium line-clamp-1">{tutor.university}</span>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <MapPin className="w-4 h-4 text-red-400" />
+            <span className="font-medium">{tutor.location}, Bangladesh</span>
+          </div>
+        </div>
       </div>
 
-      {/* Location */}
-      <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 mb-4">
-        <MapPin className="w-4 h-4 text-red-500 shrink-0" />
-        <span>{tutor.location}</span>
-      </div>
-
-      {/* See Button (Footer style) */}
+      {/* Profile Button */}
       <NavLink
         to={`/tutor/${tutor.id}`}
-        className="w-full py-2 bg-gray-800 text-white hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold rounded-lg mt-auto"
+        className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-black text-xs uppercase tracking-tighter rounded-2xl hover:bg-primary dark:hover:bg-primary dark:hover:text-white transition-all duration-300 shadow-lg active:scale-95 flex items-center justify-center gap-2 group/btn"
       >
-        See Profile
+        View Profile
+        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
       </NavLink>
     </motion.div>
   );
@@ -173,77 +128,76 @@ const TutorCard = ({ tutor }) => {
 
 export default function LatestTutors() {
   return (
-    <motion.section
-      className="py-16 md:py-24 bg-white"
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, amount: 0.5 }}
-      variants={containerVariants}
-    >
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-[#fcfdfe] dark:bg-[#030712] relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
+      
+      <div className="container mx-auto px-4 lg:px-8">
         {/* Section Header */}
-        <div className="flex justify-between items-center mb-10 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white">
-            <span className="text-primary mr-2">Premium</span> Tutors
-          </h2>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-14 gap-6">
+          <div className="text-left">
+            <motion.div 
+               initial={{ opacity: 0, x: -20 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-[0.3em] mb-4"
+            >
+               <span className="w-8 h-[2px] bg-primary"></span>
+               Top Rated
+            </motion.div>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">
+              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Premium</span> Tutors
+            </h2>
+          </div>
 
-          {/* 🚩 See All Button */}
           <NavLink
             to="/all-tutors"
-            className="btn btn-sm md:btn-md bg-primary text-white hover:bg-primary/90 transition-all font-semibold flex items-center gap-1"
+            className="group flex items-center gap-3 px-8 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-800 rounded-2xl font-bold hover:border-primary/50 transition-all shadow-sm active:scale-95"
           >
-            See All
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-arrow-right"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
+            See All Experts
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform text-primary" />
           </NavLink>
         </div>
 
-        {/* 🚩 Swiper Slider Implementation */}
-        <div className="relative pb-10">
-          {" "}
-          {/* Padding bottom for pagination dots */}
+        {/* Swiper Slider */}
+        <div className="relative group">
           <Swiper
-            modules={[Pagination, Navigation, Autoplay]}
-            spaceBetween={24}
+            modules={[Pagination, Autoplay, FreeMode]}
+            spaceBetween={30}
             slidesPerView={1}
-            // Responsive Breakpoints
+            freeMode={true}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 },
               1280: { slidesPerView: 4 },
             }}
-            pagination={{ clickable: true }}
-            // navigation
+            pagination={{ clickable: true, dynamicBullets: true }}
             autoplay={{
-              delay: 5000,
+              delay: 4000,
               disableOnInteraction: false,
+              pauseOnMouseEnter: true
             }}
-            className="mySwiper"
+            className="pb-16"
           >
             {mockTutors.map((tutor) => (
-              <SwiperSlide key={tutor.id}>
-                {/* Framer Motion Item inside SwiperSlide */}
-                <motion.div variants={itemVariants}>
-                  <TutorCard tutor={tutor} />
-                </motion.div>
+              <SwiperSlide key={tutor.id} className="h-auto">
+                <TutorCard tutor={tutor} />
               </SwiperSlide>
             ))}
           </Swiper>
         </div>
       </div>
-    </motion.section>
+
+      {/*  Custom Swiper Pagination Styling (Global CSS বা স্টাইল ট্যাগে দিতে পারেন) */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .swiper-pagination-bullet-active {
+          background: #007bff !important; /* আপনার primary color */
+          width: 25px !important;
+          border-radius: 5px !important;
+        }
+        .swiper-pagination {
+          bottom: 0 !important;
+        }
+      `}} />
+    </section>
   );
 }
