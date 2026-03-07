@@ -17,40 +17,50 @@ export default function AllTuitions() {
   const axiosSicure = useAxiosSicure();
   const [displayTuitions, setDisplayTuitions] = useState([]);
   const [page, setPage] = useState(0);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("newest"); // নতুন স্টেট: সর্টিং এর জন্য
+
+  // লজিক্যাল স্টেটসমূহ
+  const [searchInput, setSearchInput] = useState(""); // ইনপুটে যা টাইপ করবেন
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sort, setSort] = useState("newest");
   const limit = 10;
 
-  // TanStack Query: search এবং sort কে queryKey তে রাখা হয়েছে যাতে এগুলো চেঞ্জ হলে ডাটা অটো রি-লোড হয়
+  // TanStack Query: searchQuery ব্যবহার করা হয়েছে যাতে প্রতি অক্ষরের জন্য রিকোয়েস্ট না যায়
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["all-approved-tuitions", page, search, sort],
+    queryKey: ["all-tuitions", searchQuery, sort, page],
     queryFn: async () => {
       const res = await axiosSicure.get(
-        `/all-approved-tuitions?page=${page}&limit=${limit}&search=${search}&sort=${sort}`,
+        `/all-tuitions?page=${page}&limit=${limit}&search=${searchQuery}&sort=${sort}`,
       );
       return res.data;
     },
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchQuery(searchInput);
+      setPage(0);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [searchInput]);
 
   useEffect(() => {
     if (data?.tuitions) {
       if (page === 0) {
-        // যদি পেজ ০ হয় (সার্চ বা সর্ট করলে), তবে আগের ডাটা ফেলে দিয়ে নতুন ডাটা দেখাবে
         setDisplayTuitions(data.tuitions);
       } else {
-        // Load More করলে আগের ডাটার সাথে নতুন ডাটা যোগ হবে
         setDisplayTuitions((prev) => {
-          const newData = data.tuitions.filter(
-            (newItem) => !prev.some((oldItem) => oldItem._id === newItem._id),
+          const existingIds = new Set(prev.map((item) => item._id));
+          const uniqueNewData = data.tuitions.filter(
+            (item) => !existingIds.has(item._id),
           );
-          return [...prev, ...newData];
+          return [...prev, ...uniqueNewData];
         });
       }
     }
-  }, [data, page]);
+  }, [data?.tuitions, page, sort, searchQuery, data?.totalCount]);
 
-  if (isLoading && page === 0) return <Loading />;
+  // if (isLoading && page === 0) return <Loading />;
 
   return (
     <section className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-20">
@@ -69,7 +79,7 @@ export default function AllTuitions() {
             that match your expertise.
           </p>
 
-          {/* Search Bar */}
+          {/* Search Bar - Focus fix with local state */}
           <div className="max-w-3xl mx-auto relative group">
             <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
               <Search className="w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors" />
@@ -78,14 +88,11 @@ export default function AllTuitions() {
               type="text"
               placeholder="Search by subject or location (e.g. Dhaka, Physics)..."
               className="w-full pl-14 pr-32 py-4 md:py-5 bg-white dark:bg-gray-900 rounded-2xl shadow-xl focus:ring-2 focus:ring-primary outline-none text-gray-700 dark:text-gray-200 border border-gray-100 dark:border-gray-800"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(0); // সার্চ টাইপ করলে আবার প্রথম পেজ থেকে শুরু হবে
-              }}
+              value={searchInput} // Local state
+              onChange={(e) => setSearchInput(e.target.value)} // টাইপিং স্মুথ থাকবে, ফোকাস সরবে না
             />
             <button className="absolute right-3 top-3 bottom-3 px-6 bg-primary text-white rounded-xl font-bold hidden md:block">
-              Search
+              {isFetching ? "Searching..." : "Search"}
             </button>
           </div>
         </div>
@@ -99,11 +106,11 @@ export default function AllTuitions() {
             Available Jobs ({data?.totalCount || 0})
           </h2>
 
-          {/* Sorting Dropdown - logic added here */}
+          {/* Sorting Dropdown */}
           <div className="dropdown dropdown-end">
             <label
               tabIndex={0}
-              className="btn btn-sm btn-ghost gap-2 border border-gray-200 dark:border-gray-800 rounded-lg capitalize"
+              className="btn btn-sm btn-ghost gap-2 border border-gray-200 dark:border-gray-800 rounded-lg capitalize cursor-pointer"
             >
               <Filter className="w-4 h-4" /> Sort By:{" "}
               {sort === "newest" ? "Newest" : "High Salary"}{" "}
@@ -115,6 +122,7 @@ export default function AllTuitions() {
             >
               <li>
                 <button
+                  className="cursor-pointer"
                   onClick={() => {
                     setSort("newest");
                     setPage(0);
@@ -125,6 +133,7 @@ export default function AllTuitions() {
               </li>
               <li>
                 <button
+                  className="cursor-pointer"
                   onClick={() => {
                     setSort("salaryHigh");
                     setPage(0);
@@ -194,7 +203,7 @@ export default function AllTuitions() {
                   </div>
                   <NavLink
                     to={`/all-tuition/${tuition._id}`}
-                    className="btn btn-primary btn-sm rounded-xl px-5 normal-case"
+                    className="btn btn-primary btn-sm rounded-xl px-5 normal-case cursor-pointer"
                   >
                     Details
                   </NavLink>
@@ -210,7 +219,7 @@ export default function AllTuitions() {
             <button
               onClick={() => setPage((prev) => prev + 1)}
               disabled={isFetching}
-              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-white transition-all duration-200 bg-primary font-pj rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-50"
+              className="group relative inline-flex items-center justify-center px-10 py-4 font-bold text-white transition-all duration-200 bg-primary font-pj rounded-2xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-50 cursor-pointer"
             >
               {isFetching ? (
                 <span className="loading loading-spinner"></span>
