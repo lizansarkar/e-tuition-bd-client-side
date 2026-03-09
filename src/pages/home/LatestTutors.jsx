@@ -72,7 +72,7 @@ const TutorCard = ({ tutor }) => {
           <NavLink
             to={`/tutor/${tutor.id}`}
             onClick={(e) => e.stopPropagation()} // সোয়াইপ করার সময় ক্লিক প্রোটেকশন
-            className="w-full py-4 bg-gray-900 dark:bg-primary/10 text-white dark:text-primary rounded-2xl font-black text-xs uppercase tracking-[0.15em] hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg hover:shadow-primary/30 cursor-pointer pointer-events-auto"
+            className="w-full py-4 bg-gray-900 dark:bg-primary/10 text-white dark:text-primary rounded-2xl font-black text-xs uppercase tracking-[0.15em] hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-lg hover:shadow-primary/30 cursor-pointer pointer-events-auto z-50"
           >
             View Profile
             <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1.5 transition-transform" />

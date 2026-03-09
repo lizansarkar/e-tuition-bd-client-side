@@ -35,7 +35,7 @@ export default function LatestTuitionPosts() {
     },
   });
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
   return (
     <section className="py-24 bg-[#fcfdfe] dark:bg-[#030712] relative overflow-hidden">
