@@ -13,8 +13,8 @@ export default function Home() {
         <LatestTuitionPosts></LatestTuitionPosts>
         <LatestTutors></LatestTutors>
         <HowWork></HowWork>
-        <Stats></Stats>
         <Features></Features>
+        <Stats></Stats>
     </div>
   )
 }
