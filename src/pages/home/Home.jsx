@@ -5,6 +5,7 @@ import LatestTutors from './LatestTutors'
 import HowWork from './HowWork'
 import Features from './Features'
 import Stats from './Stats'
+import SubjectCategories from './SubjectCategories'
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <HowWork></HowWork>
         <Features></Features>
         <Stats></Stats>
+        <SubjectCategories></SubjectCategories>
     </div>
   )
 }
