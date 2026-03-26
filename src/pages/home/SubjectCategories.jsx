@@ -14,133 +14,80 @@ import {
 import { motion } from "framer-motion";
 
 const categories = [
-  {
-    id: 1,
-    name: "Mathematics",
-    tutors: "1.2k+",
-    icon: <Calculator />,
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
-  },
-  {
-    id: 2,
-    name: "Physics",
-    tutors: "850+",
-    icon: <Atom />,
-    color: "text-purple-500",
-    bg: "bg-purple-500/10",
-  },
-  {
-    id: 3,
-    name: "Chemistry",
-    tutors: "640+",
-    icon: <Beaker />,
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-  },
-  {
-    id: 4,
-    name: "English",
-    tutors: "980+",
-    icon: <Languages />,
-    color: "text-rose-500",
-    bg: "bg-rose-500/10",
-  },
-  {
-    id: 5,
-    name: "Programming",
-    tutors: "450+",
-    icon: <Code />,
-    color: "text-cyan-500",
-    bg: "bg-cyan-500/10",
-  },
-  {
-    id: 6,
-    name: "Biology",
-    tutors: "520+",
-    icon: <Globe />,
-    color: "text-orange-500",
-    bg: "bg-orange-500/10",
-  },
-  {
-    id: 7,
-    name: "Fine Arts",
-    tutors: "310+",
-    icon: <Palette />,
-    color: "text-pink-500",
-    bg: "bg-pink-500/10",
-  },
-  {
-    id: 8,
-    name: "Music",
-    tutors: "200+",
-    icon: <Music />,
-    color: "text-indigo-500",
-    bg: "bg-indigo-500/10",
-  },
+  { id: 1, name: "Mathematics", tutors: "1.2k+", icon: <Calculator />, color: "text-blue-600", bg: "bg-blue-600/10" },
+  { id: 2, name: "Physics", tutors: "850+", icon: <Atom />, color: "text-purple-600", bg: "bg-purple-600/10" },
+  { id: 3, name: "Chemistry", tutors: "640+", icon: <Beaker />, color: "text-emerald-600", bg: "bg-emerald-600/10" },
+  { id: 4, name: "English", tutors: "980+", icon: <Languages />, color: "text-rose-600", bg: "bg-rose-600/10" },
+  { id: 5, name: "Programming", tutors: "450+", icon: <Code />, color: "text-cyan-600", bg: "bg-cyan-600/10" },
+  { id: 6, name: "Biology", tutors: "520+", icon: <Globe />, color: "text-orange-600", bg: "bg-orange-600/10" },
+  { id: 7, name: "Fine Arts", tutors: "310+", icon: <Palette />, color: "text-pink-600", bg: "bg-pink-600/10" },
+  { id: 8, name: "Music", tutors: "200+", icon: <Music />, color: "text-indigo-600", bg: "bg-indigo-600/10" },
 ];
 
 export default function SubjectCategories() {
   return (
-    <section className="py-24 bg-white dark:bg-[#020617] relative overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section className="py-10 bg-[#fcfdfe] dark:bg-[#030712] relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-20">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-black text-[10px] uppercase tracking-[0.2em] mb-4"
           >
             <Sparkles className="w-3 h-3" />
-            <span>Top Categories</span>
+            <span>Academic Excellence</span>
           </motion.div>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-6">
-            Explore by{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
-              Subjects
-            </span>
+          <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
+            Explore by <span className="text-primary">Subjects</span>
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">
-            আপনার পছন্দের বিষয়টি বেছে নিন এবং সেরা টিউটরদের সাথে পড়ালেখা শুরু
-            করুন।
+          <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
+            Select your preferred subject and start learning with our expert tutors 
+            tailored to your academic needs.
           </p>
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Categories Grid - 3 columns for that larger box feel */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10">
           {categories.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              whileHover={{ y: -10 }}
-              transition={{ delay: index * 0.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -12 }}
+              transition={{ delay: index * 0.05, duration: 0.5 }}
               className="group cursor-pointer"
             >
-              <div className="relative p-8 rounded-[2rem] bg-gray-50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10 group-hover:border-primary/20 overflow-hidden">
-                {/* Background Decor */}
-                <div
-                  className={`absolute -right-4 -bottom-4 w-24 h-24 ${item.bg} rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700`}
-                ></div>
+              <div className="relative p-10 rounded-[3rem] bg-white dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 overflow-hidden flex flex-col h-full min-h-[320px]">
+                
+                {/* Accent line like your other cards */}
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
 
+                {/* Icon Container */}
                 <div
-                  className={`w-14 h-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-6 transform group-hover:rotate-12 transition-transform duration-500`}
+                  className={`w-16 h-16 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center mb-8 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 shadow-inner`}
                 >
                   {React.cloneElement(item.icon, {
-                    size: 28,
+                    size: 32,
                     strokeWidth: 2.5,
                   })}
                 </div>
 
-                <h3 className="text-xl font-black text-gray-900 dark:text-white mb-1">
-                  {item.name}
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 font-bold mb-4">
-                  {item.tutors} Tutors
-                </p>
+                <div className="flex-grow">
+                  <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">
+                    {item.tutors} Expert Tutors
+                  </p>
+                </div>
 
-                <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Browse All <ArrowRight className="w-3 h-3" />
+                {/* Footer Link */}
+                <div className="mt-8 flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-[0.25em] opacity-40 group-hover:opacity-100 transition-all duration-300">
+                  Find Tutors <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
             </motion.div>
@@ -148,9 +95,9 @@ export default function SubjectCategories() {
         </div>
 
         {/* View All Button */}
-        <div className="mt-16 text-center">
-          <button className="px-10 py-4 bg-gray-900 dark:bg-primary/10 text-white dark:text-primary rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all duration-300 shadow-xl cursor-pointer">
-            View All Categories
+        <div className="mt-20 text-center">
+          <button className="px-12 py-5 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 active:scale-95 cursor-pointer">
+            Explore All Subjects
           </button>
         </div>
       </div>

@@ -108,7 +108,7 @@ const WorkStep = ({ step, index }) => {
 // ---------- Main Section ----------
 export default function HowWork() {
   return (
-    <section className="py-16 md:py-24 bg-base-200 dark:bg-gray-900 overflow-hidden">
+    <section className="py-8 md:py-10 bg-base-200 dark:bg-gray-900 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* হেডিং */}
         <motion.div

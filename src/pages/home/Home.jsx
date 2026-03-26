@@ -15,8 +15,8 @@ export default function Home() {
         <LatestTutors></LatestTutors>
         <HowWork></HowWork>
         <Features></Features>
-        <Stats></Stats>
         <SubjectCategories></SubjectCategories>
+        <Stats></Stats>
     </div>
   )
 }

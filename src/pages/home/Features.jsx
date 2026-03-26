@@ -141,7 +141,7 @@ export default function Features() {
               >
                 <div className="w-full h-full rounded-full overflow-hidden border-4 border-primary/20">
                   <img
-                    src="https://i.ibb.co.com/DH2pZ0dV/photo-1640951613773-54706e06851d.jpg"
+                    src="https://i.ibb.co/zVfWF52w/favicon.png"
                     alt="Center"
                     className="w-full h-full object-cover"
                   />

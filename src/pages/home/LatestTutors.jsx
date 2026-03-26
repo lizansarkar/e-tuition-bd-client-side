@@ -84,7 +84,7 @@ const TutorCard = ({ tutor }) => {
 
 export default function LatestTutors() {
   return (
-    <section className="py-24 md:py-32 bg-[#f8fafc] dark:bg-[#020617] relative overflow-hidden">
+    <section className="py-8 md:py-10 bg-[#f8fafc] dark:bg-[#020617] relative overflow-hidden">
       
       {/* Background Decorative Elements */}
       <div className="absolute top-20 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse"></div>
