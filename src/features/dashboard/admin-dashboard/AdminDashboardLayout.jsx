@@ -1,42 +1,59 @@
 import React from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import Footer from "../../../components/reusable/Footer";
 import { FaUsers } from "react-icons/fa";
-import { FaHourglassHalf } from "react-icons/fa6";
-import { FaLayerGroup } from "react-icons/fa";
+import { FaLayerGroup } from "react-icons/fa6";
 import {
-  Book,
-  BookMarked,
-  BookOpen,
-  BookOpenCheck,
-  BookPlus,
-  DollarSign,
   Home,
   Landmark,
   Settings,
-  UserPen,
-  UserRound,
-  UserRoundCog,
-  UserRoundMinus,
-  UsersRound,
+  LogOut,
+  User,
 } from "lucide-react";
 import UseRole from "../../../hooks/useRole";
+import useAuth from "../../../hooks/UseAuth";
+import Swal from "sweetalert2";
 
 export default function AdminDashboardLayout() {
   const { role } = UseRole();
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, logout!",
+      confirmButtonColor: "#03373d",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logOut()
+          .then(() => {
+            navigate("/");
+            Swal.fire("Logged Out!", "See you soon!", "success");
+          })
+          .catch((err) => console.log(err));
+      }
+    });
+  };
+
   return (
     <div className="">
+      {/* drawer-content এর পাশে lg:drawer-open রাখা হয়েছে আপনার ডিজাইন অনুযায়ী */}
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
+        
+        <div className="drawer-content flex flex-col min-h-screen">
           {/* Navbar */}
-          <nav className="navbar w-full bg-gray-200">
+          <nav className="navbar w-full bg-gray-200 sticky top-0 z-30 px-4 md:px-8">
+            {/* এই বাটনটিই এখন ড্রয়ার টগল করবে */}
             <label
               htmlFor="my-drawer-4"
               aria-label="open sidebar"
-              className="btn btn-square btn-ghost"
+              className="btn btn-square btn-ghost cursor-pointer"
             >
-              {/* Sidebar toggle icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -45,43 +62,86 @@ export default function AdminDashboardLayout() {
                 strokeWidth="2"
                 fill="none"
                 stroke="currentColor"
-                className="my-1.5 inline-block size-4"
+                className="my-1.5 inline-block size-6"
               >
                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
                 <path d="M9 4v16"></path>
                 <path d="M14 10l2 2l-2 2"></path>
               </svg>
             </label>
-            <div className="px-4">Tutor Dashboard</div>
+            
+            <div className="flex justify-between w-full items-center">
+              <div className="px-4 font-bold">Admin Dashboard</div>
+
+              {/* Profile Dropdown */}
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar border border-primary mr-4"
+                >
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="User"
+                      src={
+                        user?.photoURL ||
+                        "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
+                      }
+                    />
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-gray-200"
+                >
+                  <li className="menu-title text-black font-bold">
+                    {user?.displayName || "Admin User"}
+                  </li>
+                  <li>
+                    <Link to="/dashboard/admin/profile-settings">
+                      <User size={16} /> Profile Settings
+                    </Link>
+                  </li>
+                  <div className="divider my-0"></div>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="text-red-500 font-bold cursor-pointer"
+                    >
+                      <LogOut size={16} /> Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </nav>
+
           {/* Page content here */}
-          <Outlet></Outlet>
-          <Footer></Footer>
+          <div className="flex-grow p-4">
+            <Outlet />
+          </div>
+          <Footer />
         </div>
 
-        <div className="drawer-side is-drawer-close:overflow-visible">
+        {/* Sidebar with your specific tooltip and width classes */}
+        <div className="drawer-side is-drawer-close:overflow-visible z-20">
           <label
             htmlFor="my-drawer-4"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-15 is-drawer-open:w-64">
-            {/* Sidebar content here */}
-            <ul className="menu w-full grow gap-10">
-              {/* List item */}
+          <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-16 is-drawer-open:w-64 transition-all duration-300">
+            <ul className="menu w-full grow gap-10 pt-20">
               <li>
                 <Link
                   to="/"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Homepage"
                 >
-                  {/* Home icon */}
-                  <Home></Home>
-                  <span className="is-drawer-close:hidden">Homepage</span>
+                  <Home size={22} />
+                  <span className="is-drawer-close:hidden font-medium">Homepage</span>
                 </Link>
               </li>
-
-              {/* ********** our dashboard link start here *********** */}
 
               <li>
                 <Link
@@ -89,8 +149,8 @@ export default function AdminDashboardLayout() {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Users Management"
                 >
-                  <FaUsers className="text-2xl"></FaUsers>
-                  <span className="is-drawer-close:hidden">
+                  <FaUsers size={22} />
+                  <span className="is-drawer-close:hidden font-medium">
                     Users Management
                   </span>
                 </Link>
@@ -102,38 +162,36 @@ export default function AdminDashboardLayout() {
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Tuition Management"
                 >
-                  <FaLayerGroup className="text-2xl"></FaLayerGroup>
-                  <span className="is-drawer-close:hidden">
+                  <FaLayerGroup size={22} />
+                  <span className="is-drawer-close:hidden font-medium">
                     Tuition Management
                   </span>
                 </Link>
               </li>
 
               <li>
-                {/* Total Earnings */}
                 <Link
                   to="/dashboard/admin/total-earning"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Total Earnings"
                 >
-                  <Landmark />
-                  <span className="is-drawer-close:hidden">Total Earnings</span>
+                  <Landmark size={22} />
+                  <span className="is-drawer-close:hidden font-medium">Total Earnings</span>
                 </Link>
               </li>
 
-
               <li>
-                {/* Profile Settings */}
                 <Link
                   to="/dashboard/admin/profile-settings"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Profile Settings"
                 >
-                  <Settings></Settings>
-                  <span className="is-drawer-close:hidden">Profile Settings</span>
+                  <Settings size={22} />
+                  <span className="is-drawer-close:hidden font-medium">
+                    Profile Settings
+                  </span>
                 </Link>
               </li>
-
             </ul>
           </div>
         </div>
