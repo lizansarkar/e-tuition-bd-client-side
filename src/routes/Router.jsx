@@ -199,6 +199,11 @@ export const router = createBrowserRouter([
             path: "total-earning",
             element: <AdminRoute><ViewTotalEarnings></ViewTotalEarnings></AdminRoute>,
           },
+          {
+            path: "profile-settings",
+            element: <AdminRoute><ProfileSettings></ProfileSettings></AdminRoute>,
+          },
+          
         ],
       },
 

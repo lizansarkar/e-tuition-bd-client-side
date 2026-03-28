@@ -121,17 +121,19 @@ export default function AdminDashboardLayout() {
                 </Link>
               </li>
 
-              {/* List item */}
+
               <li>
-                <button
+                {/* Profile Settings */}
+                <Link
+                  to="/dashboard/admin/profile-settings"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Settings"
+                  data-tip="Profile Settings"
                 >
-                  {/* Settings icon */}
                   <Settings></Settings>
-                  <span className="is-drawer-close:hidden">Settings</span>
-                </button>
+                  <span className="is-drawer-close:hidden">Profile Settings</span>
+                </Link>
               </li>
+
             </ul>
           </div>
         </div>
