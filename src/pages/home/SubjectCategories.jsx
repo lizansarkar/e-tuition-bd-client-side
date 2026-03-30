@@ -26,13 +26,13 @@ const categories = [
 
 export default function SubjectCategories() {
   return (
-    <section className="py-10 bg-[#fcfdfe] dark:bg-[#030712] relative overflow-hidden">
+    <section className="py-10 bg-[#fcfdfe] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -59,12 +59,9 @@ export default function SubjectCategories() {
               whileInView={{ opacity: 1, y: 0 }}
               whileHover={{ y: -12 }}
               transition={{ delay: index * 0.05, duration: 0.5 }}
-              className="group cursor-pointer"
+              className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all relative overflow-visible group text-center cursor-pointer"
             >
-              <div className="relative p-10 rounded-[3rem] bg-white dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 overflow-hidden flex flex-col h-full min-h-[320px]">
-                
-                {/* Accent line like your other cards */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              <div className="text-center justify-center flex flex-col items-center">
 
                 {/* Icon Container */}
                 <div

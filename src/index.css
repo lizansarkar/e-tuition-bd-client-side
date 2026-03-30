@@ -11,6 +11,9 @@
   default: true;
   --color-primary: #03373d;
   --color-secondary: #b4ce46;
+
+  --bg-primary: #03373d;
+  --bg-secondary: #b4ce46;
 }
 * body {
   font-family: "Urbanist", sans-serif;
