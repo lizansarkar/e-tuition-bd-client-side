@@ -26,7 +26,7 @@ export default function About() {
   const image_url = "/src/pages/about/learning.jpg";
 
   return (
-    <section className="bg-[#fcfdfe] dark:bg-[#030712] py-24 relative overflow-hidden">
+    <section className="bg-[#fcfdfe] dark:bg-[#030712] py-12 relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] -z-10"></div>
@@ -116,9 +116,8 @@ export default function About() {
         >
           <motion.div 
             variants={fadeInUp}
-            className="group p-12 rounded-[3rem] bg-white dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
+            className="group p-12 rounded-[3rem] bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all relative overflow-visible group"
           >
-            <div className="absolute top-0 left-0 w-full h-2 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 text-primary">
               <Target size={32} strokeWidth={2.5} />
             </div>
@@ -132,9 +131,8 @@ export default function About() {
 
           <motion.div 
             variants={fadeInUp}
-            className="group p-12 rounded-[3rem] bg-white dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
+            className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all relative overflow-visible group"
           >
-            <div className="absolute top-0 left-0 w-full h-2 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             <div className="w-16 h-16 bg-blue-600/10 rounded-2xl flex items-center justify-center mb-8 text-blue-600">
               <Eye size={32} strokeWidth={2.5} />
             </div>
@@ -169,7 +167,7 @@ export default function About() {
                 key={idx}
                 variants={fadeInUp}
                 whileHover={{ y: -10 }}
-                className="p-10 rounded-[2.5rem] bg-white dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 transition-all duration-500 flex flex-col items-center"
+                className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all relative overflow-visible group"
               >
                 <div className={`w-14 h-14 rounded-2xl ${value.bg} ${value.color} flex items-center justify-center mb-6`}>
                   {React.cloneElement(value.icon, { size: 28, strokeWidth: 2.5 })}
