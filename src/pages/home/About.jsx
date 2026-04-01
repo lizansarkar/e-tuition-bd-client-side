@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Target, Eye, GraduationCap, Users, Shield, Zap, Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import logoPath from "../../assets/logo.png";
+import heroImg from "../../assets/learning.jpg";
 
 // Animation Variants - Smooth and Professional
 const fadeInUp = {
@@ -94,7 +95,7 @@ export default function About() {
             viewport={{ once: true }}
           >
             <img
-              src="https://www.ndmscbd.org/uploads/blogs/169595884133310988.jpg"
+              src={heroImg || "https://www.ndmscbd.org/uploads/blogs/169595884133310988.jpg"}
               alt="Learning Collaboration"
               className="w-full h-[450px] object-cover rounded-[2.5rem]"
             />
