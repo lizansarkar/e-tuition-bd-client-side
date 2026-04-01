@@ -23,7 +23,6 @@ const staggerContainer = {
 };
 
 export default function About() {
-  const image_url = "/src/pages/about/learning.jpg";
 
   return (
     <section className="bg-[#fcfdfe] dark:bg-[#030712] py-12 relative overflow-hidden">
@@ -95,9 +94,9 @@ export default function About() {
             viewport={{ once: true }}
           >
             <img
-              src={image_url}
+              src="https://www.ndmscbd.org/uploads/blogs/169595884133310988.jpg"
               alt="Learning Collaboration"
-              className="w-full h-[450px] object-cover rounded-[2.5rem] grayscale group-hover:grayscale-0 transition-all duration-700"
+              className="w-full h-[450px] object-cover rounded-[2.5rem]"
             />
             <div className="absolute -bottom-8 -left-8 bg-primary p-8 rounded-3xl shadow-2xl hidden md:block">
                <p className="text-white font-black text-4xl">5+ Years</p>
