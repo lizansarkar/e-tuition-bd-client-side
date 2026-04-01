@@ -59,7 +59,7 @@ const Blogs = () => {
       date: "Jan 20, 2026",
       readTime: "4 min read",
       image:
-        "https://images.unsplash.com/photo-1588702547319-f55a6dbd7347?q=80&w=500&auto=format&fit=crop",
+        "https://img.freepik.com/free-vector/e-learning-education-template-vector-technology-ad-banner_53876-125996.jpg?semt=ais_incoming&w=740&q=80",
     },
     {
       id: 5,
@@ -73,7 +73,7 @@ const Blogs = () => {
       date: "Jan 22, 2026",
       readTime: "8 min read",
       image:
-        "https://images.unsplash.com/photo-1543167664-40d699bc2488?q=80&w=500&auto=format&fit=crop",
+        "https://www.narayanaschools.in/blog/wp-content/uploads/2023/08/20230828-171748.jpg",
     },
     {
       id: 6,

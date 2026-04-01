@@ -22,7 +22,7 @@ export default function AllTuitions() {
   const [searchInput, setSearchInput] = useState(""); // ইনপুটে যা টাইপ করবেন
   const [searchQuery, setSearchQuery] = useState("");
   const [sort, setSort] = useState("newest");
-  const limit = 10;
+  const limit = 9;
 
   // TanStack Query: searchQuery ব্যবহার করা হয়েছে যাতে প্রতি অক্ষরের জন্য রিকোয়েস্ট না যায়
   const { data, isLoading, isFetching } = useQuery({
@@ -161,7 +161,7 @@ export default function AllTuitions() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-6 rounded-[2rem] hover:shadow-2xl hover:shadow-primary/5 transition-all group relative overflow-hidden"
+                className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-6 rounded-3xl shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 px-6 py-2 bg-primary/10 text-primary text-[10px] font-black uppercase rounded-bl-2xl">
                   {tuition.status || "Approved"}
