@@ -172,7 +172,7 @@ export default function LatestTutors() {
           opacity: 0.4;
           filter: blur(1px);
           transition: all 0.6s ease;
-          pointer-events: auto !important; /* ক্লিক সচল করা */
+          pointer-events: auto !important;
         }
         .swiper-slide-active {
           opacity: 1;
@@ -180,7 +180,7 @@ export default function LatestTutors() {
           transform: scale(1.05);
           z-index: 50 !important;
         }
-        /* নিশ্চিত করা যে বাটন ক্লিক পাচ্ছে */
+
         .swiper-slide a {
            pointer-events: auto !important;
            user-select: none;
