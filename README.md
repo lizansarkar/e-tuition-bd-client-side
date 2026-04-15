@@ -3,7 +3,7 @@ eTuitionBd – Tuition Management System [https://e-tuition-bd-c38ed.web.app/]
 📘 Project Overview
 
 eTuitionBd is a full-stack modern Tuition Management Platform designed for students, tutors, and administrators.
-The platform streamlines the entire tuition process — from posting tuition requirements, applying for tuitions, approving tutors, making secure payments, and managing all activities through a dedicated admin panel.
+The platform streamlines the entire tuition process — from posting tuition requirements, applying for tuition, approving tutors, making secure payments, and managing all activities through a dedicated admin panel.
 
 The main goal of this project is to provide a trusted, automated, and transparent way for students to find qualified tutors and for tutors to connect with verified tuition opportunities.
 
