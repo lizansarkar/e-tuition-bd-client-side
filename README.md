@@ -2,7 +2,7 @@ eTuitionBd – Tuition Management System [https://e-tuition-bd-c38ed.web.app/]
 
 🟢 Project img
 <div align="center">
-  <img src="eTuitionBD-hero.PNG" alt="eTuitionBd banner img" width="100%" />
+  <img src="/public/eTuitionBD-hero.PNG" alt="eTuitionBd banner img" width="100%" />
 </div>
 
 📘 Project Overview
